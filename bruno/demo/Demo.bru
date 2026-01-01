@@ -1,0 +1,20 @@
+meta {
+  name: Demo
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/demos
+  body: none
+  auth: inherit
+}
+
+headers {
+  x-tenant: {{TENANT}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

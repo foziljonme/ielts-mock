@@ -1,0 +1,309 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// ==========================
+// Prisma Configuration
+// ==========================
+
+generator client {
+  provider     = "prisma-client"
+  output       = "./generated"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================
+// TENANT (EDUCATION CENTER)
+// ==========================
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  subdomain String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  tests    Test[]
+  sessions ExamSession[]
+  users    User[]
+}
+
+enum UserRole {
+  OWNER // SaaS owner (can create tenants)
+  TENANT // Center admin (can manage sessions)
+  STAFF // Center staff (can manage sessions)
+}
+
+model User {
+  id        String     @id @default(cuid())
+  tenantId  String?
+  email     String     @unique
+  password  String
+  roles     UserRole[]
+  createdAt DateTime   @default(now())
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id])
+}
+
+// ==========================
+// ENUMS
+// ==========================
+enum QuestionType {
+  // Common
+  MULTIPLE_CHOICE
+  MATCHING
+  PLAN_MAP_DIAGRAM_LABELING
+  FORM_COMPLETION
+  NOTE_COMPLETION
+  TABLE_COMPLETION
+  FLOW_CHART_COMPLETION
+  SUMMARY_COMPLETION
+  SENTENCE_COMPLETION
+  SHORT_ANSWER
+
+  // Reading-only
+  TRUE_FALSE_NOT_GIVEN
+  YES_NO_NOT_GIVEN
+  MATCHING_HEADINGS
+  MATCHING_INFORMATION
+  MATCHING_FEATURES
+}
+
+enum TestModule {
+  READING
+  LISTENING
+  WRITING
+}
+
+enum AttemptStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  SUBMITTED
+  EXPIRED
+}
+
+enum SessionStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+}
+
+// ==========================
+// TEST (BLUEPRINT)
+// ==========================
+model Test {
+  id          String  @id @default(cuid())
+  tenantId    String?
+  title       String
+  description String?
+  isPublished Boolean @default(false)
+
+  tenant       Tenant?       @relation(fields: [tenantId], references: [id])
+  sections     TestSection[]
+  attempts     SeatAttempt[]
+  examSessions ExamSession[]
+}
+
+// ==========================
+// TEST SECTION
+// ==========================
+model TestSection {
+  id          String     @id @default(cuid())
+  testId      String
+  module      TestModule
+  order       Int
+  durationMin Int
+
+  test            Test             @relation(fields: [testId], references: [id])
+  passages        Passage[]
+  questions       Question[]
+  listeningAudio  ListeningAudio?
+  sectionAttempts SectionAttempt[]
+}
+
+// ==========================
+// PASSAGE (READING)
+// ==========================
+model Passage {
+  id        String  @id @default(cuid())
+  sectionId String
+  title     String?
+  content   String
+  order     Int
+
+  section   TestSection @relation(fields: [sectionId], references: [id])
+  questions Question[]
+}
+
+// ==========================
+// LISTENING AUDIO
+// ==========================
+model ListeningAudio {
+  id           String  @id @default(cuid())
+  sectionId    String  @unique
+  audioUrl     String
+  durationSec  Int
+  playOnceOnly Boolean @default(true)
+
+  section TestSection @relation(fields: [sectionId], references: [id])
+}
+
+// ==========================
+// QUESTION
+// ==========================
+model Question {
+  id        String       @id @default(cuid())
+  sectionId String
+  passageId String?
+  type      QuestionType
+  prompt    String
+  order     Int
+  maxWords  Int?
+
+  section          TestSection       @relation(fields: [sectionId], references: [id])
+  passage          Passage?          @relation(fields: [passageId], references: [id])
+  options          QuestionOption[]
+  questionAttempts QuestionAttempt[]
+}
+
+// ==========================
+// QUESTION OPTION
+// ==========================
+model QuestionOption {
+  id         String @id @default(cuid())
+  questionId String
+  label      String
+  text       String
+  order      Int
+
+  question Question @relation(fields: [questionId], references: [id])
+}
+
+// ==========================
+// EXAM SESSION
+// ==========================
+model ExamSession {
+  id         String        @id @default(cuid())
+  tenantId   String
+  testId     String
+  name       String?
+  startTime  DateTime
+  status     SessionStatus @default(SCHEDULED)
+  accessCode String        @unique
+
+  tenant       Tenant        @relation(fields: [tenantId], references: [id])
+  test         Test          @relation(fields: [testId], references: [id])
+  seats        ExamSeat[]
+  seatAttempts SeatAttempt[]
+}
+
+// ==========================
+// EXAM SEAT (ONE COMPUTER)
+// ==========================
+model ExamSeat {
+  id         String  @id @default(cuid())
+  sessionId  String
+  seatNumber Int
+  label      String?
+
+  session ExamSession  @relation(fields: [sessionId], references: [id])
+  attempt SeatAttempt?
+}
+
+// ==========================
+// SEAT ATTEMPT (REPLACES USER)
+// ==========================
+model SeatAttempt {
+  id        String @id @default(cuid())
+  seatId    String @unique
+  sessionId String
+  testId    String
+
+  status      AttemptStatus @default(NOT_STARTED)
+  startedAt   DateTime?
+  submittedAt DateTime?
+
+  seat    ExamSeat    @relation(fields: [seatId], references: [id])
+  session ExamSession @relation(fields: [sessionId], references: [id])
+  test    Test        @relation(fields: [testId], references: [id])
+
+  sections SectionAttempt[]
+}
+
+// ==========================
+// SECTION ATTEMPT
+// ==========================
+model SectionAttempt {
+  id            String        @id @default(cuid())
+  seatAttemptId String
+  sectionId     String
+  startedAt     DateTime?
+  expiresAt     DateTime?
+  remainingSec  Int
+  status        AttemptStatus @default(NOT_STARTED)
+
+  seatAttempt SeatAttempt       @relation(fields: [seatAttemptId], references: [id])
+  section     TestSection       @relation(fields: [sectionId], references: [id])
+  questions   QuestionAttempt[]
+}
+
+// ==========================
+// QUESTION ATTEMPT
+// ==========================
+model QuestionAttempt {
+  id               String    @id @default(cuid())
+  sectionAttemptId String
+  questionId       String
+  isFlagged        Boolean   @default(false)
+  visitedAt        DateTime?
+
+  sectionAttempt SectionAttempt @relation(fields: [sectionAttemptId], references: [id])
+  question       Question       @relation(fields: [questionId], references: [id])
+  answer         Answer?
+  highlights     Highlight[]
+  writingDrafts  WritingDraft[]
+}
+
+// ==========================
+// ANSWER
+// ==========================
+model Answer {
+  id                String   @id @default(cuid())
+  questionAttemptId String   @unique
+  value             String
+  wordCount         Int?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  questionAttempt QuestionAttempt @relation(fields: [questionAttemptId], references: [id])
+}
+
+// ==========================
+// HIGHLIGHT
+// ==========================
+model Highlight {
+  id                String @id @default(cuid())
+  questionAttemptId String
+  startOffset       Int
+  endOffset         Int
+
+  questionAttempt QuestionAttempt @relation(fields: [questionAttemptId], references: [id])
+}
+
+// ==========================
+// WRITING DRAFT
+// ==========================
+model WritingDraft {
+  id                String   @id @default(cuid())
+  questionAttemptId String
+  content           String
+  wordCount         Int
+  savedAt           DateTime @default(now())
+
+  questionAttempt QuestionAttempt @relation(fields: [questionAttemptId], references: [id])
+}

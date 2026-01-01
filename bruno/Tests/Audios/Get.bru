@@ -1,0 +1,26 @@
+meta {
+  name: Get
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/passages/cmjvoyfj30001d8v2hh2wfl24
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "test14@test.net",
+    "password": "1",
+    "tenantId": "cmjiq9shr0001p4v2e26s32kd",
+    "firstName": "Test",
+    "lastName": "User"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

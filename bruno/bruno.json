@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "ielts-mock",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

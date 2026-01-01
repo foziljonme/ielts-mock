@@ -1,0 +1,24 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/tests/cmjviiyiv000164v2gs31afe6/sections
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "durationMin": 60,
+    "order": 3,
+    "module": "WRITING"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

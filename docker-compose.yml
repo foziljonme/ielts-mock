@@ -1,0 +1,90 @@
+services:
+  # Database Service
+  db:
+    image: postgres:18.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: education-center
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  # Backend Service (Development)
+  backend:
+    build:
+      context: ./backend
+      target: development
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgres://postgres:123@db:5432/education-center
+      JWT_SECRET: "Pk+BOapIuucuFMdUZsM2cyeZPb7Dh8rZF6OfEGo183we98JIctuWUWPNTZEzAQdUTmGq3c9CHpo/r6ibWg8XktWHM23KcOU5rOP23yiV8qsh/LggC4gdFJXVYJCh5jtHg88MYn6+JnxS6xM9ppQhk1GS/xC6Wq00rV273JyMz7vr7eF7DDturUVtcOiwEUJ0Rg8YsvyFpxISzG0rWRSj48K+Qd5Hons/walFdkkVsy+f/n++wYhRO3Gbj0dLD7ErNUTqVZG1YEHiOeuNjGdW9DGWEDxllqulusy8FdylQfz/d7E81VhdjEenWs1c23jHey/ZbtyCMLbR60ZTKolmCQ=="
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: /bin/sh -c "yarn db:push && yarn prisma generate && yarn start:dev"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  # Backend Service (Production)
+  backend-prod:
+    profiles: [ "prod" ]
+    build:
+      context: ./backend
+      target: production
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://postgres:123@db:5432/education-center
+      JWT_SECRET: "Pk+BOapIuucuFMdUZsM2cyeZPb7Dh8rZF6OfEGo183we98JIctuWUWPNTZEzAQdUTmGq3c9CHpo/r6ibWg8XktWHM23KcOU5rOP23yiV8qsh/LggC4gdFJXVYJCh5jtHg88MYn6+JnxS6xM9ppQhk1GS/xC6Wq00rV273JyMz7vr7eF7DDturUVtcOiwEUJ0Rg8YsvyFpxISzG0rWRSj48K+Qd5Hons/walFdkkVsy+f/n++wYhRO3Gbj0dLD7ErNUTqVZG1YEHiOeuNjGdW9DGWEDxllqulusy8FdylQfz/d7E81VhdjEenWs1c23jHey/ZbtyCMLbR60ZTKolmCQ=="
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # Frontend Service (Development)
+  frontend:
+    build:
+      context: ./frontend
+      target: development
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - app-network
+
+  # Frontend Service (Production)
+  frontend-prod:
+    profiles: [ "prod" ]
+    build:
+      context: ./frontend
+      target: production
+    ports:
+      - "3000:80"
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  app-network:
+    driver: bridge

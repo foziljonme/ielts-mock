@@ -1,0 +1,26 @@
+meta {
+  name: Update
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{BASE_URL}}/platform/users/cmjrnfpf10000x8v2lvmqrrwn
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+  //   "email": "test14@test.net",
+  //   "password": "1",
+  //   "tenantId": "cmjiq9shr0001p4v2e26s32kd",
+  //   "firstName": "Not test anymore",
+    "lastName": "User 123"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

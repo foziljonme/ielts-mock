@@ -1,0 +1,27 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/platform/tenants
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "English House",
+    "subdomain": "english-house"
+  //   "name": "English Academy",
+  //   "subdomain": "english-academy"
+  //   "name": "Inter nation",
+  //   "subdomain": "inter-nation"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

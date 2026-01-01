@@ -1,0 +1,24 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/platform/users
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "tenant_admin8@demo.com",
+    "password": "demo",
+    "tenantId": "cmjvd2fb100021cv23xa1xaac"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Delete
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{BASE_URL}}/platform/tenants/cmjrntm7i00009ov28aj2t9hf
+  body: none
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "English Academy Updated"
+  //   ,"subdomain": "english-academy"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

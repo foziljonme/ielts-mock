@@ -1,0 +1,23 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/tests
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Hello world",
+    "description": "Some description for this test!"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

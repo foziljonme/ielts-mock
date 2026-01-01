@@ -1,0 +1,30 @@
+meta {
+  name: Upload
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{BASE_URL}}/uploads/test
+  body: multipartForm
+  auth: inherit
+}
+
+body:json {
+  {
+    
+  }
+}
+
+body:multipart-form {
+  : @file(C:\Users\User\Desktop\campridge-75-test-1.mp3) @contentType(Audio)
+}
+
+body:file {
+  file: @file(C:\Users\User\Desktop\campridge-75-test-1.mp3) @contentType(audio/mpeg)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,29 @@
+meta {
+  name: Me
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/auth/me
+  body: json
+  auth: inherit
+}
+
+headers {
+  "{{TENANT_HEADER}}": {{TENANT}}
+}
+
+script:post-response {
+  const responseBody = res.getBody(); // Get the response body (automatically parsed if JSON)
+  
+  // Assuming the response body has a property named 'access_token'
+  const accessToken = responseBody.accessToken;
+  
+  bru.setEnvVar('token', accessToken)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,19 @@
+auth {
+  mode: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+script:pre-request {
+  // add x-tenant to all endpoints except /platform requests
+  
+  const secondPathName = req.getUrl().split('/')[1]
+  if (secondPathName !== 'platform') {
+    const headers = req.getHeaders()
+    headers[bru.getEnvVar('TENANT_HEADER')] = bru.getEnvVar('TENANT')
+  //   headers[bru.getEnvVar('TENANT_HEADER')] = bru.getEnvVar('TENANT_TEST')
+    console.log(req.getHeaders())
+  }
+}

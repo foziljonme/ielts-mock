@@ -1,0 +1,16 @@
+meta {
+  name: Seed Admin accounts
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{BASE_URL}}/platform/seed-platform-admin-accounts
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

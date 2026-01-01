@@ -1,0 +1,23 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/sections/cmjvl6lne0000h8v2x32ee953/audios
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "audioUrl": "/test/path2",
+    "durationSec": 1234
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
