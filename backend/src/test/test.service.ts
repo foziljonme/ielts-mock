@@ -20,10 +20,12 @@ export class TestService {
   }
 
   async findAll() {
+    this.logger.log('Finding all tests');
     return await this.prismaService.test.findMany();
   }
 
   async findOne(id: string) {
+    this.logger.log('Finding test');
     return await this.prismaService.test.findUnique({
       where: { id },
       include: {
@@ -32,6 +34,7 @@ export class TestService {
         sections: {
           include: {
             passages: true,
+            listeningAudio: true,
           },
         },
         tenant: true,
@@ -40,6 +43,7 @@ export class TestService {
   }
 
   async update(id: string, updateTestDto: UpdateTestDto) {
+    this.logger.log('Updating test');
     return await this.prismaService.test.update({
       where: { id },
       data: updateTestDto,
@@ -47,6 +51,7 @@ export class TestService {
   }
 
   async delete(id: string) {
+    this.logger.log('Deleting test');
     return await this.prismaService.test.delete({ where: { id } });
   }
 }

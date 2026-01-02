@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import * as ffmpeg from 'fluent-ffmpeg';
+import ffmpeg from 'fluent-ffmpeg';
 import { join } from 'path';
 import { unlink } from 'fs/promises';
 import { UploadResponseDto } from './dto/upload-response.dto';

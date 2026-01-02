@@ -15,6 +15,8 @@ import { CreatePassageDto } from '../passages/dto/create-passage.dto';
 import { PassagesService } from '../passages/passages.service';
 import { AudiosService } from '../audios/audios.service';
 import { CreateAudioDto } from '../audios/dto/create-audio.dto';
+import { CreateQuestionDto } from '../questions/dto/create-question.dto';
+import { QuestionsService } from '../questions/questions.service';
 
 @Controller('sections')
 export class SectionsController {
@@ -22,6 +24,7 @@ export class SectionsController {
     private readonly sectionsService: SectionsService,
     private readonly passagesService: PassagesService,
     private readonly audiosService: AudiosService,
+    private readonly questionsService: QuestionsService,
   ) {}
 
   @Get()
@@ -64,5 +67,16 @@ export class SectionsController {
     @Body() createAudioDto: CreateAudioDto,
   ) {
     return await this.audiosService.createWithTx(sectionId, createAudioDto);
+  }
+
+  @Post(':sectionId/questions')
+  async createQuestion(
+    @Param('sectionId') sectionId: string,
+    @Body() createQuestionDto: CreateQuestionDto,
+  ) {
+    return await this.questionsService.createWithTx(
+      sectionId,
+      createQuestionDto,
+    );
   }
 }

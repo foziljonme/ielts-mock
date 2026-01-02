@@ -157,13 +157,14 @@ model ListeningAudio {
 // QUESTION
 // ==========================
 model Question {
-  id        String       @id @default(cuid())
-  sectionId String
-  passageId String?
-  type      QuestionType
-  prompt    String
-  order     Int
-  maxWords  Int?
+  id         String       @id @default(cuid())
+  sectionId  String
+  passageId  String?
+  type       QuestionType
+  prompt     String
+  order      Int
+  maxWords   Int?
+  diagramUrl String?
 
   section          TestSection       @relation(fields: [sectionId], references: [id])
   passage          Passage?          @relation(fields: [passageId], references: [id])

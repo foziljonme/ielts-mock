@@ -20,6 +20,9 @@ import { TestModule } from './test/test.module';
 import { SectionsModule } from './test/sections/sections.module';
 import { PassagesModule } from './test/passages/passages.module';
 import { UploadModule } from './test/uploads/upload.module';
+import { AudiosModule } from './test/audios/audios.module';
+import { QuestionsModule } from './test/questions/questions.module';
+import { OptionsModule } from './test/options/options.module';
 
 @Module({
   imports: [
@@ -64,6 +67,9 @@ import { UploadModule } from './test/uploads/upload.module';
     SectionsModule,
     PassagesModule,
     UploadModule,
+    AudiosModule,
+    QuestionsModule,
+    OptionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

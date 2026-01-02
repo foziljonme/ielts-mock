@@ -3,6 +3,9 @@ FROM node:22 AS development
 
 WORKDIR /app
 
+# Install ffmpeg binary for Debian/Ubuntu base
+RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+
 COPY package.json yarn.lock ./
 
 RUN ls -la
@@ -10,8 +13,6 @@ RUN ls -la
 RUN yarn install --frozen-lockfile
 
 COPY . .
-
-RUN yarn generate
 
 EXPOSE 8080
 
@@ -26,6 +27,9 @@ RUN yarn build
 FROM node:22-alpine AS production
 
 WORKDIR /app
+
+# Install ffmpeg binary for Debian/Ubuntu base
+RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
 
 COPY package.json yarn.lock ./
 
