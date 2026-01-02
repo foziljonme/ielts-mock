@@ -3,6 +3,7 @@ import { CreateTestDto } from './dto/create-test.dto';
 import { UpdateTestDto } from './dto/update-test.dto';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { readFileSync } from 'fs';
 
 @Injectable()
 export class TestService {
@@ -40,6 +41,16 @@ export class TestService {
         tenant: true,
       },
     });
+  }
+
+  async getListeningFromJson(id: string) {
+    this.logger.log('Getting listening from json');
+    // const listening = readFileSync(`src/data/${id}/listening.json`, 'utf-8');
+    const listening = readFileSync(
+      `src/data/cambridge-16-test-1/${id}.json`,
+      'utf-8',
+    );
+    return JSON.parse(listening);
   }
 
   async update(id: string, updateTestDto: UpdateTestDto) {

@@ -1,23 +1,18 @@
 import { lazy } from "react";
 
-const SignupPage = lazy(() => import("./pages/SignupPage"));
-const LoginPage = lazy(() => import("./pages/LoginPage"));
-const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
+const SessionLoginPage = lazy(() => import("./pages/SessionLoginPage"));
+const AdminLoginPage = lazy(() => import("./pages/AdminLoginPage"));
 
 export const authRoutes = {
   path: "auth",
   children: [
     {
-      path: "signup",
-      element: <SignupPage />,
-    },
-    {
       path: "login",
-      element: <LoginPage />,
+      element: <SessionLoginPage />,
     },
     {
-      path: "forgot-password",
-      element: <ForgotPasswordPage />,
+      path: "admin-login",
+      element: <AdminLoginPage />,
     },
   ],
 };

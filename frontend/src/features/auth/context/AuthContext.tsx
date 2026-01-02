@@ -6,20 +6,14 @@ import React, {
   type ReactNode,
 } from "react";
 import type { User } from "../types";
-import { authenticate, getMe } from "../api";
 import { useAuthStore } from "../store";
 
 type UserRole = "teacher" | "student" | "tenant_admin" | "OWNER";
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<void>;
-  signup: (
-    name: string,
-    email: string,
-    password: string,
-    role: UserRole
-  ) => Promise<void>;
+  sessionLogin: (accessCode: string) => Promise<void>;
+  adminLogin: (email: string, password: string) => Promise<void>;
   logout: () => void;
   resetPassword: (email: string) => Promise<void>;
   redirectUrl: string;
@@ -40,8 +34,6 @@ const mockUsers: User[] = [
   {
     id: "1",
     name: "Sarah Johnson",
-    firstName: "Sarah",
-    lastName: "Johnson",
     email: "teacher@demo.com",
     role: "teacher",
     tenantId: "t1",
@@ -52,8 +44,6 @@ const mockUsers: User[] = [
   {
     id: "2",
     name: "Michael Chen",
-    firstName: "Michael",
-    lastName: "Chen",
     email: "student@demo.com",
     role: "student",
     tenantId: "t1",
@@ -64,8 +54,6 @@ const mockUsers: User[] = [
   {
     id: "3",
     name: "Emma Thompson",
-    firstName: "Emma",
-    lastName: "Thompson",
     email: "admin@demo.com",
     role: "tenant_admin",
     tenantId: "t1",
@@ -76,8 +64,6 @@ const mockUsers: User[] = [
   {
     id: "4",
     name: "David Wilson",
-    firstName: "David",
-    lastName: "Wilson",
     email: "saas@demo.com",
     role: "OWNER",
     avatar:
@@ -90,60 +76,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { role: selectedRole } = useAuthStore((state) => state);
 
   const redirectUrl = useMemo(() => {
-    switch (selectedRole.value) {
-      case "student":
-        return "/student/dashboard";
-      case "teacher":
-        return "/teacher/dashboard";
-      case "admin":
-        return "/tenant/dashboard";
-      case "OWNER":
-        return "/saas/dashboard";
-      default:
-        return "/student/dashboard";
-    }
+    return "/test/section-selection";
   }, [selectedRole]);
 
-  const login = async (email: string, password: string) => {
-    try {
-      await authenticate({ email, password });
-      const user = await getMe();
-      console.log(user);
-      setUser({ ...user, role: selectedRole.value });
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
-    // Remove after mock users are removed
-    const foundUser = mockUsers.find((u) => u.email === email);
-    if (foundUser) {
-      setUser(foundUser);
-      console.log({ foundUser });
-      localStorage.setItem("user", JSON.stringify(foundUser));
-    } else {
-      throw new Error("Invalid credentials");
-    }
+  const sessionLogin = async (accessCode: string) => {
+    console.log({ accessCode });
+    setUser({
+      id: "1",
+      name: "Sarah Johnson",
+      email: "teacher@demo.com",
+      role: "teacher",
+      tenantId: "t1",
+      tenantName: "IELTS Excellence Center",
+      avatar:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
+    });
   };
 
-  const signup = async (
-    name: string,
-    email: string,
-    password: string,
-    role: UserRole
-  ) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    const newUser: User = {
-      id: Math.random().toString(36).substr(2, 9),
-      name,
-      email,
-      role,
-      tenantId: role !== "OWNER" ? "t1" : undefined,
-      tenantName: role !== "OWNER" ? "IELTS Excellence Center" : undefined,
-    };
-
-    setUser(newUser);
-    localStorage.setItem("user", JSON.stringify(newUser));
+  const adminLogin = async (email: string, password: string) => {
+    console.log({ email, password });
+    setUser({
+      id: "1",
+      name: "Sarah Johnson",
+      email: "teacher@demo.com",
+      role: "teacher",
+      tenantId: "t1",
+      tenantName: "IELTS Excellence Center",
+      avatar:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
+    });
   };
 
   const logout = () => {
@@ -167,7 +128,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, signup, logout, resetPassword, redirectUrl }}
+      value={{
+        user,
+        sessionLogin,
+        adminLogin,
+        logout,
+        resetPassword,
+        redirectUrl,
+      }}
     >
       {children}
     </AuthContext.Provider>

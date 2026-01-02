@@ -1,4 +1,10 @@
-@import 'tailwindcss' source(none);
+@import "tailwindcss" source(none);
 @source '../**/*.{js,ts,jsx,tsx}';
 
-@import 'tw-animate-css';
+@import "tw-animate-css";
+
+.inline-input {
+  @apply border-b-2 border-gray-600 w-32 px-1 py-0.5 text-center focus:border-blue-600 focus:outline-none;
+  font-size: inherit;
+  font-family: inherit;
+}

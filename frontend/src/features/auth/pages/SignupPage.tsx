@@ -12,7 +12,8 @@ export default function SignupPage() {
   const [role, setRole] = useState<"teacher" | "student">("student");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signup } = useAuth();
+  // const { signup } = useAuth();
+  const signup = (...args: any) => {};
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {

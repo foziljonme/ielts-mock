@@ -26,3 +26,6 @@ db-push:
 # Run both generate + db push
 sync:
 	docker compose exec backend sh -c "yarn prisma generate && yarn db:push"
+
+fr-log:
+	docker compose logs -f frontend

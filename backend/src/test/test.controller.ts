@@ -21,6 +21,11 @@ export class TestController {
     private readonly sectionsService: SectionsService,
   ) {}
 
+  @Get('/sections/listening/:id')
+  async getListening(@Param('id') id: string) {
+    return await this.testService.getListeningFromJson(id);
+  }
+
   @Post()
   async create(@Body() createTestDto: CreateTestDto) {
     return await this.testService.create(createTestDto);
