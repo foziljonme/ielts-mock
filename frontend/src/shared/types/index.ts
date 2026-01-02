@@ -109,7 +109,10 @@ export interface NoteCompletionBlock {
   type:
     | "TITLE"
     | "ROW"
+    | "ROW_BULLET"
     | "QUESTION_ROW"
+    | "ROW_SUB"
+    | "QUESTION_ROW_SUB"
     | "QUESTION_BULLET"
     | "SECTION_HEADER"
     | "TEXT";

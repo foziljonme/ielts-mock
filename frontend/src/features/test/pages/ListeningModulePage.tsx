@@ -1,9 +1,8 @@
-// App.tsx or ListeningTest.tsx
+// pages/ListeningTest.tsx or components/ListeningTestPage.tsx
 import { useEffect, useState } from "react";
-import QuestionSection from "../components/QuestionSection";
-import AudioPlayer from "../components/AudioPlayer";
-import type { ListeningSection, ListeningTest } from "../../../shared/types";
+import type { ListeningTest } from "../../../shared/types";
 import { getListeningSection } from "../api";
+import ListeningPart from "../components/ListeningPart";
 
 export default function ListeningTestPage() {
   const [testData, setTestData] = useState<ListeningTest | null>(null);
@@ -22,72 +21,96 @@ export default function ListeningTestPage() {
   }
 
   const currentPart = testData.parts[currentPartIndex];
-
+  console.log(currentPart);
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">
-            IELTS Listening Practice Test
-          </h1>
-          <div className="text-sm text-gray-600">
-            Part {currentPart.part} of 4
+      <header className="bg-white shadow-md border-b border-gray-300 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+              IELTS Listening Practice Test
+            </h1>
+            <p className="text-sm text-gray-600 mt-1">
+              Computer-Delivered Format Simulation
+            </p>
+          </div>
+          <div className="text-center">
+            <span className="text-xl font-semibold text-blue-700">
+              PART {currentPart.part} / 4
+            </span>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col lg:flex-row max-w-6xl mx-auto w-full px-4 py-6 gap-8">
-        {/* Left: Questions (Booklet Style) */}
-        <div className="flex-1 bg-white rounded-lg shadow-md p-8 overflow-y-auto">
-          {/* <PartNavigation
-            parts={testData.parts}
-            currentPartIndex={currentPartIndex}
-            onPartChange={setCurrentPartIndex}
-          /> */}
-
-          <div className="mt-8">
-            {currentPart.questions.map((questionGroup, idx) => (
-              <QuestionSection key={idx} questionGroup={questionGroup} />
-            ))}
-          </div>
+      {/* Main Split Layout */}
+      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl mx-auto w-full px-4 py-8 gap-10">
+        {/* Left: Questions (Scrollable Booklet) */}
+        <div className="flex-1 bg-white rounded-xl shadow-lg p-8 overflow-y-auto max-h-[80vh] lg:max-h-none">
+          <ListeningPart part={currentPart} />
         </div>
 
-        {/* Right: Audio Player (Fixed on larger screens) */}
-        {/* <div className="lg:w-96">
-          <div className="sticky top-6">
+        {/* Right: Audio Player (Fixed/Sticky) */}
+        {/* <div className="lg:w-96 flex-shrink-0">
+          <div className="sticky top-24 bg-white rounded-xl shadow-lg p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+              Audio Player - Part {currentPart.part}
+            </h3>
             <AudioPlayer
-              audioUrl={currentPart.audio!.url}
-              playOnce={currentPart.audio!.playOnce ?? true}
+              audioUrl={currentPart.audio?.url || "/audio/placeholder.mp3"}
+              playOnce={currentPart.audio?.playOnce ?? true}
             />
+            <div className="mt-6 text-center text-sm text-gray-600">
+              <p>⏱ Audio plays once only</p>
+              <p className="mt-2 font-medium">
+                You have 30 minutes for the full test
+              </p>
+            </div>
           </div>
         </div> */}
       </div>
 
-      {/* Footer Controls */}
-      <footer className="bg-white border-t border-gray-200 px-4 py-4">
-        <div className="max-w-6xl mx-auto flex justify-between">
+      {/* Bottom Navigation */}
+      <footer className="bg-white border-t border-gray-300 px-6 py-5 sticky bottom-0 shadow-up">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
           <button
             onClick={() =>
               setCurrentPartIndex(Math.max(0, currentPartIndex - 1))
             }
             disabled={currentPartIndex === 0}
-            className="px-6 py-3 bg-gray-300 rounded-lg disabled:opacity-50"
+            className="px-8 py-4 bg-gray-200 text-gray-700 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition"
           >
-            Previous Part
+            ← Previous Part
           </button>
-          <button
-            onClick={() =>
-              setCurrentPartIndex(
-                Math.min(testData.parts.length - 1, currentPartIndex + 1)
-              )
-            }
-            disabled={currentPartIndex === testData.parts.length - 1}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-          >
-            Next Part
-          </button>
+
+          <div className="flex gap-3">
+            {testData.parts.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentPartIndex(idx)}
+                className={`w-12 h-12 rounded-full font-bold transition ${
+                  idx === currentPartIndex
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
+                {idx + 1}
+              </button>
+            ))}
+          </div>
+
+          {currentPartIndex < testData.parts.length - 1 ? (
+            <button
+              onClick={() => setCurrentPartIndex(currentPartIndex + 1)}
+              className="px-8 py-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
+            >
+              Next Part →
+            </button>
+          ) : (
+            <button className="px-8 py-4 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition">
+              Finish Test
+            </button>
+          )}
         </div>
       </footer>
     </div>

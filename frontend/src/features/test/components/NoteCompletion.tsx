@@ -1,69 +1,128 @@
 import type { NoteCompletionQuestionType } from "../../../shared/types";
+import { constructTemplate } from "../utils";
+import QuestionGroupWrapper from "./QuestionGroupWrapper";
 
 export default function NoteCompletion({
-  block,
+  group,
 }: {
-  block: NoteCompletionQuestionType;
+  group: NoteCompletionQuestionType;
 }) {
   return (
-    <div className="space-y-4 font-serif text-base leading-relaxed">
-      {block.blocks.map((b, i) => {
-        switch (b.type) {
-          case "TITLE":
-            return (
-              <h2 key={i} className="text-xl font-bold text-center mb-6">
-                {b.text}
-              </h2>
-            );
-          case "SECTION_HEADER":
-            return (
-              <h3 key={i} className="text-lg font-semibold mt-8 mb-4">
-                {b.text}
-              </h3>
-            );
-          case "ROW":
-            return (
-              <div key={i} className="grid grid-cols-3 gap-4 items-center">
-                <span className="font-medium">{b.label}</span>
-                <span className="col-span-2 border-b border-gray-400 pb-1">
-                  {b.value}
-                </span>
-              </div>
-            );
-          case "QUESTION_ROW":
-          case "QUESTION_BULLET":
-            const isBullet = b.type === "QUESTION_BULLET";
-            return (
-              <div
-                key={i}
-                className={`flex items-center gap-4 ${isBullet ? "ml-8" : ""}`}
-              >
-                <span className="font-medium w-8 text-right text-gray-700">
-                  {b.number}.
-                </span>
-                <div className="flex-1 flex items-center gap-3">
-                  {b.label && <span>{b.label}</span>}
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: (b.template || "").replace(
-                        "{{blank}}",
-                        `<input type="text" class="inline-input" data-qid="${b.questionId}" />`
-                      ),
-                    }}
-                  />
+    <QuestionGroupWrapper instructions={group.instructions}>
+      <div className="text-base leading-loose space-y-5 max-w-3xl mx-auto">
+        {group.blocks.map((block, idx) => {
+          switch (block.type) {
+            case "TITLE":
+              return (
+                <h2
+                  key={idx}
+                  className="text-2xl font-bold text-center mt-8 mb-6"
+                >
+                  {block.text}
+                </h2>
+              );
+
+            case "SECTION_HEADER":
+              return (
+                <h3
+                  key={idx}
+                  className="text-lg font-semibold text-gray-800 mt-10 mb-4 underline"
+                >
+                  {block.text}
+                </h3>
+              );
+
+            case "ROW":
+              return (
+                <div key={idx} className="grid grid-cols-2 gap-4 items-center">
+                  <span className="font-medium">{block.label}</span>
+                  <span className="border-b-2 border-gray-600 pb-1">
+                    {block.value}
+                  </span>
                 </div>
-              </div>
-            );
-          case "TEXT":
-            return (
-              <p key={i} className="ml-8 font-medium">
-                {b.text}
-              </p>
-            );
-          default:
-            return null;
-        }
-      })}
-    </div>
+              );
+
+            case "ROW_SUB":
+              return (
+                <div key={idx} className="flex items-center gap-16">
+                  <div></div>
+                  <div className="flex-1 flex items-center gap-3">
+                    <span>{block.text}</span>
+                  </div>
+                </div>
+              );
+
+            case "QUESTION_ROW":
+              return (
+                <div
+                  key={idx}
+                  className={`grid ${
+                    block.label !== undefined ? "grid-cols-2" : "grid-cols-1"
+                  } gap-4 items-center`}
+                >
+                  {block.label !== undefined && <span>{block.label}</span>}
+                  <div className="flex items-center gap-3">
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: constructTemplate(block),
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+
+            case "QUESTION_ROW_SUB":
+              return (
+                <div key={idx} className="flex items-center gap-16">
+                  <div></div>
+                  <div className="flex-1 flex items-center gap-3">
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: constructTemplate(block),
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+
+            case "QUESTION_BULLET":
+              return (
+                <div key={idx} className="flex items-center gap-6 ml-10">
+                  <div className="w-1 h-1 bg-gray-700 rounded-full"></div>
+                  <div className="flex-1 flex items-center gap-3">
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: constructTemplate(block),
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+
+            case "ROW_BULLET":
+              console.log({ block });
+
+              return (
+                <div key={idx} className="flex items-center gap-6 ml-10">
+                  <div className="w-1 h-1 bg-gray-700 rounded-full"></div>
+                  <div className="flex-1 flex items-center gap-3">
+                    <span>{block.text}</span>
+                  </div>
+                </div>
+              );
+
+            case "TEXT":
+              return (
+                <p key={idx} className="font-medium text-gray-700 italic">
+                  {block.text}
+                </p>
+              );
+
+            default:
+              return null;
+          }
+        })}
+      </div>
+    </QuestionGroupWrapper>
   );
 }

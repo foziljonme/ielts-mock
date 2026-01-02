@@ -92,13 +92,10 @@
               }
             },
             {
-              "type": "TEXT",
-              "text": "Complaints about bus service:"
-            },
-            {
-              "type": "QUESTION_BULLET",
+              "type": "QUESTION_ROW",
               "questionId": "Q6",
               "number": 6,
+              "label": "Complaints about bus service:",
               "template": "- bus today was {{blank}}",
               "constraints": {
                 "maxWords": 1,
@@ -106,9 +103,10 @@
               }
             },
             {
-              "type": "QUESTION_BULLET",
+              "type": "QUESTION_ROW",
               "questionId": "Q7",
               "number": 7,
+              "label": "",
               "template": "- frequency of buses in the {{blank}}",
               "constraints": {
                 "maxWords": 1,
@@ -219,7 +217,7 @@
           "range": "14-15",
           "instructions": [
             "Questions 14 and 15",
-            "Choose TWO letters, A–E.",
+            "Choose TWO letters, A-E.",
             "Which TWO issues does the speaker ask the audience to consider before they apply to be volunteers?"
           ],
           "selectCount": 2,
@@ -275,7 +273,7 @@
           "type": "MULTIPLE_CHOICE_SINGLE",
           "range": "21-26",
           "instructions": [
-            "Questions 21–26",
+            "Questions 21-26",
             "Choose the correct letter, A, B or C."
           ],
           "items": [
@@ -420,7 +418,7 @@
           "type": "NOTE_COMPLETION",
           "range": "31-40",
           "instructions": [
-            "Questions 31–40",
+            "Questions 31-40",
             "Complete the notes below.",
             "Write ONE WORD ONLY for each answer."
           ],
@@ -435,32 +433,26 @@
               "text": "Reasons for overpopulation at Majete National Park"
             },
             {
-              "type": "QUESTION_BULLET",
-              "questionId": "Q31",
-              "number": 31,
-              "template": "• strict enforcement of anti-poaching laws"
+              "type": "ROW_BULLET",
+              "text": "strict enforcement of anti-poaching laws"
             },
             {
-              "type": "QUESTION_BULLET",
-              "questionId": "Q32",
-              "number": 32,
-              "template": "• successful breeding"
+              "type": "ROW_BULLET",
+              "text": "successful breeding"
             },
             {
               "type": "SECTION_HEADER",
               "text": "Problems caused by elephant overpopulation"
             },
             {
-              "type": "QUESTION_BULLET",
-              "questionId": "Q33",
-              "number": 33,
-              "template": "• greater competition, causing hunger for elephants"
+              "type": "ROW_BULLET",
+              "text": "greater competition, causing hunger for elephants"
             },
             {
               "type": "QUESTION_BULLET",
-              "questionId": "Q34",
-              "number": 34,
-              "template": "• damage to {{blank}} in the park"
+              "questionId": "Q31",
+              "number": 31,
+              "template": "damage to {{blank}} in the park"
             },
             {
               "type": "SECTION_HEADER",
@@ -468,55 +460,51 @@
             },
             {
               "type": "QUESTION_BULLET",
+              "questionId": "Q32",
+              "number": 32,
+              "template": "a suitable group of elephants from the same {{blank}} was selected"
+            },
+            {
+              "type": "QUESTION_BULLET",
+              "questionId": "Q33",
+              "number": 33,
+              "template": "vets and park staff made use of {{blank}} to help guide the elephants into an open plain"
+            },
+            {
+              "type": "ROW_BULLET",
+              "text": "elephants were immobilised with tranquilisers"
+            },
+            {
+              "type": "QUESTION_ROW_SUB",
+              "questionId": "Q34",
+              "number": 34,
+              "template": "– this process had to be completed quickly to reduce {{blank}}"
+            },
+            {
+              "type": "QUESTION_ROW_SUB",
               "questionId": "Q35",
               "number": 35,
-              "template": "• a suitable group of elephants from the same {{blank}} was selected"
-            },
-            {
-              "type": "QUESTION_BULLET",
-              "questionId": "Q36",
-              "number": 36,
-              "template": "• vets and park staff made use of {{blank}} to help guide the elephants into an open plain"
-            },
-            {
-              "type": "QUESTION_BULLET",
-              "questionId": "Q37",
-              "number": 37,
-              "template": "• elephants were immobilised with tranquilisers"
-            },
-            {
-              "type": "TEXT",
-              "text": "– this process had to be completed quickly to reduce {{blank}}"
-            },
-            {
-              "type": "QUESTION_BULLET",
-              "questionId": "Q38",
-              "number": 38,
               "template": "– elephants had to be turned on their {{blank}} to avoid damage to their lungs"
             },
             {
-              "type": "QUESTION_BULLET",
-              "questionId": "Q39",
-              "number": 39,
+              "type": "QUESTION_ROW_SUB",
+              "questionId": "Q36",
+              "number": 36,
               "template": "– elephants’ {{blank}} had to be monitored constantly"
             },
             {
-              "type": "QUESTION_BULLET",
-              "questionId": "Q40",
-              "number": 40,
-              "template": "– tracking devices were fitted to the matriarchs"
+              "type": "ROW_SUB",
+              "text": "– tracking devices were fitted to the matriarchs"
             },
             {
-              "type": "QUESTION_BULLET",
-              "questionId": "Q41",
-              "number": 41,
+              "type": "QUESTION_ROW_SUB",
+              "questionId": "Q37",
+              "number": 37,
               "template": "– data including the size of their tusks and {{blank}} was taken"
             },
             {
-              "type": "QUESTION_BULLET",
-              "questionId": "Q42",
-              "number": 42,
-              "template": "• elephants were taken by truck to their new reserve"
+              "type": "ROW_BULLET",
+              "text": "elephants were taken by truck to their new reserve"
             },
             {
               "type": "SECTION_HEADER",
@@ -524,27 +512,25 @@
             },
             {
               "type": "QUESTION_BULLET",
-              "questionId": "Q43",
-              "number": 43,
-              "template": "• {{blank}} opportunities"
+              "questionId": "Q38",
+              "number": 38,
+              "template": "{{blank}} opportunities"
             },
             {
               "type": "QUESTION_BULLET",
-              "questionId": "Q44",
-              "number": 44,
-              "template": "• a reduction in the number of poachers and {{blank}}"
+              "questionId": "Q49",
+              "number": 39,
+              "template": "a reduction in the number of poachers and {{blank}}"
             },
             {
               "type": "QUESTION_BULLET",
-              "questionId": "Q45",
-              "number": 45,
-              "template": "• an example of conservation that other parks can follow"
+              "template": "an example of conservation that other parks can follow"
             },
             {
               "type": "QUESTION_BULLET",
-              "questionId": "Q46",
-              "number": 46,
-              "template": "• an increase in {{blank}} as a contributor to GDP"
+              "questionId": "Q40",
+              "number": 40,
+              "template": "an increase in {{blank}} as a contributor to GDP"
             }
           ]
         }

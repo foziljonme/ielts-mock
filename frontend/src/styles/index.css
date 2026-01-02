@@ -1,3 +1,17 @@
-/* @import './fonts.css'; */
+@import "./fonts.css";
 @import "./tailwind.css";
 @import "./theme.css";
+
+.inline-input {
+  @apply border-b-2 border-gray-700 w-40 px-2 py-1 text-center focus:border-blue-600 focus:outline-none bg-transparent;
+  font-size: inherit;
+  font-family: inherit;
+  letter-spacing: 0.5px;
+  padding: 0px 8px;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+.inline-input::placeholder {
+  @apply text-gray-400;
+}
