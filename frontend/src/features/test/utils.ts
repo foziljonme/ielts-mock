@@ -1,4 +1,5 @@
 import type { NoteCompletionBlock } from "../../shared/types";
+import parse from "html-react-parser";
 
 export const placeNumberOnTemplateBeforeBlank = (
   template: string,
@@ -34,4 +35,9 @@ export const constructTemplate = (block: NoteCompletionBlock) => {
   );
 
   return inputTemplate;
+};
+
+export const parseHtml = (html: string) => {
+  const parsed = parse(html);
+  return parsed;
 };

@@ -1,27 +1,43 @@
 // pages/ListeningTest.tsx or components/ListeningTestPage.tsx
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ListeningTest } from "../../../shared/types";
 import { getListeningSection } from "../api";
 import ListeningPart from "../components/ListeningPart";
+import useForm from "../hooks/useForm";
 
 export default function ListeningTestPage() {
   const [testData, setTestData] = useState<ListeningTest | null>(null);
-  const [currentPartIndex, setCurrentPartIndex] = useState(0);
+  const [currentPartIndex, setCurrentPartIndex] = useState(1);
+  const { errors, inputHandler, restoreAnswers } = useForm();
+  const listeningRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchSection = async () => {
       const response = await getListeningSection("listening-full-v2");
+      console.log({ response });
       setTestData(response);
     };
     fetchSection();
   }, []);
+
+  useEffect(() => {
+    const container = listeningRef.current;
+    if (!container) return;
+
+    container.addEventListener("input", inputHandler);
+    restoreAnswers();
+
+    return () => {
+      container.removeEventListener("input", inputHandler);
+    };
+  }, [testData, currentPartIndex]);
 
   if (!testData) {
     return <div>Loading...</div>;
   }
 
   const currentPart = testData.parts[currentPartIndex];
-  console.log(currentPart);
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Header */}
@@ -46,8 +62,11 @@ export default function ListeningTestPage() {
       {/* Main Split Layout */}
       <div className="flex-1 flex flex-col lg:flex-row max-w-7xl mx-auto w-full px-4 py-8 gap-10">
         {/* Left: Questions (Scrollable Booklet) */}
-        <div className="flex-1 bg-white rounded-xl shadow-lg p-8 overflow-y-auto max-h-[80vh] lg:max-h-none">
-          <ListeningPart part={currentPart} />
+        <div
+          className="flex-1 bg-white rounded-xl shadow-lg p-8 overflow-y-auto max-h-[80vh] lg:max-h-none"
+          ref={listeningRef}
+        >
+          <ListeningPart part={currentPart} errors={errors} />
         </div>
 
         {/* Right: Audio Player (Fixed/Sticky) */}

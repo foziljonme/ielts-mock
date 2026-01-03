@@ -1,11 +1,11 @@
-import type { ListeningSection } from "@/shared/types";
 import { apiClient } from "../../app/api";
+import type { ListeningTest } from "../../shared/types";
 
 export const getListeningSection = async (
   testId: string
-): Promise<ListeningSection> => {
+): Promise<ListeningTest> => {
   const response = await apiClient.get<any>(
-    `/tests/sections/listening/${testId}`
+    `/tests/sections/questions/listening/${testId}`
   );
 
   return response.data;

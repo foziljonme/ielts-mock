@@ -1,11 +1,14 @@
 // components/MultipleChoiceMultiple.tsx
 import type { MultipleChoiceMultipleQuestionType } from "../../../shared/types";
+import ErrorMessage from "./ErrorMessage";
 import QuestionGroupWrapper from "./QuestionGroupWrapper";
 
 export default function MultipleChoiceMultiple({
   group,
+  errors,
 }: {
   group: MultipleChoiceMultipleQuestionType;
+  errors: Record<string, string>;
 }) {
   return (
     <QuestionGroupWrapper instructions={group.instructions}>
@@ -36,10 +39,20 @@ export default function MultipleChoiceMultiple({
               </span>
               {/* {q.label && <span className="font-medium w-40">{q.label}</span>} */}
               <input
+                id={q.questionId}
                 type="text"
+                data-allowed-options={group.options
+                  .map((opt) => opt.key)
+                  .join(",")}
                 data-qid={q.questionId}
                 className="w-16 border-b-2 border-gray-600 text-center focus:border-blue-600 outline-none text-lg inline-input"
                 maxLength={1}
+                autoCapitalize="characters"
+                onChange={(e) => {}}
+              />
+              <ErrorMessage
+                message={errors[q.questionId]}
+                show={!!errors[q.questionId]}
               />
             </div>
           ))}

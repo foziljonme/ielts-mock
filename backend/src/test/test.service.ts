@@ -47,10 +47,19 @@ export class TestService {
     this.logger.log('Getting listening from json');
     // const listening = readFileSync(`src/data/${id}/listening.json`, 'utf-8');
     const listening = readFileSync(
-      `src/data/cambridge-16-test-1/${id}.json`,
+      `src/data/tests/cambridge-16-test-1/${id}.json`,
       'utf-8',
     );
     return JSON.parse(listening);
+  }
+
+  async getListeningAnswers(id: string) {
+    this.logger.log('Getting listening answers from json');
+    const answers = readFileSync(
+      `src/data/answers/cambridge-16-test-1/${id}.json`,
+      'utf-8',
+    );
+    return JSON.parse(answers);
   }
 
   async update(id: string, updateTestDto: UpdateTestDto) {

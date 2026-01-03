@@ -4,8 +4,10 @@ import QuestionGroupWrapper from "./QuestionGroupWrapper";
 
 export default function MultipleChoiceSingle({
   group,
+  errors,
 }: {
   group: MultipleChoiceSingleQuestionType;
+  errors: Record<string, string>;
 }) {
   return (
     <QuestionGroupWrapper instructions={group.instructions}>
@@ -26,6 +28,7 @@ export default function MultipleChoiceSingle({
                 >
                   <input
                     type="radio"
+                    data-qid={item.questionId}
                     name={item.questionId}
                     value={opt.key}
                     className="w-5 h-5 text-blue-600 focus:ring-blue-500"

@@ -1,6 +1,7 @@
-import React, {
+import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -76,7 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { role: selectedRole } = useAuthStore((state) => state);
 
   const redirectUrl = useMemo(() => {
-    return "/test/section-selection";
+    return "/test/cambridge-16-test-1/section-selection";
   }, [selectedRole]);
 
   const sessionLogin = async (accessCode: string) => {
@@ -119,7 +120,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Check for stored user on mount
-  React.useEffect(() => {
+  useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));

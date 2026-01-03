@@ -4,7 +4,13 @@ import MultipleChoiceSingle from "./MultipleChoiceSingle";
 import MultipleChoiceMultiple from "./MultipleChoiceMultiple";
 import type { ListeningSection } from "../../../shared/types";
 
-export default function ListeningPart({ part }: { part: ListeningSection }) {
+export default function ListeningPart({
+  part,
+  errors,
+}: {
+  part: ListeningSection;
+  errors: Record<string, string>;
+}) {
   return (
     <div>
       <h2 className="text-3xl font-bold text-center mb-10 text-gray-800">
@@ -15,10 +21,10 @@ export default function ListeningPart({ part }: { part: ListeningSection }) {
         <div key={idx}>
           {group.type === "NOTE_COMPLETION" && <NoteCompletion group={group} />}
           {group.type === "MULTIPLE_CHOICE_SINGLE" && (
-            <MultipleChoiceSingle group={group} />
+            <MultipleChoiceSingle group={group} errors={errors} />
           )}
           {group.type === "MULTIPLE_CHOICE_MULTIPLE" && (
-            <MultipleChoiceMultiple group={group} />
+            <MultipleChoiceMultiple group={group} errors={errors} />
           )}
         </div>
       ))}
