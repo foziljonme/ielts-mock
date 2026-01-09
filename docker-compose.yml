@@ -32,7 +32,6 @@ services:
       - "8080:8080"
     volumes:
       - ./backend:/app
-      - /app/node_modules
     working_dir: /app
     command: /bin/sh -c "yarn prisma generate && yarn db:push && yarn start:dev"
     tty: true

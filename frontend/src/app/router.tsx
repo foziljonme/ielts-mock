@@ -2,13 +2,20 @@ import { createBrowserRouter } from "react-router-dom";
 import { authRoutes } from "../features/auth/routes";
 // import AppLayout from "./AppLayout";
 import { adminsRoutes } from "../features/admins/routes";
-import { testRoutes } from "../features/test/routes";
+import { examsRoutes } from "../features/exams/routes";
+import { ProtectedRoute } from "../features/auth/components/ProtectedRoute";
+import RootLayoutWithAuth from "./RootLayoutWithAuth";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    // element: <AppLayout />,
-    children: [adminsRoutes, testRoutes],
+    element: <RootLayoutWithAuth />,
+    children: [
+      {
+        path: "/",
+        element: <ProtectedRoute />,
+        children: [adminsRoutes, examsRoutes],
+      },
+      authRoutes,
+    ],
   },
-  authRoutes,
 ]);

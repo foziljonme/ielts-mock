@@ -22,3 +22,8 @@ export const TABS: UserRoleTypeForAuthLayout[] = [
 export const LOGIN_PATH = "/auth/login";
 export const SIGNUP_PATH = "/auth/signup";
 export const FORGOT_PASSWORD_PATH = "/auth/forgot-password";
+
+export const ACCESS_TOKEN = "access_token";
+export const REFRESH_TOKEN = "refresh_token";
+export const EXPIRES_AT = "expires_at";
+export const AUTH_TYPE = "auth_type";

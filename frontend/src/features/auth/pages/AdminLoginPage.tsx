@@ -2,61 +2,56 @@ import React, { useState } from "react";
 import { Card } from "../../../shared/ui/card";
 import { Button } from "../../../shared/ui/button";
 import { Input } from "../../../shared/ui/input";
-import { LogIn, GraduationCap } from "lucide-react";
 import { Label } from "../../../shared/ui/label";
 import { Alert, AlertDescription } from "../../../shared/ui/alert";
+import { Building2, LogIn } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 export default function AdminLoginPage() {
-  const { adminLogin, redirectUrl } = useAuth();
+  const { handleLogin } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) {
-      setError("Please enter your email");
+    if (!email.trim() || !password.trim()) {
+      setError("Please enter both email and password");
       return;
     }
 
-    if (!password.trim()) {
-      setError("Please enter your password");
+    // Simple validation for demo
+    if (!email.includes("@")) {
+      setError("Please enter a valid email address");
       return;
     }
-
-    adminLogin(email, password);
-    navigate(redirectUrl);
+    console.log("Logging in admin");
+    handleLogin(email, password);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <Card className="max-w-md w-full p-8">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
-            <GraduationCap className="w-8 h-8 text-white" />
+            <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-semibold mb-2">Admin Login</h1>
-          <p className="text-gray-600">
-            Enter your email and password to login
-          </p>
+          <h1 className="text-2xl font-semibold mb-2">Admin Portal</h1>
+          <p className="text-gray-600">Sign in to manage your test center</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Email Address</Label>
             <Input
               id="email"
               type="email"
-              placeholder="admin@ielts.com"
+              placeholder="admin@testcenter.com"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
                 setError("");
               }}
-              className="text-lg tracking-wider"
             />
           </div>
 
@@ -65,13 +60,12 @@ export default function AdminLoginPage() {
             <Input
               id="password"
               type="password"
-              placeholder="admin"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
                 setError("");
               }}
-              className="ext-lg tracking-wider"
             />
           </div>
 
@@ -83,32 +77,28 @@ export default function AdminLoginPage() {
 
           <Button type="submit" className="w-full" size="lg">
             <LogIn className="w-4 h-4 mr-2" />
-            Login
+            Sign In
           </Button>
         </form>
 
         <div className="mt-8 pt-6 border-t">
-          <p className="text-xs text-gray-500 text-center">Demo Accounts:</p>
-          <div className="flex flex-wrap gap-2 justify-center mt-2">
-            {["admin@ielts.com:demo", "admin1@ielts.com:demo"].map((code) => (
-              <button
-                key={code}
-                onClick={() => {
-                  setEmail(code.split(":")[0]);
-                  setPassword(code.split(":")[1]);
-                }}
-                className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded"
-              >
-                {code}
-              </button>
-            ))}
+          <p className="text-xs text-gray-500 text-center mb-2">
+            Demo Credentials:
+          </p>
+          <div
+            className="bg-gray-50 p-3 rounded cursor-pointer text-xs font-mono"
+            onClick={() => {
+              setEmail("admin@global-academy.com");
+              setPassword("demo");
+            }}
+          >
+            <p>Email: admin@global-academy.com</p>
+            <p>Password: demo</p>
           </div>
         </div>
 
         <div className="mt-6 text-center">
-          <p className="text-xs text-gray-500">
-            Contact your test center if you don't have an access code
-          </p>
+          <p className="text-xs text-gray-500">Need help? Contact IT support</p>
         </div>
       </Card>
     </div>

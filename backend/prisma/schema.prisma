@@ -19,7 +19,7 @@ datasource db {
 }
 
 // ==========================
-// TENANT (EDUCATION CENTER)
+// TENANT (Education Center)
 // ==========================
 model Tenant {
   id        String   @id @default(cuid())
@@ -28,15 +28,18 @@ model Tenant {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
 
-  tests    Test[]
-  sessions ExamSession[]
-  users    User[]
+  users     User[]
+  schedules ExamSchedule[]
 }
 
+// ==========================
+// USER & ROLES
+// ==========================
 enum UserRole {
-  OWNER // SaaS owner (can create tenants)
-  TENANT // Center admin (can manage sessions)
-  STAFF // Center staff (can manage sessions)
+  OWNER // Platform admin
+  TENANT // Center admin
+  STAFF // Proctors / staff
+  STUDENT // Student / scheduled test user
 }
 
 model User {
@@ -44,6 +47,7 @@ model User {
   tenantId  String?
   email     String     @unique
   password  String
+  name      String
   roles     UserRole[]
   createdAt DateTime   @default(now())
 
@@ -51,33 +55,55 @@ model User {
 }
 
 // ==========================
-// ENUMS
+// EXAM SCHEDULE (Proctored Practice Test)
 // ==========================
-enum QuestionType {
-  // Common
-  MULTIPLE_CHOICE
-  MATCHING
-  PLAN_MAP_DIAGRAM_LABELING
-  FORM_COMPLETION
-  NOTE_COMPLETION
-  TABLE_COMPLETION
-  FLOW_CHART_COMPLETION
-  SUMMARY_COMPLETION
-  SENTENCE_COMPLETION
-  SHORT_ANSWER
-
-  // Reading-only
-  TRUE_FALSE_NOT_GIVEN
-  YES_NO_NOT_GIVEN
-  MATCHING_HEADINGS
-  MATCHING_INFORMATION
-  MATCHING_FEATURES
+enum ExamScheduleStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
 }
 
-enum TestModule {
-  READING
-  LISTENING
-  WRITING
+model ExamSchedule {
+  id        String             @id @default(cuid())
+  tenantId  String
+  testId    String // e.g., "test1"
+  name      String?
+  startTime DateTime
+  endTime   DateTime?
+  status    ExamScheduleStatus @default(SCHEDULED)
+
+  tenant   Tenant        @relation(fields: [tenantId], references: [id])
+  seats    ExamSeat[]
+  attempts SeatAttempt[]
+}
+
+model ExamSeat {
+  id                  String @id @default(cuid())
+  scheduleId          String
+  seatNumber          Int
+  label               String // e.g., "Row 3, Seat 2"
+  accessCode          String @unique // ← UNIQUE per seat! e.g., "A3K9P2"
+  assignedStudentName String // ← Teacher fills: "Ahmed Khan"
+  assignedStudentId   String // Optional school ID
+
+  schedule ExamSchedule @relation(fields: [scheduleId], references: [id])
+  attempt  SeatAttempt?
+
+  @@unique([scheduleId, seatNumber])
+  @@unique([scheduleId, accessCode]) // Ensures no duplicate codes in same schedule
+}
+
+model SeatAttempt {
+  id          String        @id @default(cuid())
+  seatId      String        @unique
+  scheduleId  String
+  status      AttemptStatus @default(NOT_STARTED)
+  startedAt   DateTime?
+  submittedAt DateTime?
+
+  seat     ExamSeat         @relation(fields: [seatId], references: [id])
+  schedule ExamSchedule     @relation(fields: [scheduleId], references: [id])
+  sections SectionAttempt[]
 }
 
 enum AttemptStatus {
@@ -87,170 +113,28 @@ enum AttemptStatus {
   EXPIRED
 }
 
-enum SessionStatus {
-  SCHEDULED
-  IN_PROGRESS
-  COMPLETED
+// ==========================
+// SECTION ATTEMPT (Listening, Reading, etc.)
+// ==========================
+enum TestSection {
+  LISTENING
+  READING
+  WRITING
+  SPEAKING
 }
 
-// ==========================
-// TEST (BLUEPRINT)
-// ==========================
-model Test {
-  id          String  @id @default(cuid())
-  tenantId    String?
-  title       String
-  description String?
-  isPublished Boolean @default(false)
-
-  tenant       Tenant?       @relation(fields: [tenantId], references: [id])
-  sections     TestSection[]
-  attempts     SeatAttempt[]
-  examSessions ExamSession[]
-}
-
-// ==========================
-// TEST SECTION
-// ==========================
-model TestSection {
-  id          String     @id @default(cuid())
-  testId      String
-  module      TestModule
-  order       Int
-  durationMin Int
-
-  test            Test             @relation(fields: [testId], references: [id])
-  passages        Passage[]
-  questions       Question[]
-  listeningAudio  ListeningAudio?
-  sectionAttempts SectionAttempt[]
-}
-
-// ==========================
-// PASSAGE (READING)
-// ==========================
-model Passage {
-  id        String  @id @default(cuid())
-  sectionId String
-  title     String?
-  content   String
-  order     Int
-
-  section   TestSection @relation(fields: [sectionId], references: [id])
-  questions Question[]
-}
-
-// ==========================
-// LISTENING AUDIO
-// ==========================
-model ListeningAudio {
-  id           String  @id @default(cuid())
-  sectionId    String  @unique
-  audioUrl     String
-  durationSec  Int
-  playOnceOnly Boolean @default(true)
-
-  section TestSection @relation(fields: [sectionId], references: [id])
-}
-
-// ==========================
-// QUESTION
-// ==========================
-model Question {
-  id         String       @id @default(cuid())
-  sectionId  String
-  passageId  String?
-  type       QuestionType
-  prompt     String
-  order      Int
-  maxWords   Int?
-  diagramUrl String?
-
-  section          TestSection       @relation(fields: [sectionId], references: [id])
-  passage          Passage?          @relation(fields: [passageId], references: [id])
-  options          QuestionOption[]
-  questionAttempts QuestionAttempt[]
-}
-
-// ==========================
-// QUESTION OPTION
-// ==========================
-model QuestionOption {
-  id         String @id @default(cuid())
-  questionId String
-  label      String
-  text       String
-  order      Int
-
-  question Question @relation(fields: [questionId], references: [id])
-}
-
-// ==========================
-// EXAM SESSION
-// ==========================
-model ExamSession {
-  id         String        @id @default(cuid())
-  tenantId   String
-  testId     String
-  name       String?
-  startTime  DateTime
-  status     SessionStatus @default(SCHEDULED)
-  accessCode String        @unique
-
-  tenant       Tenant        @relation(fields: [tenantId], references: [id])
-  test         Test          @relation(fields: [testId], references: [id])
-  seats        ExamSeat[]
-  seatAttempts SeatAttempt[]
-}
-
-// ==========================
-// EXAM SEAT (ONE COMPUTER)
-// ==========================
-model ExamSeat {
-  id         String  @id @default(cuid())
-  sessionId  String
-  seatNumber Int
-  label      String?
-
-  session ExamSession  @relation(fields: [sessionId], references: [id])
-  attempt SeatAttempt?
-}
-
-// ==========================
-// SEAT ATTEMPT (REPLACES USER)
-// ==========================
-model SeatAttempt {
-  id        String @id @default(cuid())
-  seatId    String @unique
-  sessionId String
-  testId    String
-
-  status      AttemptStatus @default(NOT_STARTED)
-  startedAt   DateTime?
-  submittedAt DateTime?
-
-  seat    ExamSeat    @relation(fields: [seatId], references: [id])
-  session ExamSession @relation(fields: [sessionId], references: [id])
-  test    Test        @relation(fields: [testId], references: [id])
-
-  sections SectionAttempt[]
-}
-
-// ==========================
-// SECTION ATTEMPT
-// ==========================
 model SectionAttempt {
   id            String        @id @default(cuid())
   seatAttemptId String
-  sectionId     String
+  section       TestSection
   startedAt     DateTime?
-  expiresAt     DateTime?
-  remainingSec  Int
+  remainingSec  Int? // For countdown sync
   status        AttemptStatus @default(NOT_STARTED)
 
   seatAttempt SeatAttempt       @relation(fields: [seatAttemptId], references: [id])
-  section     TestSection       @relation(fields: [sectionId], references: [id])
   questions   QuestionAttempt[]
+
+  @@unique([seatAttemptId, section])
 }
 
 // ==========================
@@ -259,24 +143,25 @@ model SectionAttempt {
 model QuestionAttempt {
   id               String    @id @default(cuid())
   sectionAttemptId String
-  questionId       String
+  questionId       String // External ID from JSON, e.g., "Q1", "Q14"
   isFlagged        Boolean   @default(false)
   visitedAt        DateTime?
 
   sectionAttempt SectionAttempt @relation(fields: [sectionAttemptId], references: [id])
-  question       Question       @relation(fields: [questionId], references: [id])
   answer         Answer?
   highlights     Highlight[]
   writingDrafts  WritingDraft[]
+
+  @@unique([sectionAttemptId, questionId])
 }
 
 // ==========================
-// ANSWER
+// ANSWER (User's response)
 // ==========================
 model Answer {
   id                String   @id @default(cuid())
   questionAttemptId String   @unique
-  value             String
+  value             String // Text input, selected option key(s) as JSON string, etc.
   wordCount         Int?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -285,19 +170,20 @@ model Answer {
 }
 
 // ==========================
-// HIGHLIGHT
+// HIGHLIGHT (For Reading questions)
 // ==========================
 model Highlight {
   id                String @id @default(cuid())
   questionAttemptId String
   startOffset       Int
   endOffset         Int
+  color             String @default("yellow")
 
   questionAttempt QuestionAttempt @relation(fields: [questionAttemptId], references: [id])
 }
 
 // ==========================
-// WRITING DRAFT
+// WRITING DRAFT (Task 1 & 2 autosave)
 // ==========================
 model WritingDraft {
   id                String   @id @default(cuid())

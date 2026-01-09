@@ -43,12 +43,6 @@
       "Q40": "tourism"
     },
     "multi": {
-      "Q14-Q15": {
-        "correct": ["B", "E"],
-        "count": 2,
-        "inEitherOrder": true,
-        "note": "Choose TWO letters, A–E"
-      },
       "Q27-Q28": {
         "correct": ["A", "C"],
         "count": 2,

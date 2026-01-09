@@ -14,7 +14,7 @@ import {
   ContextStorageService,
   ContextStorageServiceKey,
 } from 'src/config/contextStorage.service';
-import { TenantsService } from 'src/platform/tenants/tenants.service';
+import { TenantsService } from 'src/tenants/tenants.service';
 
 @Injectable()
 export class TenantResolverMiddleware implements NestMiddleware {
@@ -27,9 +27,8 @@ export class TenantResolverMiddleware implements NestMiddleware {
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    // next();
-    // // System routes does not have tenant
-    // console.log(req.originalUrl);
+    // System routes does not have tenant
+    console.log(req.originalUrl);
     // if (
     //   req.originalUrl.startsWith('/platform') ||
     //   req.originalUrl === '/auth/login-platform-admin'
@@ -41,38 +40,55 @@ export class TenantResolverMiddleware implements NestMiddleware {
     //   next();
     //   return;
     // }
-    // const subdomain = this.extractSubdomain(req);
-    // const tenant = await this.tenantService.getBySubdomain(subdomain);
+    const subdomain = this.extractSubdomain(req);
+    if (!subdomain) {
+      this.logger.log('No subdomain found');
+      next();
+      return;
+    }
+    const tenant = await this.tenantService.getBySubdomain(subdomain);
 
-    // if (!tenant) {
-    //   this.logger.error(`Tenant with subdomain ${subdomain} not found`);
-    //   throw new NotFoundException('Tenant not found');
-    // }
+    if (!tenant) {
+      this.logger.error(`Tenant with subdomain ${subdomain} not found`);
+      // throw new NotFoundException('Tenant not found');
+      next();
+      return;
+    }
 
-    // req['tenantId'] = tenant.id;
-    // this.contextStorageService.setContextEnv(
-    //   ContextEnvKeys.TENANT_ID,
-    //   tenant.id,
-    // );
+    req['tenantId'] = tenant.id;
+    this.logger.log('Setting tenant id', tenant.id);
 
-    // this.contextStorageService.setContextEnv(
-    //   ContextEnvKeys.SUBDOMAIN,
-    //   subdomain,
-    // );
+    this.contextStorageService.setContextEnv(
+      ContextEnvKeys.TENANT_ID,
+      tenant.id,
+    );
 
-    // this.logger.log(
-    //   `Tenant with id ${tenant.id} and subdomain ${subdomain} found`,
-    // );
+    this.contextStorageService.setContextEnv(
+      ContextEnvKeys.SUBDOMAIN,
+      subdomain,
+    );
+
+    this.logger.log(
+      `Tenant with id ${tenant.id} and subdomain ${subdomain} found`,
+    );
     next();
   }
 
   private extractSubdomain(req: Request): string {
     const subdomain = req.headers['x-tenant'];
-    if (!subdomain || Array.isArray(subdomain)) {
-      this.logger.error('No subdomain found, or invalid subdomain');
-      throw new NotFoundException('Tenant not found, or invalid subdomain');
-    }
+    // if (!subdomain || Array.isArray(subdomain)) {
+    //   this.logger.error('No subdomain found, or invalid subdomain');
+    //   throw new NotFoundException('Tenant not found, or invalid subdomain');
+    // }
 
-    return subdomain;
+    return subdomain as string;
+
+    // const host = req.headers.host;
+    // const subdomain = host?.split('.')[0];
+    // if (!subdomain) {
+    //   this.logger.error('No subdomain found');
+    //   throw new NotFoundException('Tenant not found');
+    // }
+    // return subdomain;
   }
 }

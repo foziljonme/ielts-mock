@@ -7,11 +7,11 @@ export const authRoutes = {
   path: "auth",
   children: [
     {
-      path: "login",
+      path: "join-by-code",
       element: <SessionLoginPage />,
     },
     {
-      path: "admin-login",
+      path: "admin/login",
       element: <AdminLoginPage />,
     },
   ],

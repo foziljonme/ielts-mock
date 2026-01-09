@@ -26,18 +26,28 @@ import {
   Download,
   Plus,
   Building2,
+  LogOut,
 } from "lucide-react";
 import {
   mockStudents,
   mockTestResults,
   mockTenants,
 } from "../../../data/mockData";
+import { ScheduleTestPage } from "../components/ScheduleTestPage";
+import { TestSubmissionsPage } from "../components/TestSubmissionsPage";
+import type { ScheduledTest } from "../types";
+import { useAdminStore } from "../store";
 
-export default function AdminDashboard() {
+interface AdminDashboardProps {
+  onLogout?: () => void;
+}
+
+export default function AdminDashboardPage({ onLogout }: AdminDashboardProps) {
+  const { fetchTenant, isLoading, tenant, students, results } = useAdminStore();
   const [searchTerm, setSearchTerm] = useState("");
-  const tenant = mockTenants[0]; // Current tenant
-  const students = mockStudents.filter((s) => s.tenantId === tenant.id);
-  const results = mockTestResults.filter((r) => r.tenantId === tenant.id);
+  // const tenant = mockTenants[0]; // Current tenant
+  // const students = mockStudents.filter((s) => s.tenantId === tenant.id);
+  // const results = mockTestResults.filter((r) => r.tenantId === tenant.id);
 
   const filteredStudents = students.filter(
     (s) =>
@@ -49,8 +59,26 @@ export default function AdminDashboard() {
     totalStudents: students.length,
     activeTests: students.filter((s) => s.testStatus === "in-progress").length,
     completedTests: results.length,
-    revenue: results.length * tenant.pricePerTest,
+    // testAttempts: tenant.testAttempts,
   };
+
+  const handleStartTest = (test: ScheduledTest) => {
+    // setActiveTestControl(test);
+  };
+
+  const handleBackFromControl = () => {
+    // setActiveTestControl(null);
+  };
+
+  // Show test control panel if a test is active
+  // if (activeTestControl) {
+  //   return (
+  //     <AdminTestControl
+  //       scheduledTest={activeTestControl}
+  //       onBack={handleBackFromControl}
+  //     />
+  //   );
+  // }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -73,6 +101,12 @@ export default function AdminDashboard() {
                 <Download className="w-4 h-4 mr-2" />
                 Export Data
               </Button>
+              {onLogout && (
+                <Button variant="outline" size="sm" onClick={onLogout}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -85,10 +119,27 @@ export default function AdminDashboard() {
           <Card className="p-6">
             <div className="flex items-center justify-between">
               <div>
+                <p className="text-sm text-gray-600 mb-1">Test Attempts</p>
+                <p className="text-2xl font-semibold">
+                  {/* {stats.testAttempts.total} */}
+                  431
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {/* {stats.testAttempts.remaining} remaining */}
+                  54
+                </p>
+              </div>
+              <ClipboardList className="w-8 h-8 text-blue-600" />
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
                 <p className="text-sm text-gray-600 mb-1">Total Students</p>
                 <p className="text-2xl font-semibold">{stats.totalStudents}</p>
               </div>
-              <Users className="w-8 h-8 text-blue-600" />
+              <Users className="w-8 h-8 text-purple-600" />
             </div>
           </Card>
 
@@ -98,7 +149,7 @@ export default function AdminDashboard() {
                 <p className="text-sm text-gray-600 mb-1">Active Tests</p>
                 <p className="text-2xl font-semibold">{stats.activeTests}</p>
               </div>
-              <ClipboardList className="w-8 h-8 text-orange-600" />
+              <TrendingUp className="w-8 h-8 text-orange-600" />
             </div>
           </Card>
 
@@ -108,28 +159,30 @@ export default function AdminDashboard() {
                 <p className="text-sm text-gray-600 mb-1">Completed</p>
                 <p className="text-2xl font-semibold">{stats.completedTests}</p>
               </div>
-              <TrendingUp className="w-8 h-8 text-green-600" />
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Revenue</p>
-                <p className="text-2xl font-semibold">£{stats.revenue}</p>
-              </div>
-              <DollarSign className="w-8 h-8 text-purple-600" />
+              <DollarSign className="w-8 h-8 text-green-600" />
             </div>
           </Card>
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="students" className="space-y-4">
+        <Tabs defaultValue="schedule" className="space-y-4">
           <TabsList>
+            <TabsTrigger value="schedule">Schedule Tests</TabsTrigger>
+            <TabsTrigger value="submissions">Test Submissions</TabsTrigger>
             <TabsTrigger value="students">Students</TabsTrigger>
             <TabsTrigger value="results">Test Results</TabsTrigger>
-            <TabsTrigger value="quotes">Custom Quotes</TabsTrigger>
+            <TabsTrigger value="quota">Quota Management</TabsTrigger>
           </TabsList>
+
+          {/* Schedule Tests Tab */}
+          <TabsContent value="schedule">
+            <ScheduleTestPage />
+          </TabsContent>
+
+          {/* Test Submissions Tab */}
+          <TabsContent value="submissions">
+            <TestSubmissionsPage tenant={tenant} />
+          </TabsContent>
 
           {/* Students Tab */}
           <TabsContent value="students" className="space-y-4">
@@ -246,56 +299,113 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
 
-          {/* Quotes Tab */}
-          <TabsContent value="quotes" className="space-y-4">
+          {/* Quota Management Tab */}
+          <TabsContent value="quota" className="space-y-4">
             <Card className="p-6">
               <h2 className="text-lg font-semibold mb-4">
-                Custom Quote Generator
+                Quota Management & Custom Quotes
               </h2>
 
-              <div className="grid grid-cols-2 gap-6 mb-6">
+              {/* Current quota status */}
+              <Card className="p-6 bg-blue-50 border-blue-200 mb-6">
+                <h3 className="font-semibold mb-4">
+                  Current Test Attempts Quota
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-sm">Total Purchased Attempts:</span>
+                    <span className="font-semibold">
+                      {/* {tenant.testAttempts.total} */}
+                      67
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm">Used Attempts:</span>
+                    <span className="font-semibold text-red-600">
+                      {/* {tenant.testAttempts.used} */}
+                      213
+                    </span>
+                  </div>
+                  <div className="flex justify-between pt-2 border-t">
+                    <span className="font-semibold">Remaining Attempts:</span>
+                    <span className="font-semibold text-green-600">
+                      {/* {tenant.testAttempts.remaining} */}
+                      213
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full"
+                      style={{
+                        width: `${(213 / 67) * 100}%`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              </Card>
+
+              <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-4">
+                  <h3 className="font-semibold">
+                    Purchase Additional Test Attempts
+                  </h3>
                   <div>
                     <label className="text-sm font-medium mb-2 block">
-                      Number of Students
+                      Number of Test Attempts
                     </label>
-                    <Input type="number" placeholder="50" />
+                    <Input type="number" placeholder="50" defaultValue="50" />
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-2 block">
-                      Tests per Student
+                      Contract Duration (months)
                     </label>
-                    <Input type="number" placeholder="2" />
+                    <Input type="number" placeholder="6" defaultValue="6" />
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-2 block">
-                      Duration (months)
+                      Volume Discount
                     </label>
-                    <Input type="number" placeholder="6" />
+                    <Input
+                      type="number"
+                      placeholder="10"
+                      defaultValue="10"
+                      disabled
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      10% discount for orders over 50 attempts
+                    </p>
                   </div>
                 </div>
 
-                <Card className="p-6 bg-blue-50 border-blue-200">
+                <Card className="p-6 bg-green-50 border-green-200">
                   <h3 className="font-semibold mb-4">Quote Summary</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-sm">Base Price per Test:</span>
+                      <span className="text-sm">Base Price per Attempt:</span>
                       <span className="font-semibold">
                         £{tenant.pricePerTest}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm">Volume Discount:</span>
-                      <span className="font-semibold text-green-600">-10%</span>
+                      <span className="text-sm">Test Attempts:</span>
+                      <span className="font-semibold">50</span>
                     </div>
-                    <div className="flex justify-between pt-2 border-t">
-                      <span className="text-sm">Total Tests:</span>
-                      <span className="font-semibold">100</span>
+                    <div className="flex justify-between">
+                      <span className="text-sm">Subtotal:</span>
+                      <span className="font-semibold">
+                        £{50 * tenant.pricePerTest}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm">Volume Discount (10%):</span>
+                      <span className="font-semibold text-green-600">
+                        -£{(50 * tenant.pricePerTest * 0.1).toFixed(2)}
+                      </span>
                     </div>
                     <div className="flex justify-between text-lg pt-2 border-t">
                       <span className="font-semibold">Total Amount:</span>
-                      <span className="font-semibold text-blue-600">
-                        £4,050
+                      <span className="font-semibold text-green-600">
+                        £{(50 * tenant.pricePerTest * 0.9).toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -303,11 +413,15 @@ export default function AdminDashboard() {
                 </Card>
               </div>
 
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="bg-gray-50 p-4 rounded-lg mt-6">
                 <h4 className="font-medium mb-2">Package Details</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
                   <li>• {tenant.agreement}</li>
                   <li>• {tenant.totalSeats} workstations available</li>
+                  <li>
+                    • Test attempts are managed independently of student
+                    enrollment
+                  </li>
                   <li>• Full technical support included</li>
                   <li>• Detailed analytics and reporting</li>
                   <li>• Custom branding options</li>

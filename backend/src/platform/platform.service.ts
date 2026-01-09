@@ -37,6 +37,7 @@ export class PlatformService {
             email,
             password: hashedPassword,
             roles: [UserRole.OWNER],
+            name: 'Platform Admin',
           },
         }),
       );

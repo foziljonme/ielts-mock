@@ -23,6 +23,10 @@ generate:
 db-push:
 	docker compose exec backend yarn db:push
 
+# Run Prisma db reset inside container
+db-reset:
+	docker compose exec backend yarn db:reset
+
 # Run both generate + db push
 sync:
 	docker compose exec backend sh -c "yarn prisma generate && yarn db:push"

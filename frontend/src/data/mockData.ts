@@ -4,7 +4,9 @@ import type {
   TestResult,
   SeatReservation,
   TestSection,
-} from "../shared/types";
+  ScheduledTest,
+  TestSubmission,
+} from "../app/types";
 
 // Mock tenants
 export const mockTenants: Tenant[] = [
@@ -15,6 +17,11 @@ export const mockTenants: Tenant[] = [
     totalSeats: 30,
     agreement: "Standard Package",
     pricePerTest: 45.0,
+    testAttempts: {
+      total: 100,
+      used: 15,
+      remaining: 85,
+    },
   },
   {
     id: "tenant-2",
@@ -23,6 +30,11 @@ export const mockTenants: Tenant[] = [
     totalSeats: 20,
     agreement: "Premium Package",
     pricePerTest: 55.0,
+    testAttempts: {
+      total: 50,
+      used: 5,
+      remaining: 45,
+    },
   },
 ];
 
@@ -271,3 +283,136 @@ export const mockWritingSection: TestSection = {
     },
   ],
 };
+
+// Mock scheduled tests
+export const mockScheduledTests: ScheduledTest[] = [
+  {
+    id: "scheduled-1",
+    tenantId: "tenant-1",
+    testDate: "2026-01-10",
+    students: [
+      {
+        id: "student-1",
+        name: "Alice Johnson",
+        email: "alice.johnson@email.com",
+        accessCode: "IELTS-2026-010",
+        assignedSeat: 1,
+      },
+      {
+        id: "student-2",
+        name: "Bob Smith",
+        email: "bob.smith@email.com",
+        accessCode: "IELTS-2026-011",
+        assignedSeat: 2,
+      },
+    ],
+    attemptsAllocated: 2,
+    status: "scheduled",
+  },
+  {
+    id: "scheduled-2",
+    tenantId: "tenant-1",
+    testDate: "2026-01-15",
+    students: [
+      {
+        id: "student-3",
+        name: "Carol White",
+        email: "carol.white@email.com",
+        accessCode: "IELTS-2026-015",
+      },
+      {
+        id: "student-4",
+        name: "David Brown",
+        email: "david.brown@email.com",
+        accessCode: "IELTS-2026-016",
+      },
+      {
+        id: "student-5",
+        name: "Emma Davis",
+        email: "emma.davis@email.com",
+        accessCode: "IELTS-2026-017",
+      },
+    ],
+    attemptsAllocated: 3,
+    status: "scheduled",
+  },
+];
+
+// Mock test submissions
+export const mockTestSubmissions: TestSubmission[] = [
+  {
+    id: "submission-1",
+    studentId: "student-1",
+    studentName: "Alice Johnson",
+    tenantId: "tenant-1",
+    testDate: "2026-01-01",
+    submittedAt: "2026-01-01T14:30:00Z",
+    sections: {
+      listening: {
+        answers: {
+          l1: "University accommodation",
+          l2: "300",
+          l3: "This Friday",
+          l4: "second",
+        },
+        score: 8.0,
+      },
+      reading: {
+        answers: {
+          q1: "Baron Karl von Drais",
+          q2: "The bone shaker",
+          q3: "FALSE",
+          q4: "TRUE",
+          q5: "women",
+          q6: "Pneumatic tires",
+          q7: "NOT GIVEN",
+          q8: "equal",
+        },
+        score: 7.5,
+      },
+      writing: {
+        answers: {
+          w1: "The chart illustrates the enrollment numbers across various courses at a university. Engineering has the highest enrollment with approximately 450 students, followed by Business Studies with around 380 students. Computer Science shows strong numbers at 320 students, while Arts and Humanities has 280 enrolled students. The Sciences department has 250 students, and Social Sciences rounds out the data with 200 students. Overall, technical and business-oriented courses show higher enrollment compared to traditional arts and social sciences.",
+          w2: "Technology has fundamentally transformed modern life, sparking debate about whether it has simplified or complicated our existence. While some argue that technology has made life more complex, I believe that overall, it has made our lives significantly easier and more efficient.\n\nThose who claim technology has increased complexity point to the constant need to learn new systems, deal with technical problems, and manage multiple devices and platforms. Additionally, the digital age has created new concerns such as cybersecurity, data privacy, and information overload. People now face the challenge of managing countless passwords, updating software, and troubleshooting various technical issues.\n\nHowever, I contend that technology has predominantly simplified our lives in numerous ways. Communication has become instantaneous and global through smartphones and the internet. Tasks that once took hours, such as research, shopping, or banking, can now be completed in minutes from the comfort of our homes. Automation has freed people from repetitive manual labor, and access to information has democratized education and knowledge.\n\nIn conclusion, while technology does present new challenges, its benefits far outweigh the complexities it introduces. The key is developing digital literacy to navigate these tools effectively.",
+        },
+        score: 7.0,
+      },
+      speaking: {
+        answers: { s1: "Recorded response for speaking section" },
+        score: 8.5,
+      },
+    },
+    status: "graded",
+    overallScore: 7.75,
+  },
+  {
+    id: "submission-2",
+    studentId: "student-2",
+    studentName: "Bob Smith",
+    tenantId: "tenant-1",
+    testDate: "2026-01-01",
+    submittedAt: "2026-01-01T15:45:00Z",
+    sections: {
+      reading: {
+        answers: {
+          q1: "Baron Karl von Drais",
+          q2: "The bone shaker",
+          q3: "TRUE",
+          q4: "TRUE",
+          q5: "women",
+          q6: "Pneumatic tires",
+          q7: "FALSE",
+          q8: "equal",
+        },
+      },
+      writing: {
+        answers: {
+          w1: "The chart shows student enrollment. Engineering has most students. Business is second. Other courses have fewer students.",
+          w2: "Technology is good and bad. Some people like it. Some people dont like it. I think technology is good because it helps us do things faster. We can talk to friends easily. We can find information quickly. But technology can be difficult sometimes. In conclusion technology is mostly good.",
+        },
+      },
+    },
+    status: "pending-review",
+    overallScore: undefined,
+  },
+];

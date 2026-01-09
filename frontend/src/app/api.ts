@@ -1,6 +1,9 @@
 import axios, { type AxiosInstance } from "axios";
+import { ACCESS_TOKEN } from "../features/auth/constants";
 
-const API_BASE_URL = "http://localhost:8080";
+export const SERVER_BASE_URL = "localhost:8080";
+export const API_BASE_URL = `http://${SERVER_BASE_URL}`;
+export const WS_BASE_URL = `ws://${SERVER_BASE_URL}/controls`;
 
 class ApiClient {
   private instance: AxiosInstance;
@@ -16,7 +19,7 @@ class ApiClient {
     });
     this.instance.interceptors.request.use(
       (config) => {
-        const token = localStorage.getItem("accessToken");
+        const token = localStorage.getItem(ACCESS_TOKEN);
         console.log("hit interceptor for request", { token });
         if (token) {
           config.headers["Authorization"] = `Bearer ${token}`;

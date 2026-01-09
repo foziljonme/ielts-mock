@@ -5,18 +5,21 @@
 ### Must-Have Features (Phase 1 - MVP)
 
 #### Student Management
+
 - ✅ Student registration & profile management
 - ✅ Enrollment in groups/classes
 - ✅ Attendance tracking (mark present/absent)
 - ✅ Student dashboard (view progress, upcoming classes)
 
 #### Teacher Management
+
 - ✅ Teacher profile management
 - ✅ Assign teachers to groups
 - ✅ View teacher schedules
 - ✅ Basic performance metrics (attendance rate, student count)
 
 #### Group/Class Management
+
 - ✅ Create/edit/delete groups
 - ✅ Assign students to groups
 - ✅ Assign teacher to group
@@ -24,17 +27,20 @@
 - ✅ View group roster
 
 #### Financial Tracking
+
 - ✅ Record student payments
 - ✅ Track payment status (paid/pending/overdue)
 - ✅ Basic revenue reports (total collected, pending)
 - ✅ Payment history per student
 
 #### Academic Tracking
+
 - ✅ Record mock test results (L/R/W/S scores)
 - ✅ Track student progress over time
 - ✅ Basic progress reports (score trends)
 
 #### Mock IELTS Test Module (Simplified)
+
 - ✅ Listening section with timer
 - ✅ Reading section with timer
 - ✅ Writing section (manual grading)
@@ -43,6 +49,7 @@
 - ✅ Submit and store results
 
 #### Authentication & Authorization
+
 - ✅ Login/logout (JWT-based)
 - ✅ Role-based access control (Admin, Teacher, Student)
 - ✅ Password management
@@ -98,7 +105,7 @@
 │  │           Services (Business Logic Layer)             │  │
 │  │  • AuthService        • StudentService                │  │
 │  │  • TeacherService     • GroupService                  │  │
-│  │  • PaymentService     • TestService                   │  │
+│  │  • PaymentService     • ExamsService                   │  │
 │  │  • AttendanceService  • ReportService                 │  │
 │  └───────────────────────────────────────────────────────┘  │
 │                           │                                 │
@@ -470,6 +477,7 @@ model MockTestSection {
 ## 4. Backend Architecture & Folder Structure
 
 ### Current Stack
+
 - **Framework**: NestJS (TypeScript)
 - **ORM**: Prisma
 - **Database**: PostgreSQL
@@ -806,44 +814,50 @@ GET    /reports/teacher-performance   # Teacher performance metrics
 
 ### Risks & Mitigation
 
-| Risk | Impact | Mitigation |
-|------|--------|-----------|
-| **Data Loss** | High | Regular automated backups, database replication |
-| **Unauthorized Access** | High | Strict JWT validation, role-based access control, rate limiting |
-| **Payment Discrepancies** | High | Audit logs for all payment operations, reconciliation reports |
-| **Poor Performance** | Medium | Database indexing, caching (Redis), query optimization |
-| **Incomplete Test Submissions** | Medium | Auto-save functionality, session recovery |
-| **Teacher Availability** | Low | Flexible scheduling, substitute teacher assignment |
+| Risk                            | Impact | Mitigation                                                      |
+| ------------------------------- | ------ | --------------------------------------------------------------- |
+| **Data Loss**                   | High   | Regular automated backups, database replication                 |
+| **Unauthorized Access**         | High   | Strict JWT validation, role-based access control, rate limiting |
+| **Payment Discrepancies**       | High   | Audit logs for all payment operations, reconciliation reports   |
+| **Poor Performance**            | Medium | Database indexing, caching (Redis), query optimization          |
+| **Incomplete Test Submissions** | Medium | Auto-save functionality, session recovery                       |
+| **Teacher Availability**        | Low    | Flexible scheduling, substitute teacher assignment              |
 
 ### Scalability Considerations
 
 #### Database Optimization
+
 - **Indexes**: Add indexes on frequently queried fields (email, groupId, studentId, date)
 - **Partitioning**: Partition large tables (attendance, payments) by date
 - **Read Replicas**: For read-heavy operations (reports)
 
 #### Caching Strategy
+
 - Cache frequently accessed data (group rosters, teacher schedules)
 - Use Redis for session management
 - Cache computed reports
 
 #### API Optimization
+
 - Implement pagination for all list endpoints
 - Add field selection (GraphQL-style) to reduce payload
 - Rate limiting per user/IP
 
 #### Future Architecture (Multi-Tenancy)
+
 - Add `centerId` field to all models
 - Implement tenant isolation at database level
 - Row-level security (RLS) in PostgreSQL
 - Separate schemas per tenant (advanced)
 
 #### Horizontal Scaling
+
 - Stateless API design (JWT, no sessions)
 - Load balancer (Nginx/AWS ALB)
 - Container orchestration (Docker + Kubernetes)
 
 #### File Storage
+
 - Move to S3/Cloudinary for test audio files, student documents
 - CDN for static assets
 
@@ -852,6 +866,7 @@ GET    /reports/teacher-performance   # Teacher performance metrics
 ## 8. Technology Recommendations
 
 ### Already Chosen ✅
+
 - **Backend**: NestJS + TypeScript
 - **ORM**: Prisma
 - **Database**: PostgreSQL
@@ -860,18 +875,21 @@ GET    /reports/teacher-performance   # Teacher performance metrics
 ### Additional Recommendations
 
 #### Backend
+
 - **Validation**: `class-validator` + `class-transformer` ✅
 - **Logging**: Winston ✅
 - **API Documentation**: Swagger (@nestjs/swagger)
 - **Testing**: Jest (unit) + Supertest (E2E)
 
 #### DevOps
+
 - **Containerization**: Docker
 - **CI/CD**: GitHub Actions or GitLab CI
 - **Hosting**: Railway, Render, or DigitalOcean (MVP) → AWS (Scale)
 - **Monitoring**: Sentry (errors) + LogRocket (analytics)
 
 #### Frontend (Recommended)
+
 - **Framework**: Next.js 14 (App Router)
 - **UI Library**: shadcn/ui + Tailwind CSS
 - **State Management**: Zustand or TanStack Query
@@ -911,6 +929,7 @@ GET    /reports/teacher-performance   # Teacher performance metrics
 ## Appendix: Example DTO Structures
 
 ### CreateStudentDto
+
 ```typescript
 export class CreateStudentDto {
   @IsString()
@@ -942,6 +961,7 @@ export class CreateStudentDto {
 ```
 
 ### CreateGroupDto
+
 ```typescript
 export class CreateGroupDto {
   @IsString()
@@ -972,6 +992,7 @@ export class CreateGroupDto {
 ```
 
 ### MarkAttendanceDto
+
 ```typescript
 export class MarkAttendanceDto {
   @IsString()

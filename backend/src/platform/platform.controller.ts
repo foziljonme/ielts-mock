@@ -1,7 +1,6 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { PlatformService } from './platform.service';
-import { TenantsService } from './tenants/tenants.service';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { TenantsService } from '../tenants/tenants.service';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginDto } from 'src/auth/dto/login.dto';
 

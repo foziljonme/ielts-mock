@@ -1,144 +1,147 @@
+// auth/context/AuthContext.tsx
 import {
   createContext,
   useContext,
-  useEffect,
-  useMemo,
   useState,
+  useEffect,
   type ReactNode,
 } from "react";
-import type { User } from "../types";
-import { useAuthStore } from "../store";
+import { useNavigate } from "react-router-dom";
+import { joinByCode, loginAdmin, retrieveSession } from "../api";
+import { isTokenExpired } from "../utils";
+import { AuthType } from "../types";
 
-type UserRole = "teacher" | "student" | "tenant_admin" | "OWNER";
-
-interface AuthContextType {
-  user: User | null;
-  sessionLogin: (accessCode: string) => Promise<void>;
-  adminLogin: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  resetPassword: (email: string) => Promise<void>;
-  redirectUrl: string;
+interface AuthState {
+  type: AuthType | null;
+  subjectId: string | null;
+  // user: IUser | null;
+  // student: IExamSeatSession | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+interface AuthContextValue extends AuthState {
+  handleLogin: (email: string, password: string) => Promise<void>;
+  loginSession: (accessCode: string, studentId: string) => Promise<void>;
+  logout: () => void;
+}
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-// Mock users for demo
-const mockUsers: User[] = [
-  {
-    id: "1",
-    name: "Sarah Johnson",
-    email: "teacher@demo.com",
-    role: "teacher",
-    tenantId: "t1",
-    tenantName: "IELTS Excellence Center",
-    avatar:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
-  },
-  {
-    id: "2",
-    name: "Michael Chen",
-    email: "student@demo.com",
-    role: "student",
-    tenantId: "t1",
-    tenantName: "IELTS Excellence Center",
-    avatar:
-      "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=150&h=150&fit=crop",
-  },
-  {
-    id: "3",
-    name: "Emma Thompson",
-    email: "admin@demo.com",
-    role: "tenant_admin",
-    tenantId: "t1",
-    tenantName: "IELTS Excellence Center",
-    avatar:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",
-  },
-  {
-    id: "4",
-    name: "David Wilson",
-    email: "saas@demo.com",
-    role: "OWNER",
-    avatar:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop",
-  },
-];
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [state, setState] = useState<AuthState>({
+    type: null,
+    subjectId: null,
+    // user: null,
+    // student: null,
+    isAuthenticated: false,
+    isLoading: true,
+  });
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const { role: selectedRole } = useAuthStore((state) => state);
+  const navigate = useNavigate();
 
-  const redirectUrl = useMemo(() => {
-    return "/test/cambridge-16-test-1/section-selection";
-  }, [selectedRole]);
+  // Helper: clear all auth data
+  const clearAuth = () => {
+    // localStorage.removeItem("authType");
+    // localStorage.removeItem("accessToken");
+    // localStorage.removeItem("tokenExp");
 
-  const sessionLogin = async (accessCode: string) => {
-    console.log({ accessCode });
-    setUser({
-      id: "1",
-      name: "Sarah Johnson",
-      email: "teacher@demo.com",
-      role: "teacher",
-      tenantId: "t1",
-      tenantName: "IELTS Excellence Center",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
+    setState({
+      type: null,
+      subjectId: null,
+      // user: null,
+      // student: null,
+      isAuthenticated: false,
+      isLoading: false,
     });
   };
 
-  const adminLogin = async (email: string, password: string) => {
-    console.log({ email, password });
-    setUser({
-      id: "1",
-      name: "Sarah Johnson",
-      email: "teacher@demo.com",
-      role: "teacher",
-      tenantId: "t1",
-      tenantName: "IELTS Excellence Center",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
+  // On mount: validate existing token and fetch fresh profile/session
+  useEffect(() => {
+    const validateAuth = async () => {
+      const token = localStorage.getItem("accessToken");
+      const type = localStorage.getItem("authType") as AuthType;
+
+      const tokenExpired = isTokenExpired();
+
+      if (!token || !type || tokenExpired) {
+        clearAuth();
+        return;
+      }
+
+      try {
+        const subject = await retrieveSession();
+
+        setState({
+          type,
+          subjectId: subject.subjectId,
+          isAuthenticated: subject.authenticated,
+          isLoading: false,
+        });
+      } catch (err) {
+        console.warn("Auth validation failed:", err);
+        clearAuth();
+      }
+    };
+
+    validateAuth();
+  }, []);
+
+  const handleLogin = async (email: string, password: string) => {
+    await loginAdmin({
+      email,
+      password,
     });
+
+    const { subjectId } = await retrieveSession();
+
+    setState({
+      type: AuthType.ADMIN,
+      subjectId,
+      isAuthenticated: true,
+      isLoading: false,
+    });
+
+    navigate("/admin/dashboard");
+  };
+
+  const loginSession = async (accessCode: string, studentId: string) => {
+    await joinByCode({ accessCode, studentId });
+    const { subjectId, examId } = await retrieveSession();
+
+    setState({
+      type: AuthType.EXAM,
+      subjectId,
+      isAuthenticated: true,
+      isLoading: false,
+    });
+
+    navigate(`/exams/${examId}/waiting-room`);
   };
 
   const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+    clearAuth();
+    navigate("/login/student"); // or your join-by-code page
   };
-
-  const resetPassword = async (email: string) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    // In a real app, this would send a password reset email
-  };
-
-  // Check for stored user on mount
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
 
   return (
     <AuthContext.Provider
       value={{
-        user,
-        sessionLogin,
-        adminLogin,
+        ...state,
+        handleLogin,
+        loginSession,
         logout,
-        resetPassword,
-        redirectUrl,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
+}
+
+export const useAuth = (): AuthContextValue => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 };
