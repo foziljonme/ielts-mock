@@ -12,7 +12,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -59,10 +59,9 @@ services:
         condition: service_healthy
     networks:
       - app-network
-
-  # Backend Service (Production)
+    # Backend Service (Production)
   backend-prod:
-    profiles: ["prod"]
+    profiles: [ "prod" ]
     build:
       context: ./backend
       target: production
@@ -85,7 +84,7 @@ services:
     tty: true
     # stdin_open: true
     ports:
-      - "3000:3000"
+      - "4000:4000"
     volumes:
       - ./frontend:/app
     working_dir: /app
@@ -95,7 +94,7 @@ services:
 
   # Frontend Service (Production)
   frontend-prod:
-    profiles: ["prod"]
+    profiles: [ "prod" ]
     build:
       context: ./frontend
       target: production
@@ -104,8 +103,24 @@ services:
     networks:
       - app-network
 
+  # Nextjs (Development)
+  next-js:
+    build:
+      context: ./full-stack
+      target: dev # change to 'prod' for production
+    volumes:
+      - ./full-stack:/app # mount source for live reload
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+    command: yarn dev
+    networks:
+      - app-network
+
 volumes:
   postgres_data:
+
 
 networks:
   app-network:

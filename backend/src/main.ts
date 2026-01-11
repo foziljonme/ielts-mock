@@ -16,6 +16,9 @@ async function bootstrap() {
       'http://localhost:3000', // Vite default port
       /http:\/\/(.+\.)?localhost:3000$/,
       'http://172.31.227.158:3000',
+      'http://localhost:8000', // Custom port
+      /http:\/\/(.+\.)?localhost:8000$/,
+      'http://172.31.227.158:8000',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Allowed methods
     credentials: true, // If you need to handle cookies/sessions
