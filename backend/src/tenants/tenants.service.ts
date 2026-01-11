@@ -149,15 +149,4 @@ export class TenantsService {
 
     return tenant;
   }
-
-  async getDashboard(tenantId: string) {
-    this.logger.log('Listing dashboard');
-    const dashboard = await this.prismaService.tenant.findUnique({
-      where: {
-        id: tenantId,
-      },
-      include: {},
-    });
-    return dashboard;
-  }
 }

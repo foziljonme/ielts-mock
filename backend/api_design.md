@@ -1,6 +1,6 @@
 # API Design for Multi-Tenant Education Platform
 
-This document outlines the REST API endpoints for managing tenants, users, courses, schedules, attendance, and finance. It is designed for a multi-tenant system with Prisma ORM backend.
+This document outlines the REST API endpoints for managing tenants, users, courses, sessions, attendance, and finance. It is designed for a multi-tenant system with Prisma ORM backend.
 
 ---
 
@@ -72,13 +72,13 @@ This document outlines the REST API endpoints for managing tenants, users, cours
 
 ### Courses
 
-| Done | Method | URL            | Description                             |
-| :--: | :----- | :------------- | :-------------------------------------- |
-| [ ]  | GET    | `/courses`     | List courses                            |
-| [ ]  | GET    | `/courses/:id` | Get course details + schedules + prices |
-| [ ]  | POST   | `/courses`     | Create course                           |
-| [ ]  | PUT    | `/courses/:id` | Update course info                      |
-| [ ]  | DELETE | `/courses/:id` | Delete course                           |
+| Done | Method | URL            | Description                            |
+| :--: | :----- | :------------- | :------------------------------------- |
+| [ ]  | GET    | `/courses`     | List courses                           |
+| [ ]  | GET    | `/courses/:id` | Get course details + sessions + prices |
+| [ ]  | POST   | `/courses`     | Create course                          |
+| [ ]  | PUT    | `/courses/:id` | Update course info                     |
+| [ ]  | DELETE | `/courses/:id` | Delete course                          |
 
 ### Course Prices
 
@@ -90,12 +90,12 @@ This document outlines the REST API endpoints for managing tenants, users, cours
 
 ### Course Schedules
 
-| Done | Method | URL                      | Description     |
-| :--: | :----- | :----------------------- | :-------------- |
-| [ ]  | GET    | `/courses/:id/schedules` | List schedules  |
-| [ ]  | POST   | `/courses/:id/schedules` | Create schedule |
-| [ ]  | PUT    | `/schedules/:id`         | Update schedule |
-| [ ]  | DELETE | `/schedules/:id`         | Remove schedule |
+| Done | Method | URL                     | Description     |
+| :--: | :----- | :---------------------- | :-------------- |
+| [ ]  | GET    | `/courses/:id/sessions` | List sessions   |
+| [ ]  | POST   | `/courses/:id/sessions` | Create schedule |
+| [ ]  | PUT    | `/sessions/:id`         | Update schedule |
+| [ ]  | DELETE | `/sessions/:id`         | Remove schedule |
 
 ---
 
@@ -103,17 +103,17 @@ This document outlines the REST API endpoints for managing tenants, users, cours
 
 ### Groups
 
-| Done | Method | URL           | Description                               |
-| :--: | :----- | :------------ | :---------------------------------------- |
-| [ ]  | GET    | `/groups`     | List groups                               |
-| [ ]  | GET    | `/groups/:id` | Get group details, schedules, enrollments |
-| [ ]  | POST   | `/groups`     | Create group                              |
-| [ ]  | PUT    | `/groups/:id` | Update group info                         |
-| [ ]  | DELETE | `/groups/:id` | Soft delete group                         |
+| Done | Method | URL           | Description                              |
+| :--: | :----- | :------------ | :--------------------------------------- |
+| [ ]  | GET    | `/groups`     | List groups                              |
+| [ ]  | GET    | `/groups/:id` | Get group details, sessions, enrollments |
+| [ ]  | POST   | `/groups`     | Create group                             |
+| [ ]  | PUT    | `/groups/:id` | Update group info                        |
+| [ ]  | DELETE | `/groups/:id` | Soft delete group                        |
 
 ### Group Schedules
 
-CRUD endpoints: `/groups/:id/schedules`
+CRUD endpoints: `/groups/:id/sessions`
 
 ### Sessions
 

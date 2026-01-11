@@ -10,7 +10,7 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { LoginDto, JoinByCodeDto } from './dto/login.dto';
+import { LoginDto, CandidateLoginDto } from './dto/login.dto';
 import { LoginResponse } from './entities/login.entity';
 import {
   ADMIN_TOKEN_EXPIRES_IN,
@@ -23,7 +23,7 @@ import {
   ContextStorageServiceKey,
 } from 'src/config/contextStorage.service';
 import { SessionJwtPayload, JwtPayloadBase } from './entities/token.entity';
-import { AttemptStatus, UserRole } from 'prisma/generated/enums';
+import { ExamSessionStatus, UserRole } from 'prisma/generated/enums';
 import { Prisma } from 'prisma/generated/client';
 
 @Injectable()
@@ -64,7 +64,7 @@ export class AuthService {
     }
 
     if (isPlatformAdmin) {
-      if (!user.roles.includes(UserRole.OWNER)) {
+      if (!user.roles.includes(UserRole.PLATFORM_ADMIN)) {
         throw new UnauthorizedException(
           'User is not a platform admin, please make sure you are using the correct email',
         );
@@ -106,130 +106,11 @@ export class AuthService {
       accessToken,
       refreshToken,
       expiresAt: this.getExpiresAt(ADMIN_TOKEN_EXPIRES_IN),
-      // user: rest,
+      user: rest,
     };
   }
 
-  async joinByCode(loginDto: JoinByCodeDto) {
-    // 1. Find the seat with this access code in an active schedule
-    return await this.prismaService.$transaction(async (tx) => {
-      const { accessCode, studentId } = loginDto;
-      const seat = await tx.examSeat.findFirst({
-        where: {
-          accessCode: accessCode,
-          assignedStudentId: studentId,
-        },
-        include: {
-          schedule: {
-            select: {
-              id: true,
-              testId: true,
-              tenantId: true,
-              startTime: true,
-              endTime: true,
-            },
-          },
-          attempt: true,
-        },
-      });
-
-      if (!seat) {
-        throw new UnauthorizedException('Invalid or expired access code');
-      }
-
-      // 3. Optional: Check if schedule time window is still valid
-      const now = new Date();
-      if (seat.schedule.endTime && now > seat.schedule.endTime) {
-        throw new UnauthorizedException('This test has ended');
-      }
-
-      // 4. Create the SeatAttempt
-      let seatAttempt = seat.attempt;
-      if (!seat.attempt) {
-        seatAttempt = await tx.seatAttempt.create({
-          data: {
-            seatId: seat.id,
-            scheduleId: seat.schedule.id,
-            status: AttemptStatus.NOT_STARTED,
-            startedAt: null,
-            submittedAt: null,
-          },
-        });
-      }
-
-      if (!seatAttempt) {
-        throw new InternalServerErrorException('Failed to create seat attempt');
-      }
-
-      const payload: SessionJwtPayload = {
-        sub: seat.id, // subject = attempt ID
-        tenantId: seat.schedule.tenantId,
-        scheduleInfo: {
-          scheduleId: seat.schedule.id,
-          testId: seat.schedule.testId,
-          seatId: seat.id,
-          studentName: seat.assignedStudentName || null,
-          studentId: seat.assignedStudentId || null,
-        },
-        roles: [UserRole.STUDENT],
-      };
-
-      const token = this.jwtService.sign(payload, {
-        expiresIn: SESSION_TOKEN_EXPIRES_IN,
-      });
-      const { schedule, attempt, ...rest } = seat;
-      const expiresAt = this.getExpiresAt(SESSION_TOKEN_EXPIRES_IN);
-      // 6. Return success with token and context
-      return {
-        success: true,
-        accessToken: token,
-        subjectId: seat.id,
-        expiresAt,
-        // seat: rest,
-        // schedule,
-        // attempt: seatAttempt,
-      };
-    });
-  }
-
-  private getExpiresAt(expiresIn: number) {
-    return Date.now() + expiresIn * 1000;
-  }
-
-  async getSessionInfo(tokenData: JwtPayloadBase) {
-    if (tokenData.roles.includes(UserRole.STUDENT)) {
-      console.log('Getting session info for student');
-      const seatId = tokenData.sub;
-      return await this.prismaService.$transaction(async (tx) => {
-        const seat = await tx.examSeat.findFirst({
-          where: {
-            id: seatId,
-          },
-        });
-        console.log('Seat found', seat);
-        if (!seat) {
-          throw new InternalServerErrorException('Failed to get session info');
-        }
-        return {
-          subjectId: seat.id,
-          authenticated: true,
-          type: [UserRole.STUDENT],
-          examId: seat.scheduleId,
-        };
-      });
-    } else {
-      console.log('Getting session info for user');
-      const userId = tokenData.sub;
-      const user = await this.getMe(userId);
-      return {
-        subjectId: userId,
-        authenticated: true,
-        type: user.roles,
-      };
-    }
-  }
-
-  public async getMe(userId: string) {
+  public async getAdminMe(userId: string) {
     this.logger.log({ message: 'Getting user', userId });
     const user = await this.prismaService.user.findUnique({
       where: {
@@ -243,7 +124,84 @@ export class AuthService {
     const { password, ...rest } = user;
 
     return {
-      ...rest,
+      user: rest,
+    };
+  }
+
+  async candidateLogin(loginDto: CandidateLoginDto) {
+    // 1. Find the seat with this access code in an active schedule
+    return await this.prismaService.$transaction(async (tx) => {
+      const { accessCode, candidateId } = loginDto;
+      const seat = await tx.examSeat.findFirst({
+        where: {
+          accessCode: accessCode,
+          candidateId,
+        },
+        include: {
+          session: true,
+        },
+      });
+
+      if (!seat) {
+        throw new UnauthorizedException('Invalid or expired access code');
+      }
+
+      if (seat.session.status === ExamSessionStatus.COMPLETED) {
+        throw new UnauthorizedException('This test has ended');
+      }
+
+      // 3. Optional: Check if schedule time window is still valid
+      const now = new Date();
+      if (seat.session.endTime && now > seat.session.endTime) {
+        throw new UnauthorizedException('This test has ended');
+      }
+
+      const payload: SessionJwtPayload = {
+        sub: seat.id, // subject = attempt ID
+        tenantId: seat.session.tenantId,
+        scheduleInfo: {
+          sessionId: seat.session.id,
+          testId: seat.session.testId,
+          seatId: seat.id,
+          candidateName: seat.candidateName || null,
+          candidateId: seat.candidateId || null,
+        },
+        roles: [UserRole.CANDIDATE],
+      };
+
+      const token = this.jwtService.sign(payload, {
+        expiresIn: SESSION_TOKEN_EXPIRES_IN,
+      });
+      const { session, ...rest } = seat;
+      const expiresAt = this.getExpiresAt(SESSION_TOKEN_EXPIRES_IN);
+      // 6. Return success with token and context
+      return {
+        accessToken: token,
+        subjectId: seat.id,
+        expiresAt,
+        seat: rest,
+      };
+    });
+  }
+
+  private getExpiresAt(expiresIn: number) {
+    return Date.now() + expiresIn * 1000;
+  }
+
+  public async getCandidateMe(seatId: string) {
+    this.logger.log({ message: 'Getting user', seatId });
+    const seat = await this.prismaService.examSeat.findUnique({
+      where: {
+        id: seatId,
+      },
+    });
+
+    if (!seat) {
+      throw new UnauthorizedException('Candidate seat not found');
+    }
+    const { accessCode, ...rest } = seat;
+    return {
+      seat: rest,
     };
   }
 }

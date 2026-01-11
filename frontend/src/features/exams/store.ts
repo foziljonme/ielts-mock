@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import type { SectionName } from "./types";
-import type { IExamSeatSession } from "../auth/types";
+import type { ISeat } from "../auth/types";
 
 interface IExamStore {
-  examSeatInfo: IExamSeatSession | null;
+  examSeatInfo: ISeat | null;
   activeSection: SectionName | null;
   completedSections: Set<SectionName>;
 
-  fetchExamSeatInfo: () => Promise<void>;
+  setExamSeatInfo: (seat: ISeat) => void;
   startSection: (section: SectionName) => void;
   completeSection: (section: SectionName) => void;
 }
@@ -17,9 +17,7 @@ const useExamStore = create<IExamStore>((set) => ({
   activeSection: null,
   completedSections: new Set<SectionName>(),
 
-  fetchExamSeatInfo: async () => {
-    const data = "";
-  },
+  setExamSeatInfo: (seat: ISeat) => set({ examSeatInfo: seat }),
   startSection: (section: SectionName) => set({ activeSection: section }),
   completeSection: (section: SectionName) =>
     set((state) => ({

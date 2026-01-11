@@ -10,10 +10,10 @@ import {
 export class CreateSeatDto {
   @IsString()
   @IsOptional()
-  assignedStudentId?: string;
+  candidateId?: string;
 
   @IsString()
-  assignedStudentName: string;
+  candidateName: string;
 
   @IsNumber()
   seatNumber: number;

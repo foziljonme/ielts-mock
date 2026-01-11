@@ -6,7 +6,7 @@
 
 - **User Management**: Admin, Teacher, Student roles. Authentication (JWT).
 - **Student Management**: Profiles, enrollment in groups, attendance tracking.
-- **Group Management**: Class groups, schedules.
+- **Group Management**: Class groups, sessions.
 - **Mock Test Module (Core Value)**:
   - Create/Edit Tests (Listening, Reading, Writing, Speaking).
   - Assign tests to students/groups.

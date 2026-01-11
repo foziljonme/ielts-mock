@@ -11,96 +11,97 @@ import {
 } from '@nestjs/common';
 import { ExamsService } from './exams.service';
 import { TestSection } from 'prisma/generated/enums';
-import { SchedulesService } from './schedules/schedules.service';
-import { CreateSessionDto } from './schedules/dto/create-session.dto';
-import { UpdateSessionDto } from './schedules/dto/update-session.dto';
+import { SessionsService } from './sessions/sessions.service';
+import { CreateSessionDto } from './sessions/dto/create-session.dto';
+import { UpdateSessionDto } from './sessions/dto/update-session.dto';
 import { SeatsService } from './seats/seats.service';
 import { CreateSeatArrayDto } from './seats/dto/create-seat.dto';
 import { UpdateSeatArrayDto } from './seats/dto/update-seat.dto';
 import { ControlsService } from './control/controls.service';
 import { AttemptsService } from './attempts/attempts.service';
 import { Public } from 'src/auth/decorators/public.decorator';
+import { get } from 'http';
 
-@Controller('exams')
+@Controller('exam')
 export class ExamsController {
   constructor(
     private readonly examsService: ExamsService,
-    private readonly schedulesService: SchedulesService,
+    private readonly sessionsService: SessionsService,
     private readonly seatsService: SeatsService,
     private readonly controlService: ControlsService,
     private readonly attemptsService: AttemptsService,
   ) {}
 
-  // ======================================================
-  // Schedules Start
-  // ======================================================
-  @Post('schedules')
-  async createExamSchedule(@Body() createSessionDto: CreateSessionDto) {
-    return await this.schedulesService.create(createSessionDto);
+  @Get('sessions/:sessionId/seats/:seatId')
+  async getSeatById(
+    @Param('sessionId') sessionId: string,
+    @Param('seatId') seatId: string,
+  ) {
+    return await this.seatsService.get(sessionId, seatId);
   }
 
-  @Get('schedules')
-  async getAllSchedules() {
-    return await this.schedulesService.findAll();
+  // ======================================================
+  // Exam Sessions Start
+  // ======================================================
+  @Post('sessions')
+  async createExamSession(@Body() createSessionDto: CreateSessionDto) {
+    return await this.sessionsService.create(createSessionDto);
   }
 
-  @Get('schedules/:id')
+  // @Get('sessions')
+  // async getAllExamSessions() {
+  //   return await this.sessionsService.findAll();
+  // }
+
+  @Get('sessions/:id')
   async getSessionById(@Param('id') id: string) {
-    return await this.schedulesService.get(id);
+    return await this.sessionsService.get(id);
   }
 
-  @Patch('schedules/:id')
-  async updateSchedule(
+  @Patch('sessions/:id')
+  async updateSession(
     @Param('id') id: string,
     @Body() updateSessionDto: UpdateSessionDto,
   ) {
-    return await this.schedulesService.updateWithTx(id, updateSessionDto);
+    return await this.sessionsService.updateWithTx(id, updateSessionDto);
   }
 
-  @Delete('schedules/:id')
+  @Delete('sessions/:id')
   async deleteSchedule(@Param('id') id: string) {
-    return await this.schedulesService.delete(id);
+    return await this.sessionsService.delete(id);
   }
 
   // ======================================================
-  // Schedules End
+  // Sessions End
   // ======================================================
 
   // ======================================================
   // Seats Start
   // ======================================================
-  @Post('schedules/:scheduleId/seats')
+  @Post('sessions/:sessionId/seats')
   async createSeat(
-    @Param('scheduleId') scheduleId: string,
+    @Param('sessionId') sessionId: string,
     @Body() body: CreateSeatArrayDto,
   ) {
-    return await this.seatsService.create(scheduleId, body);
+    return await this.seatsService.create(sessionId, body);
   }
 
-  @Get('schedules/:scheduleId/seats')
-  async getSeatsByScheduleId(@Param('scheduleId') scheduleId: string) {
-    return await this.seatsService.findAll(scheduleId);
+  @Get('sessions/:sessionId/seats')
+  async getSeatsByScheduleId(@Param('sessionId') sessionId: string) {
+    return await this.seatsService.findAll(sessionId);
   }
 
-  @Get('schedules/:scheduleId/seats/:id')
-  async getSeatById(
-    @Param('scheduleId') scheduleId: string,
-    @Param('id') id: string,
-  ) {
-    return await this.seatsService.get(scheduleId, id);
-  }
-
-  @Patch('schedules/:scheduleId/seats')
+  @Patch('sessions/:sessionId/seats')
   async updateSeat(
-    @Param('scheduleId') scheduleId: string,
+    @Param('sessionId') sessionId: string,
     @Body() body: UpdateSeatArrayDto,
   ) {
-    return await this.seatsService.update(scheduleId, body);
+    return await this.seatsService.update(sessionId, body);
   }
 
-  // @Get('schedules/:scheduleId/seats/print')
-  // async printSeats(@Param('scheduleId') scheduleId: string) {
-  //   return await this.seatsService.print(scheduleId);
+  // @Get('sessions/:sessionId/seats/print')
+  // async printSeats(@Param('sessionId') sessionId: string) {
+  //   return await this.seatsService.print(sessionId);
   // }
 
   // ======================================================
@@ -111,19 +112,19 @@ export class ExamsController {
   // Control Start
   // ======================================================
 
-  @Post('schedules/:scheduleId/start')
-  async startSession(@Param('scheduleId') scheduleId: string) {
-    return await this.controlService.startSession(scheduleId);
+  @Post('sessions/:sessionId/start')
+  async startSession(@Param('sessionId') sessionId: string) {
+    return await this.controlService.startSession(sessionId);
   }
 
-  @Post('schedules/:scheduleId/end')
-  async endSession(@Param('scheduleId') scheduleId: string) {
-    return await this.controlService.endSession(scheduleId);
+  @Post('sessions/:sessionId/end')
+  async endSession(@Param('sessionId') sessionId: string) {
+    return await this.controlService.endSession(sessionId);
   }
 
-  @Post('schedules/:scheduleId/:section/start')
+  @Post('sessions/:sessionId/:section/start')
   async startSection(
-    @Param('scheduleId') scheduleId: string,
+    @Param('sessionId') sessionId: string,
     @Param('section') section: TestSection,
   ) {
     section = section.toUpperCase() as TestSection;
@@ -131,12 +132,12 @@ export class ExamsController {
       throw new BadRequestException('Invalid section');
     }
 
-    return await this.controlService.startSection(scheduleId, section);
+    return await this.controlService.startSection(sessionId, section);
   }
 
-  @Post('schedules/:scheduleId/:section/end')
+  @Post('sessions/:sessionId/:section/end')
   async endSection(
-    @Param('scheduleId') scheduleId: string,
+    @Param('sessionId') sessionId: string,
     @Param('section') section: TestSection,
   ) {
     section = section.toUpperCase() as TestSection;
@@ -144,7 +145,7 @@ export class ExamsController {
       throw new BadRequestException('Invalid section');
     }
 
-    return await this.controlService.endSection(scheduleId, section);
+    return await this.controlService.endSection(sessionId, section);
   }
 
   // ======================================================

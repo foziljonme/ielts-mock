@@ -33,7 +33,7 @@ import {
   mockTestResults,
   mockTenants,
 } from "../../../data/mockData";
-import { ScheduleTestPage } from "../components/ScheduleTestPage";
+import { ScheduleTestTab } from "../components/ScheduleTestTab";
 import { TestSubmissionsPage } from "../components/TestSubmissionsPage";
 import type { ScheduledTest } from "../types";
 import { useAdminStore } from "../store";
@@ -43,24 +43,24 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboardPage({ onLogout }: AdminDashboardProps) {
-  const { fetchTenant, isLoading, tenant, students, results } = useAdminStore();
+  const { fetchTenant, isLoading, tenant } = useAdminStore();
   const [searchTerm, setSearchTerm] = useState("");
   // const tenant = mockTenants[0]; // Current tenant
   // const students = mockStudents.filter((s) => s.tenantId === tenant.id);
   // const results = mockTestResults.filter((r) => r.tenantId === tenant.id);
 
-  const filteredStudents = students.filter(
-    (s) =>
-      s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredStudents = students.filter(
+  //   (s) =>
+  //     s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     s.email.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
-  const stats = {
-    totalStudents: students.length,
-    activeTests: students.filter((s) => s.testStatus === "in-progress").length,
-    completedTests: results.length,
-    // testAttempts: tenant.testAttempts,
-  };
+  // const stats = {
+  //   totalStudents: students.length,
+  //   activeTests: students.filter((s) => s.testStatus === "in-progress").length,
+  //   completedTests: results.length,
+  //   // testAttempts: tenant.testAttempts,
+  // };
 
   const handleStartTest = (test: ScheduledTest) => {
     // setActiveTestControl(test);
@@ -80,10 +80,14 @@ export default function AdminDashboardPage({ onLogout }: AdminDashboardProps) {
   //   );
   // }
 
+  if (!tenant) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b px-6 py-4 shadow-sm">
+      {/* <div className="bg-white border-b px-6 py-4 shadow-sm">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -110,60 +114,10 @@ export default function AdminDashboardPage({ onLogout }: AdminDashboardProps) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Main content */}
       <div className="max-w-7xl mx-auto p-6">
-        {/* Stats cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Test Attempts</p>
-                <p className="text-2xl font-semibold">
-                  {/* {stats.testAttempts.total} */}
-                  431
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  {/* {stats.testAttempts.remaining} remaining */}
-                  54
-                </p>
-              </div>
-              <ClipboardList className="w-8 h-8 text-blue-600" />
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Total Students</p>
-                <p className="text-2xl font-semibold">{stats.totalStudents}</p>
-              </div>
-              <Users className="w-8 h-8 text-purple-600" />
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Active Tests</p>
-                <p className="text-2xl font-semibold">{stats.activeTests}</p>
-              </div>
-              <TrendingUp className="w-8 h-8 text-orange-600" />
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Completed</p>
-                <p className="text-2xl font-semibold">{stats.completedTests}</p>
-              </div>
-              <DollarSign className="w-8 h-8 text-green-600" />
-            </div>
-          </Card>
-        </div>
-
         {/* Tabs */}
         <Tabs defaultValue="schedule" className="space-y-4">
           <TabsList>
@@ -176,13 +130,13 @@ export default function AdminDashboardPage({ onLogout }: AdminDashboardProps) {
 
           {/* Schedule Tests Tab */}
           <TabsContent value="schedule">
-            <ScheduleTestPage />
+            <ScheduleTestTab />
           </TabsContent>
 
           {/* Test Submissions Tab */}
-          <TabsContent value="submissions">
+          {/* <TabsContent value="submissions">
             <TestSubmissionsPage tenant={tenant} />
-          </TabsContent>
+          </TabsContent> */}
 
           {/* Students Tab */}
           <TabsContent value="students" className="space-y-4">
@@ -218,7 +172,7 @@ export default function AdminDashboardPage({ onLogout }: AdminDashboardProps) {
                     <TableHead>Seat</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                {/* <TableBody>
                   {filteredStudents.map((student) => (
                     <TableRow key={student.id}>
                       <TableCell>{student.name}</TableCell>
@@ -247,7 +201,7 @@ export default function AdminDashboardPage({ onLogout }: AdminDashboardProps) {
                       <TableCell>{student.assignedSeat || "-"}</TableCell>
                     </TableRow>
                   ))}
-                </TableBody>
+                </TableBody> */}
               </Table>
             </Card>
           </TabsContent>
@@ -270,7 +224,7 @@ export default function AdminDashboardPage({ onLogout }: AdminDashboardProps) {
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                {/* <TableBody>
                   {results.map((result) => {
                     const student = students.find(
                       (s) => s.id === result.studentId
@@ -294,7 +248,7 @@ export default function AdminDashboardPage({ onLogout }: AdminDashboardProps) {
                       </TableRow>
                     );
                   })}
-                </TableBody>
+                </TableBody> */}
               </Table>
             </Card>
           </TabsContent>
@@ -377,7 +331,7 @@ export default function AdminDashboardPage({ onLogout }: AdminDashboardProps) {
                   </div>
                 </div>
 
-                <Card className="p-6 bg-green-50 border-green-200">
+                {/* <Card className="p-6 bg-green-50 border-green-200">
                   <h3 className="font-semibold mb-4">Quote Summary</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between">
@@ -410,14 +364,14 @@ export default function AdminDashboardPage({ onLogout }: AdminDashboardProps) {
                     </div>
                   </div>
                   <Button className="w-full mt-4">Generate Quote PDF</Button>
-                </Card>
+                </Card> */}
               </div>
 
               <div className="bg-gray-50 p-4 rounded-lg mt-6">
                 <h4 className="font-medium mb-2">Package Details</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• {tenant.agreement}</li>
-                  <li>• {tenant.totalSeats} workstations available</li>
+                  {/* <li>• {tenant.agreement}</li>
+                  <li>• {tenant.totalSeats} workstations available</li> */}
                   <li>
                     • Test attempts are managed independently of student
                     enrollment

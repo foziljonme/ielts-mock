@@ -21,7 +21,7 @@ import type { JwtPayloadBase } from 'src/auth/entities/token.entity';
 
 @Controller('platform/tenants')
 @UseGuards(JwtAuthGuard)
-@AccessRoles(UserRole.OWNER)
+@AccessRoles(UserRole.PLATFORM_ADMIN)
 export class TenantsController {
   constructor(private readonly tenantsService: TenantsService) {}
 

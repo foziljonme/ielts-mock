@@ -1,5 +1,5 @@
 import { IsDate, IsEnum, IsOptional, IsString } from 'class-validator';
-import { ExamScheduleStatus } from 'prisma/generated/enums';
+import { ExamSessionStatus } from 'prisma/generated/enums';
 
 export class CreateSessionDto {
   @IsDate()
@@ -15,7 +15,10 @@ export class CreateSessionDto {
   @IsOptional()
   endTime?: Date;
 
-  @IsEnum(ExamScheduleStatus)
+  @IsDate()
+  examDate: Date;
+
+  @IsEnum(ExamSessionStatus)
   @IsOptional()
-  status?: ExamScheduleStatus = ExamScheduleStatus.SCHEDULED;
+  status?: ExamSessionStatus = ExamSessionStatus.SCHEDULED;
 }

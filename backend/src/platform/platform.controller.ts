@@ -3,6 +3,7 @@ import { PlatformService } from './platform.service';
 import { TenantsService } from '../tenants/tenants.service';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginDto } from 'src/auth/dto/login.dto';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('')
 // @UseGuards(AuthGuard)
@@ -14,6 +15,7 @@ export class PlatformController {
   ) {}
 
   @Post('seed-platform-admin-accounts')
+  @Public()
   async seedPlatformAdminAccounts() {
     return await this.PlatformService.seedPlatformAdminAccounts();
   }

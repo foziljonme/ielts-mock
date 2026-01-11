@@ -33,7 +33,7 @@ export class UsersService {
   async create(
     createUserDto: CreateUserDto,
     prisma: PrismaClientLike,
-    defaultRoles: UserRole[] = [UserRole.TENANT],
+    defaultRoles: UserRole[] = [UserRole.TENANT_ADMIN],
   ) {
     this.logger.log({ message: 'Creating user', createUserDto });
 
@@ -65,7 +65,7 @@ export class UsersService {
 
   async createWithTx(
     createUserDto: CreateUserDto,
-    defaultRoles: UserRole[] = [UserRole.TENANT],
+    defaultRoles: UserRole[] = [UserRole.TENANT_ADMIN],
   ) {
     return this.prismaService.$transaction(async (tx) => {
       return await this.create(createUserDto, tx, defaultRoles);

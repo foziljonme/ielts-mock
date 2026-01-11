@@ -1,14 +1,14 @@
 import { lazy } from "react";
 
-const SessionLoginPage = lazy(() => import("./pages/SessionLoginPage"));
+const CandidateLoginPage = lazy(() => import("./pages/CandidateLoginPage"));
 const AdminLoginPage = lazy(() => import("./pages/AdminLoginPage"));
 
 export const authRoutes = {
   path: "auth",
   children: [
     {
-      path: "join-by-code",
-      element: <SessionLoginPage />,
+      path: "candidate/login",
+      element: <CandidateLoginPage />,
     },
     {
       path: "admin/login",

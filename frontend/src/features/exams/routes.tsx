@@ -1,15 +1,17 @@
 import { lazy } from "react";
 
-const StudentWaitingRoomPage = lazy(() => import("./pages/StudentWaitingRoom"));
+const CandidateWaitingRoomPage = lazy(
+  () => import("./pages/CandidateWaitingRoom")
+);
 const SectionSelectionPage = lazy(() => import("./pages/SectionSelection"));
 const ListeningModulePage = lazy(() => import("./pages/ListeningModulePage"));
 
-export const examsRoutes = {
-  path: "exams",
+export const examRoutes = {
+  path: "exam",
   children: [
     {
       path: ":examId/waiting-room",
-      element: <StudentWaitingRoomPage />,
+      element: <CandidateWaitingRoomPage />,
     },
     {
       path: ":examId/sections",

@@ -9,16 +9,13 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
-import { LoginDto, JoinByCodeDto } from './dto/login.dto';
+import { LoginDto, CandidateLoginDto } from './dto/login.dto';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AccessRoles } from './decorators/access-roles.decorator';
-import { UserRole } from 'prisma/generated/enums';
 import { Public } from './decorators/public.decorator';
 import { GetCurrentUser } from './decorators/get-current-user.decorator';
-import type {
-  JwtPayloadBase,
-  SessionJwtPayload,
-} from './entities/token.entity';
+import type { JwtPayloadBase } from './entities/token.entity';
+import { UserRole } from 'prisma/generated/enums';
 
 @Controller('auth')
 export class AuthController {
@@ -35,25 +32,32 @@ export class AuthController {
     return this.authService.register(registerDto, registerDto.roles);
   }
 
-  @Post('/join-by-code')
-  @Public()
-  async joinByCode(@Body() body: JoinByCodeDto) {
-    this.logger.log({ message: 'Logging in user' });
-    return await this.authService.joinByCode(body);
-  }
-
-  @Get('session')
-  @AccessRoles(UserRole.STUDENT, UserRole.TENANT, UserRole.STAFF)
-  async getSessionInfo(@GetCurrentUser() user: JwtPayloadBase) {
-    this.logger.log({ message: 'Getting session info', user });
-    return await this.authService.getSessionInfo(user);
-  }
-
-  @Post('login')
+  @Post('admin/login')
   @Public()
   async login(@Body() loginDto: LoginDto) {
     this.logger.log({ message: 'Logging in user' });
     return await this.authService.login(loginDto);
+  }
+
+  @Get('admin/me')
+  @AccessRoles(UserRole.STAFF, UserRole.TENANT_ADMIN)
+  async getMe(@GetCurrentUser() user: JwtPayloadBase) {
+    this.logger.log({ message: 'Getting user', userId: user.sub });
+    return this.authService.getAdminMe(user.sub);
+  }
+
+  @Post('candidate/login')
+  @Public()
+  async candidateLogin(@Body() body: CandidateLoginDto) {
+    this.logger.log({ message: 'Logging in candidate' });
+    return await this.authService.candidateLogin(body);
+  }
+
+  @Get('candidate/me')
+  @AccessRoles(UserRole.CANDIDATE)
+  async getCandidateMe(@GetCurrentUser() user: JwtPayloadBase) {
+    this.logger.log({ message: 'Getting user', userId: user.sub });
+    return this.authService.getCandidateMe(user.sub);
   }
 
   @Post('login-platform-admin')
@@ -61,12 +65,5 @@ export class AuthController {
   async platformLogin(@Body() loginDto: LoginDto) {
     this.logger.log({ message: 'Logging in platform admin' });
     return await this.authService.login(loginDto, true);
-  }
-
-  @Get('me')
-  @AccessRoles(UserRole.OWNER, UserRole.TENANT)
-  async getMe(@GetCurrentUser() user: JwtPayloadBase) {
-    this.logger.log({ message: 'Getting user', userId: user.sub });
-    return this.authService.getMe(user.sub);
   }
 }

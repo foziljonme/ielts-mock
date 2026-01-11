@@ -12,6 +12,7 @@ import {
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { CreateSeatArrayDto, CreateSeatDto } from './dto/create-seat.dto';
 import { UpdateSeatArrayDto } from './dto/update-seat.dto';
+import { Prisma } from 'prisma/generated/browser';
 
 @Injectable()
 export class SeatsService {
@@ -34,23 +35,24 @@ export class SeatsService {
     return accessCode;
   }
 
-  async create(scheduleId: string, createSeatDto: CreateSeatArrayDto) {
+  async create(sessionId: string, createSeatDto: CreateSeatArrayDto) {
     this.logger.log('Creating seat');
 
     return await this.prismaService.$transaction(async (tx) => {
       const promises = createSeatDto.seats.map(async (seat) => {
-        let { assignedStudentId, ...rest } = seat;
+        let { candidateId, ...rest } = seat;
 
-        if (!assignedStudentId) {
-          assignedStudentId = Math.floor(Math.random() * 1000000).toString();
+        if (!candidateId) {
+          candidateId = Math.floor(Math.random() * 1000000).toString();
         }
 
         const newSeat = await this.prismaService.examSeat.create({
           data: {
+            candidateContact: 'helloworld@test.com',
             accessCode: this.generateAccessCode(),
-            assignedStudentId,
+            candidateId,
             ...rest,
-            scheduleId,
+            sessionId,
           },
         });
 
@@ -63,39 +65,42 @@ export class SeatsService {
     });
   }
 
-  async findAll(scheduleId: string) {
+  async findAll(sessionId: string) {
     const seats = await this.prismaService.examSeat.findMany({
       where: {
-        scheduleId,
+        sessionId,
       },
     });
 
     return seats;
   }
 
-  async get(scheduleId: string, id: string) {
-    const seat = await this.prismaService.examSeat.findUnique({
+  async get(sessionId: string, id: string) {
+    const seatResponse = await this.prismaService.examSeat.findUnique({
       where: {
         id,
-        scheduleId,
+        sessionId,
+      },
+      include: {
+        session: true,
       },
     });
 
-    if (!seat) {
+    if (!seatResponse) {
       throw new NotFoundException('Seat not found');
     }
-
-    return seat;
+    const { session, ...seat } = seatResponse;
+    return { ...seat, testId: session.testId };
   }
 
-  async update(scheduleId: string, updateSeatDto: UpdateSeatArrayDto) {
+  async update(sessionId: string, updateSeatDto: UpdateSeatArrayDto) {
     return await this.prismaService.$transaction(async (tx) => {
       const promises = updateSeatDto.seats.map(async (seatData) => {
         const { id, ...rest } = seatData;
         const updatedSeat = await this.prismaService.examSeat.update({
           where: {
             id,
-            scheduleId,
+            sessionId,
           },
           data: rest,
         });
@@ -107,5 +112,11 @@ export class SeatsService {
 
       return seats;
     });
+  }
+
+  public static SanitizeSeatData(seat: Prisma.ExamSeatGetPayload<{}>) {
+    const { accessCode, candidateId, ...rest } = seat;
+
+    return rest;
   }
 }

@@ -1,7 +1,15 @@
-export interface ILoginResponse {
+export interface IBaseLoginResponse {
   accessToken: string;
   refreshToken: string;
-  exp: string;
+  expiresAt: number;
+}
+
+export interface IAdminLoginResponse extends IBaseLoginResponse {
+  user: IUser;
+}
+
+export interface ICandidateLoginResponse extends IBaseLoginResponse {
+  seat: ISeat;
 }
 
 export interface IUser {
@@ -14,31 +22,13 @@ export interface IUser {
   avatar?: string;
 }
 
-export type Role = {
-  id: string;
-  name: string;
-  permissions: Permission[];
-};
-
-export type Permission = {
-  id: string;
-  name: string;
-};
-
-// export type UserRole = "teacher" | "student" | "admin" | "OWNER";
-
-export enum UserRole {
-  OWNER = "OWNER", // Platform admin
-  TENANT = "TENANT", // Center admin
-  STAFF = "STAFF", // Proctors / staff
-  STUDENT = "STUDENT", // Student / session user
+export interface IAdminMeResponse {
+  user: IUser;
 }
 
-export type UserRoleTypeForAuthLayout = {
-  label: string;
-  value: UserRole;
-  icon: any;
-};
+export interface ICandidateMeResponse {
+  seat: ISeat;
+}
 
 export interface ISeat {
   id: string;
@@ -46,49 +36,11 @@ export interface ISeat {
   seatNumber: number;
   label: string;
   accessCode: string;
-  assignedStudentName: string;
-  assignedStudentId: string;
-}
-
-export interface ISchedule {
-  id: string;
-  testId: string;
-  tenantId: string;
-  startTime: string;
-  endTime: string | null;
-}
-
-export type AttemptStatus = "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED";
-
-export interface IAttempt {
-  id: string;
-  seatId: string;
-  sessionId: string;
-  status: AttemptStatus;
-  startedAt: string | null;
-  submittedAt: string | null;
-}
-
-export interface ISessionResponse {
-  subjectId: string;
-  examId?: string;
-  type: UserRole[];
-  authenticated: boolean;
-}
-
-export interface IExamSeatSession {
-  seat: ISeat;
-  schedule: ISchedule;
-  attempt: IAttempt;
-}
-
-export interface ILoginResponse {
-  accessToken: string;
-  expiresAt: number;
-  refreshToken: string;
+  candidateName: string;
+  candidateId: string;
 }
 
 export enum AuthType {
   ADMIN = "admin",
-  EXAM = "exam",
+  CANDIDATE = "candidate",
 }

@@ -31,12 +31,12 @@ export class PlatformService {
           where: { email },
           update: {
             password: hashedPassword,
-            roles: [UserRole.OWNER],
+            roles: [UserRole.PLATFORM_ADMIN],
           },
           create: {
             email,
             password: hashedPassword,
-            roles: [UserRole.OWNER],
+            roles: [UserRole.PLATFORM_ADMIN],
             name: 'Platform Admin',
           },
         }),

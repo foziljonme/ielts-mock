@@ -7,22 +7,22 @@ import {
   type ReactNode,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { joinByCode, loginAdmin, retrieveSession } from "../api";
-import { isTokenExpired } from "../utils";
-import { AuthType } from "../types";
+import { candidateLogin, getCandidateMe, getMeAdmin, loginAdmin } from "../api";
+import { clearAuthCreds, getAuthCreds, isTokenExpired } from "../utils";
+import { AuthType, type ISeat, type IUser } from "../types";
+import useExamStore from "../../exams/store";
 
 interface AuthState {
   type: AuthType | null;
-  subjectId: string | null;
-  // user: IUser | null;
-  // student: IExamSeatSession | null;
+  user: IUser | null;
+  seat: ISeat | null;
   isAuthenticated: boolean;
   isLoading: boolean;
 }
 
 interface AuthContextValue extends AuthState {
   handleLogin: (email: string, password: string) => Promise<void>;
-  loginSession: (accessCode: string, studentId: string) => Promise<void>;
+  loginCandidate: (accessCode: string, studentId: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -31,9 +31,8 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({
     type: null,
-    subjectId: null,
-    // user: null,
-    // student: null,
+    user: null,
+    seat: null,
     isAuthenticated: false,
     isLoading: true,
   });
@@ -42,15 +41,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Helper: clear all auth data
   const clearAuth = () => {
-    // localStorage.removeItem("authType");
-    // localStorage.removeItem("accessToken");
-    // localStorage.removeItem("tokenExp");
+    clearAuthCreds();
 
     setState({
       type: null,
-      subjectId: null,
-      // user: null,
-      // student: null,
+      user: null,
+      seat: null,
       isAuthenticated: false,
       isLoading: false,
     });
@@ -59,23 +55,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // On mount: validate existing token and fetch fresh profile/session
   useEffect(() => {
     const validateAuth = async () => {
-      const token = localStorage.getItem("accessToken");
-      const type = localStorage.getItem("authType") as AuthType;
+      const { accessToken, authType } = getAuthCreds();
 
       const tokenExpired = isTokenExpired();
 
-      if (!token || !type || tokenExpired) {
+      if (!accessToken || !authType || tokenExpired) {
         clearAuth();
         return;
       }
 
       try {
-        const subject = await retrieveSession();
+        let user: IUser | null = null;
+        let seat: ISeat | null = null;
+        if (authType === AuthType.ADMIN) {
+          user = await getMeAdmin();
+        } else if (authType === AuthType.CANDIDATE) {
+          seat = await getCandidateMe();
+        }
 
         setState({
-          type,
-          subjectId: subject.subjectId,
-          isAuthenticated: subject.authenticated,
+          type: authType,
+          user: user,
+          seat: seat,
+          isAuthenticated: true,
           isLoading: false,
         });
       } catch (err) {
@@ -88,16 +90,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const handleLogin = async (email: string, password: string) => {
-    await loginAdmin({
+    const { user } = await loginAdmin({
       email,
       password,
     });
 
-    const { subjectId } = await retrieveSession();
-
     setState({
       type: AuthType.ADMIN,
-      subjectId,
+      user,
+      seat: null,
       isAuthenticated: true,
       isLoading: false,
     });
@@ -105,23 +106,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     navigate("/admin/dashboard");
   };
 
-  const loginSession = async (accessCode: string, studentId: string) => {
-    await joinByCode({ accessCode, studentId });
-    const { subjectId, examId } = await retrieveSession();
+  const loginCandidate = async (accessCode: string, candidateId: string) => {
+    const { seat } = await candidateLogin({ accessCode, candidateId });
 
     setState({
-      type: AuthType.EXAM,
-      subjectId,
+      type: AuthType.CANDIDATE,
+      user: null,
+      seat,
       isAuthenticated: true,
       isLoading: false,
     });
 
-    navigate(`/exams/${examId}/waiting-room`);
+    navigate(`/exam/${seat.sessionId}/waiting-room`);
   };
 
   const logout = () => {
     clearAuth();
-    navigate("/login/student"); // or your join-by-code page
+    navigate("/auth/candidate/login");
   };
 
   return (
@@ -129,7 +130,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         ...state,
         handleLogin,
-        loginSession,
+        loginCandidate,
         logout,
       }}
     >

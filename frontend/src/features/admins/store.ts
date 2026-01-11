@@ -1,37 +1,58 @@
 import { create } from "zustand";
-import type { ScheduledTest, Tenant } from "./types";
-import type { Student } from "../../app/types";
+import type { IExamSession, ITenantStats, ITenant } from "./types";
+import { apiClient } from "../../app/api";
+import type { IPagination } from "../../shared/types";
 
 interface AdminStore {
   isLoading: boolean;
-  tenant: Tenant | null;
-  students: Student[];
-  results: TestResult[];
-  scheduledTests: ScheduledTest[];
-  activeTestControl: ScheduledTest | null;
+  tenant: ITenant | null;
+  examSessions: IExamSession[];
+  tenantStats: ITenantStats | null;
+  totalExamSessions: number;
+  activeTestControl: IExamSession | null;
 
-  fetchTenant: (tenantId: string) => void;
-  setScheduledTests: (scheduledTests: ScheduledTest[]) => void;
-  setActiveTestControl: (activeTestControl: ScheduledTest | null) => void;
+  fetchExamSessions: () => Promise<void>;
+  fetchTenantStats: () => Promise<void>;
+  setActiveTestControl: (activeTestControl: IExamSession | null) => void;
   setIsLoading: (isLoading: boolean) => void;
+  fetchTenant: () => Promise<void>;
 }
 
 export const useAdminStore = create<AdminStore>((set) => ({
   isLoading: true,
   tenant: null,
-  scheduledTests: [],
+  examSessions: [],
+  tenantStats: null,
+  totalExamSessions: 0,
   activeTestControl: null,
-  students: [],
-  results: [],
 
-  setIsLoading: (isLoading: boolean) => set({ isLoading }),
-  fetchTenant: (tenantId: string) => {
-    set({ isLoading: true });
+  fetchTenant: async () => {
     try {
-    } catch (err) {}
+      const response = await apiClient.get<ITenant>("/tenant/current");
+      set({ tenant: response.data });
+    } catch (error) {
+      console.error("Failed to fetch tenant:", error);
+    }
   },
-  setScheduledTests: (scheduledTests: ScheduledTest[]) =>
-    set({ scheduledTests }),
-  setActiveTestControl: (activeTestControl: ScheduledTest | null) =>
+  fetchExamSessions: async () => {
+    try {
+      const response = await apiClient
+        .get<IPagination<IExamSession>>("/admin/sessions")
+        .then((res) => res.data);
+      set({ examSessions: response.results });
+    } catch (error) {
+      console.error("Failed to fetch exam sessions:", error);
+    }
+  },
+  fetchTenantStats: async () => {
+    try {
+      const response = await apiClient.get<ITenantStats>("/admin/stats");
+      set({ tenantStats: response.data });
+    } catch (error) {
+      console.error("Failed to fetch exam session stats:", error);
+    }
+  },
+  setIsLoading: (isLoading: boolean) => set({ isLoading }),
+  setActiveTestControl: (activeTestControl: IExamSession | null) =>
     set({ activeTestControl }),
 }));

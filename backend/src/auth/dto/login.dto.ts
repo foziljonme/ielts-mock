@@ -10,18 +10,14 @@ export class LoginDto {
   @IsString()
   @IsNotEmpty()
   password: string;
-
-  @IsNotEmpty()
-  @IsEnum(UserRole)
-  role: UserRole;
 }
 
-export class JoinByCodeDto {
+export class CandidateLoginDto {
   @IsString()
   @IsNotEmpty()
   accessCode: string;
 
   @IsString()
   @IsNotEmpty()
-  studentId: string;
+  candidateId: string;
 }

@@ -1,15 +1,5 @@
-import type {
-  Tenant,
-  Student,
-  TestResult,
-  SeatReservation,
-  TestSection,
-  ScheduledTest,
-  TestSubmission,
-} from "../app/types";
-
 // Mock tenants
-export const mockTenants: Tenant[] = [
+export const mockTenants: any[] = [
   {
     id: "tenant-1",
     name: "Global English Academy",
@@ -39,7 +29,7 @@ export const mockTenants: Tenant[] = [
 ];
 
 // Mock students
-export const mockStudents: Student[] = [
+export const mockStudents: any[] = [
   {
     id: "student-1",
     name: "Alice Johnson",
@@ -81,7 +71,7 @@ export const mockStudents: Student[] = [
 ];
 
 // Mock test results
-export const mockTestResults: TestResult[] = [
+export const mockTestResults: any[] = [
   {
     id: "result-1",
     studentId: "student-1",
@@ -99,7 +89,7 @@ export const mockTestResults: TestResult[] = [
 ];
 
 // Mock seat reservations
-export const mockReservations: SeatReservation[] = [
+export const mockReservations: any[] = [
   {
     id: "res-1",
     tenantId: "tenant-1",
@@ -133,7 +123,7 @@ export const mockReservations: SeatReservation[] = [
 ];
 
 // Mock reading test section
-export const mockReadingSection: TestSection = {
+export const mockReadingSection: any = {
   id: "reading-1",
   name: "Academic Reading",
   duration: 60,
@@ -221,7 +211,7 @@ The bicycle's impact on society has been profound. It played a crucial role in t
 };
 
 // Mock listening section
-export const mockListeningSection: TestSection = {
+export const mockListeningSection: any = {
   id: "listening-1",
   name: "Listening Test",
   duration: 30,
@@ -262,7 +252,7 @@ export const mockListeningSection: TestSection = {
 };
 
 // Mock writing section
-export const mockWritingSection: TestSection = {
+export const mockWritingSection: any = {
   id: "writing-1",
   name: "Writing Task",
   duration: 60,
@@ -285,7 +275,7 @@ export const mockWritingSection: TestSection = {
 };
 
 // Mock scheduled tests
-export const mockScheduledTests: ScheduledTest[] = [
+export const mockScheduledTests: any[] = [
   {
     id: "scheduled-1",
     tenantId: "tenant-1",
@@ -339,7 +329,7 @@ export const mockScheduledTests: ScheduledTest[] = [
 ];
 
 // Mock test submissions
-export const mockTestSubmissions: TestSubmission[] = [
+export const mockTestSubmissions: any[] = [
   {
     id: "submission-1",
     studentId: "student-1",

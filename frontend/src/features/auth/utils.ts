@@ -42,6 +42,6 @@ export const getAuthCreds = () => {
   const accessToken = localStorage.getItem(ACCESS_TOKEN);
   const expiresAt = localStorage.getItem(EXPIRES_AT);
   const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-  const authType = localStorage.getItem(AUTH_TYPE);
+  const authType = localStorage.getItem(AUTH_TYPE) as AuthType;
   return { accessToken, expiresAt, refreshToken, authType };
 };

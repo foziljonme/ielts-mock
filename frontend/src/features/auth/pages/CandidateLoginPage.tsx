@@ -8,9 +8,9 @@ import { Alert, AlertDescription } from "../../../shared/ui/alert";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
-export default function SessionLoginPage() {
-  const { loginSession } = useAuth();
-  const [studentId, setStudentId] = useState("");
+export default function CandidateLoginPage() {
+  const { loginCandidate } = useAuth();
+  const [candidateId, setCandidateId] = useState("");
   const [accessCode, setAccessCode] = useState("");
   const [error, setError] = useState("");
 
@@ -21,16 +21,16 @@ export default function SessionLoginPage() {
       return;
     }
 
-    if (!studentId.trim()) {
-      setError("Please enter your student ID");
+    if (!candidateId.trim()) {
+      setError("Please enter your candidate ID");
       return;
     }
 
-    loginSession(accessCode, studentId);
+    loginCandidate(accessCode, candidateId);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <Card className="max-w-md w-full p-8">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
@@ -38,20 +38,20 @@ export default function SessionLoginPage() {
           </div>
           <h1 className="text-2xl font-semibold mb-2">IELTS Test Simulation</h1>
           <p className="text-gray-600">
-            Enter your student ID and access code to begin
+            Enter your candidate ID and access code to begin
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="studentId">Student ID</Label>
+            <Label htmlFor="candidateId">Candidate ID</Label>
             <Input
-              id="studentId"
+              id="candidateId"
               type="text"
               placeholder="123456789"
-              value={studentId}
+              value={candidateId}
               onChange={(e) => {
-                setStudentId(e.target.value);
+                setCandidateId(e.target.value);
                 setError("");
               }}
               className="text-center text-lg tracking-wider"
@@ -96,16 +96,12 @@ export default function SessionLoginPage() {
             Demo Access Codes:
           </p>
           <div className="flex flex-wrap gap-2 justify-center mt-2">
-            {[
-              "774749:Au7W1PwVaW",
-              "458857:IDRf5ub5ND",
-              "267178:1j35RxXdO4",
-            ].map((code) => (
+            {["123456:IELTS-TEST-Z9NHlDGXrS"].map((code) => (
               <button
                 key={code}
                 onClick={() => {
-                  const [studentId, accessCode] = code.split(":");
-                  setStudentId(studentId);
+                  const [candidateId, accessCode] = code.split(":");
+                  setCandidateId(candidateId);
                   setAccessCode(accessCode);
                 }}
                 className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded"

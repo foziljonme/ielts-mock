@@ -14,9 +14,10 @@ import { SESSION_TOKEN_EXPIRES_IN } from './common/constants';
 import { PlatformModule } from './platform/platform.module';
 import { ConfigModule } from './config/config.module';
 import { RouterModule } from '@nestjs/core';
-import { ExamsModule } from './exams/exams.module';
+import { ExamsModule } from './exam/exams.module';
 import { TenantResolverMiddleware } from './middlewares/tenant-resolver.middleware';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     PrismaModule,
     ConfigModule,
     ExamsModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

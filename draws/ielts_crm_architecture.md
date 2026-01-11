@@ -15,7 +15,7 @@
 
 - ✅ Teacher profile management
 - ✅ Assign teachers to groups
-- ✅ View teacher schedules
+- ✅ View teacher sessions
 - ✅ Basic performance metrics (attendance rate, student count)
 
 #### Group/Class Management
@@ -343,7 +343,7 @@ model Group {
   teacher     Teacher      @relation(fields: [teacherId], references: [id])
   price       Price        @relation(fields: [priceId], references: [id])
   students    Student[]
-  schedules   Schedule[]
+  sessions   Schedule[]
   attendances Attendance[]
   payments    Payment[]
 
@@ -558,10 +558,10 @@ backend/
 │   │   ├── dto/
 │   │   └── entities/
 │   │
-│   ├── schedules/             # Schedule management
-│   │   ├── schedules.module.ts
-│   │   ├── schedules.controller.ts
-│   │   ├── schedules.service.ts
+│   ├── sessions/             # Schedule management
+│   │   ├── sessions.module.ts
+│   │   ├── sessions.controller.ts
+│   │   ├── sessions.service.ts
 │   │   ├── dto/
 │   │   └── entities/
 │   │
@@ -833,7 +833,7 @@ GET    /reports/teacher-performance   # Teacher performance metrics
 
 #### Caching Strategy
 
-- Cache frequently accessed data (group rosters, teacher schedules)
+- Cache frequently accessed data (group rosters, teacher sessions)
 - Use Redis for session management
 - Cache computed reports
 

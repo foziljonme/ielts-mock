@@ -13,11 +13,11 @@ export type JwtPayloadBase = {
 
 export type SessionJwtPayload = JwtPayloadBase & {
   scheduleInfo: {
-    scheduleId: string;
+    sessionId: string;
     testId: string;
     seatId: string;
-    studentName: string | null;
-    studentId: string | null;
+    candidateName: string | null;
+    candidateId: string | null;
   };
 };
 

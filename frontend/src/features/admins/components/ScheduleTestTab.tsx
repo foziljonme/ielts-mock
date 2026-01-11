@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "../../../shared/ui/card";
 import { Button } from "../../../shared/ui/button";
 import { Input } from "../../../shared/ui/input";
@@ -30,114 +30,118 @@ import {
   AlertCircle,
   Play,
 } from "lucide-react";
-import { mockScheduledTests, mockStudents } from "../../../data/mockData";
-import type { ScheduledTest, Tenant } from "../types";
 import { useAdminStore } from "../store";
+import { ExamSessionStatus } from "../types";
 
-export function ScheduleTestPage() {
-  const { tenant } = useAdminStore();
-  if (!tenant) {
-    return <div>Test not found</div>;
-  }
-
-  const [scheduledTests, setScheduledTests] = useState<ScheduledTest[]>(
-    mockScheduledTests.filter((t) => t.tenantId === tenant.id)
-  );
+export function ScheduleTestTab() {
+  // const [scheduledTests, setScheduledTests] = useState<ScheduledTest[]>(
+  //   mockScheduledTests.filter((t) => t.tenantId === tenant.id)
+  // );
+  const { tenantStats, fetchTenantStats, examSessions, fetchExamSessions } =
+    useAdminStore();
   const [showNewTestDialog, setShowNewTestDialog] = useState(false);
 
   // New test form state
   const [testDate, setTestDate] = useState("");
-  const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
-  const [studentEmail, setStudentEmail] = useState("");
-  const [studentName, setStudentName] = useState("");
+  const [newSessionCandidates, setNewSessionCandidates] = useState<
+    {
+      name: string;
+      contact: string;
+    }[]
+  >([]);
+  const [candidateContact, setCandidateContact] = useState("");
+  const [candidateName, setCandidateName] = useState("");
+  const [testName, setTestName] = useState("");
   const [error, setError] = useState("");
 
-  const availableStudents = mockStudents.filter(
-    (s) => s.tenantId === tenant.id
-  );
-
-  const handleAddStudent = () => {
-    if (!studentName.trim() || !studentEmail.trim()) {
+  const handleAddCandidate = () => {
+    if (!candidateName.trim() || !candidateContact.trim()) {
       setError("Please enter both name and email");
       return;
     }
 
-    if (!studentEmail.includes("@")) {
-      setError("Please enter a valid email address");
+    if (!candidateContact.trim()) {
+      setError("Please enter a valid contact information");
       return;
     }
 
-    setSelectedStudents([
-      ...selectedStudents,
-      `${studentName}|${studentEmail}`,
+    setNewSessionCandidates([
+      ...newSessionCandidates,
+      {
+        name: candidateName,
+        contact: candidateContact,
+      },
     ]);
-    setStudentName("");
-    setStudentEmail("");
+    setCandidateName("");
+    setCandidateContact("");
     setError("");
   };
 
-  const handleRemoveStudent = (index: number) => {
-    setSelectedStudents(selectedStudents.filter((_, i) => i !== index));
+  const handleRemoveCandidate = (index: number) => {
+    setNewSessionCandidates(newSessionCandidates.filter((_, i) => i !== index));
   };
 
   const handleScheduleTest = () => {
+    if (!testName) {
+      setError("Please enter a test name");
+      return;
+    }
+
     if (!testDate) {
       setError("Please select a test date");
       return;
     }
 
-    if (selectedStudents.length === 0) {
-      setError("Please add at least one student");
-      return;
-    }
-
-    if (selectedStudents.length > tenant.testAttempts.remaining) {
+    if (newSessionCandidates.length > tenantStats?.seats.available!) {
       setError(
-        `Not enough test attempts. You have ${tenant.testAttempts.remaining} remaining.`
+        `Not enough seats available. You have ${tenantStats?.seats.available} remaining.`
       );
       return;
     }
 
-    const newTest: ScheduledTest = {
-      id: `scheduled-${Date.now()}`,
-      tenantId: tenant.id,
-      testDate,
-      students: selectedStudents.map((s, idx) => {
-        const [name, email] = s.split("|");
-        return {
-          id: `student-${Date.now()}-${idx}`,
-          name,
-          email,
-          accessCode: `IELTS-${new Date(testDate).getFullYear()}-${String(
-            Math.floor(Math.random() * 1000)
-          ).padStart(3, "0")}`,
-        };
-      }),
-      attemptsAllocated: selectedStudents.length,
-      status: "scheduled",
-    };
+    // const newTest: ScheduledTest = {
+    //   id: `scheduled-${Date.now()}`,
+    //   tenantId: tenant.id,
+    //   testDate,
+    //   students: selectedStudents.map((s, idx) => {
+    //     const [name, email] = s.split("|");
+    //     return {
+    //       id: `student-${Date.now()}-${idx}`,
+    //       name,
+    //       email,
+    //       accessCode: `IELTS-${new Date(testDate).getFullYear()}-${String(
+    //         Math.floor(Math.random() * 1000)
+    //       ).padStart(3, "0")}`,
+    //     };
+    //   }),
+    //   attemptsAllocated: selectedStudents.length,
+    //   status: "scheduled",
+    // };
 
-    setScheduledTests([...scheduledTests, newTest]);
+    // setScheduledTests([...scheduledTests, newTest]);
 
     // Reset form
     setTestDate("");
-    setSelectedStudents([]);
+    setNewSessionCandidates([]);
     setError("");
     setShowNewTestDialog(false);
   };
 
+  const shouldDisableScheduleButton = () => {
+    return !testName || !testDate;
+  };
+
   const handleDeleteScheduledTest = (testId: string) => {
-    setScheduledTests(scheduledTests.filter((t) => t.id !== testId));
+    // setScheduledTests(scheduledTests.filter((t) => t.id !== testId));
   };
 
-  const handleStartTest = (testId: string) => {
-    console.log("Starting test:", testId);
-  };
+  useEffect(() => {
+    Promise.all([fetchTenantStats(), fetchExamSessions()]).then(() => {});
+  }, []);
 
-  const totalScheduledAttempts = scheduledTests.reduce(
-    (sum, test) => sum + test.attemptsAllocated,
-    0
-  );
+  if (!tenantStats) {
+    return null;
+  }
 
   return (
     <div className="space-y-6">
@@ -146,9 +150,9 @@ export function ScheduleTestPage() {
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Total Attempts</p>
+              <p className="text-sm text-gray-600 mb-1">Total Seats</p>
               <p className="text-2xl font-semibold">
-                {tenant.testAttempts.total}
+                {tenantStats?.seats.total}
               </p>
             </div>
             <Users className="w-8 h-8 text-blue-600" />
@@ -159,7 +163,9 @@ export function ScheduleTestPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 mb-1">Scheduled</p>
-              <p className="text-2xl font-semibold">{totalScheduledAttempts}</p>
+              <p className="text-2xl font-semibold">
+                {tenantStats?.sessions.scheduled}
+              </p>
             </div>
             <Clock className="w-8 h-8 text-orange-600" />
           </div>
@@ -170,7 +176,7 @@ export function ScheduleTestPage() {
             <div>
               <p className="text-sm text-gray-600 mb-1">Available</p>
               <p className="text-2xl font-semibold">
-                {tenant.testAttempts.remaining - totalScheduledAttempts}
+                {tenantStats?.seats.available}
               </p>
             </div>
             <CheckCircle2 className="w-8 h-8 text-green-600" />
@@ -200,6 +206,18 @@ export function ScheduleTestPage() {
               </DialogHeader>
 
               <div className="space-y-6 pt-4">
+                {/* Test Information */}
+                <div>
+                  <Label htmlFor="testName">Test Name</Label>
+                  <Input
+                    id="testName"
+                    type="text"
+                    placeholder="e.g. IELTS Mock Test Sturday 10:00 AM"
+                    value={testName}
+                    onChange={(e) => setTestName(e.target.value)}
+                  />
+                </div>
+
                 {/* Test date */}
                 <div>
                   <Label htmlFor="testDate">Test Date</Label>
@@ -212,43 +230,43 @@ export function ScheduleTestPage() {
                   />
                 </div>
 
-                {/* Add students */}
+                {/* Add candidates */}
                 <div className="space-y-4">
-                  <Label>Add Students</Label>
+                  <Label>Add Candidates</Label>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Input
-                        placeholder="Student Name"
-                        value={studentName}
-                        onChange={(e) => setStudentName(e.target.value)}
-                        onKeyPress={(e) =>
-                          e.key === "Enter" && handleAddStudent()
+                        placeholder="Candidate Name"
+                        value={candidateName}
+                        onChange={(e) => setCandidateName(e.target.value)}
+                        onKeyDown={(e) =>
+                          e.key === "Enter" && handleAddCandidate()
                         }
                       />
                     </div>
                     <div className="flex gap-2">
                       <Input
-                        placeholder="Student Email"
-                        type="email"
-                        value={studentEmail}
-                        onChange={(e) => setStudentEmail(e.target.value)}
-                        onKeyPress={(e) =>
-                          e.key === "Enter" && handleAddStudent()
+                        placeholder="Candidate Contact"
+                        type="text"
+                        value={candidateContact}
+                        onChange={(e) => setCandidateContact(e.target.value)}
+                        onKeyDown={(e) =>
+                          e.key === "Enter" && handleAddCandidate()
                         }
                       />
-                      <Button type="button" onClick={handleAddStudent}>
+                      <Button type="button" onClick={handleAddCandidate}>
                         <Plus className="w-4 h-4" />
                       </Button>
                     </div>
                   </div>
 
                   {/* Selected students list */}
-                  {selectedStudents.length > 0 && (
+                  {newSessionCandidates.length > 0 && (
                     <div className="border rounded-lg p-4 max-h-60 overflow-y-auto">
                       <div className="space-y-2">
-                        {selectedStudents.map((student, index) => {
-                          const [name, email] = student.split("|");
+                        {newSessionCandidates.map((candidate, index) => {
+                          const { name, contact } = candidate;
                           return (
                             <div
                               key={index}
@@ -256,12 +274,14 @@ export function ScheduleTestPage() {
                             >
                               <div>
                                 <p className="font-medium text-sm">{name}</p>
-                                <p className="text-xs text-gray-600">{email}</p>
+                                <p className="text-xs text-gray-600">
+                                  {contact}
+                                </p>
                               </div>
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => handleRemoveStudent(index)}
+                                onClick={() => handleRemoveCandidate(index)}
                               >
                                 <Trash2 className="w-4 h-4 text-red-500" />
                               </Button>
@@ -273,8 +293,10 @@ export function ScheduleTestPage() {
                   )}
 
                   <div className="flex items-center justify-between p-3 bg-blue-50 rounded">
-                    <span className="text-sm">Students to be scheduled:</span>
-                    <Badge variant="secondary">{selectedStudents.length}</Badge>
+                    <span className="text-sm">Candidates to be scheduled:</span>
+                    <Badge variant="secondary">
+                      {newSessionCandidates.length}
+                    </Badge>
                   </div>
 
                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded">
@@ -283,14 +305,15 @@ export function ScheduleTestPage() {
                     </span>
                     <Badge
                       variant={
-                        tenant.testAttempts.remaining -
-                          selectedStudents.length >=
+                        tenantStats?.seats.available! -
+                          newSessionCandidates.length >=
                         0
                           ? "default"
                           : "destructive"
                       }
                     >
-                      {tenant.testAttempts.remaining - selectedStudents.length}
+                      {tenantStats?.seats.available! -
+                        newSessionCandidates.length}
                     </Badge>
                   </div>
                 </div>
@@ -306,7 +329,7 @@ export function ScheduleTestPage() {
                   <Button
                     className="flex-1"
                     onClick={handleScheduleTest}
-                    disabled={selectedStudents.length === 0 || !testDate}
+                    disabled={shouldDisableScheduleButton()}
                   >
                     Schedule Test
                   </Button>
@@ -316,7 +339,7 @@ export function ScheduleTestPage() {
                     onClick={() => {
                       setShowNewTestDialog(false);
                       setError("");
-                      setSelectedStudents([]);
+                      setNewSessionCandidates([]);
                       setTestDate("");
                     }}
                   >
@@ -328,7 +351,7 @@ export function ScheduleTestPage() {
           </Dialog>
         </div>
 
-        {scheduledTests.length === 0 ? (
+        {examSessions.length === 0 ? (
           <div className="text-center py-12">
             <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-600 mb-2">No scheduled tests yet</p>
@@ -341,75 +364,81 @@ export function ScheduleTestPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Test Date</TableHead>
-                <TableHead>Students</TableHead>
-                <TableHead>Attempts Used</TableHead>
+                <TableHead>Candidates</TableHead>
+                {/* <TableHead>Seats Used</TableHead> */}
                 <TableHead>Status</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {scheduledTests.map((test) => (
-                <TableRow key={test.id}>
+              {examSessions.map((examSession) => (
+                <TableRow key={examSession.id}>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-gray-400" />
-                      {new Date(test.testDate).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
+                      {new Date(examSession.examDate).toLocaleDateString(
+                        "en-GB",
+                        {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        }
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="link" className="p-0 h-auto">
-                          {test.students.length} student
-                          {test.students.length !== 1 ? "s" : ""}
+                        <Button
+                          variant="link"
+                          className="p-0 h-auto cursor-pointer"
+                        >
+                          {examSession.seats.length} candidate
+                          {examSession.seats.length !== 1 ? "s" : ""}
                         </Button>
                       </DialogTrigger>
                       <DialogContent>
                         <DialogHeader>
-                          <DialogTitle>Scheduled Students</DialogTitle>
+                          <DialogTitle>Scheduled Candidates</DialogTitle>
                         </DialogHeader>
                         <div className="space-y-3 pt-4">
-                          {test.students.map((student) => (
+                          {examSession.seats.map((seat) => (
                             <div
-                              key={student.id}
+                              key={seat.id}
                               className="p-3 border rounded-lg"
                             >
-                              <p className="font-medium">{student.name}</p>
+                              <p className="font-medium">
+                                {seat.candidateName}
+                              </p>
                               <p className="text-sm text-gray-600">
-                                {student.email}
+                                {seat.candidateContact}
                               </p>
                               <code className="text-xs bg-gray-100 px-2 py-1 rounded mt-1 inline-block">
-                                {student.accessCode}
+                                {seat.accessCode}
                               </code>
-                              {student.assignedSeat && (
-                                <p className="text-sm text-gray-600 mt-1">
-                                  Seat: {student.assignedSeat}
-                                </p>
-                              )}
+                              <p className="text-sm text-gray-600 mt-1">
+                                Seat: {seat.seatNumber}
+                              </p>
                             </div>
                           ))}
                         </div>
                       </DialogContent>
                     </Dialog>
                   </TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{test.attemptsAllocated}</Badge>
-                  </TableCell>
+                  {/* <TableCell>
+                    <Badge variant="outline">{examSession.seats.length}</Badge>
+                  </TableCell> */}
                   <TableCell>
                     <Badge
                       variant={
-                        test.status === "completed"
+                        examSession.status === ExamSessionStatus.COMPLETED
                           ? "default"
-                          : test.status === "in-progress"
+                          : examSession.status === ExamSessionStatus.IN_PROGRESS
                           ? "secondary"
                           : "outline"
                       }
                     >
-                      {test.status}
+                      {examSession.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -417,20 +446,25 @@ export function ScheduleTestPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleDeleteScheduledTest(test.id)}
-                        disabled={test.status !== "scheduled"}
+                        onClick={() =>
+                          handleDeleteScheduledTest(examSession.id)
+                        }
+                        disabled={
+                          examSession.status !== ExamSessionStatus.SCHEDULED
+                        }
                       >
                         <Trash2 className="w-4 h-4 text-red-500" />
                       </Button>
-                      {test.status === "scheduled" && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleStartTest(test.id)}
-                        >
-                          <Play className="w-4 h-4 text-green-500" />
-                        </Button>
-                      )}
+                      {/* {onStartTest &&
+                        examSession.status === ExamSessionStatus.SCHEDULED && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => onStartTest(test)}
+                          >
+                            <Play className="w-4 h-4 text-green-500" />
+                          </Button>
+                        )} */}
                     </div>
                   </TableCell>
                 </TableRow>

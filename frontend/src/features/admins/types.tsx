@@ -1,57 +1,78 @@
-export interface ScheduledTest {
+export enum ExamSessionStatus {
+  SCHEDULED = "SCHEDULED",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+}
+export interface IExamSession {
   id: string;
   tenantId: string;
-  testDate: string;
-  students: {
-    id: string;
-    name: string;
-    email: string;
-    accessCode: string;
-    assignedSeat?: number;
-  }[];
-  attemptsAllocated: number;
-  status: "scheduled" | "in-progress" | "completed";
+  testId: string;
+  name: string;
+  examDate: string;
+  startTime: string;
+  endTime: string | null;
+  status: ExamSessionStatus;
+  createdAt: string;
+  seats: IExamSeat[];
 }
 
-export interface Tenant {
+export enum ExamSeatStatus {
+  NOT_STARTED = "NOT_STARTED",
+  IN_PROGRESS = "IN_PROGRESS",
+  SUBMITTED = "SUBMITTED",
+  EXPIRED = "EXPIRED",
+}
+export interface IExamSeat {
+  id: string;
+  sessionId: string;
+  seatNumber: number;
+  label: string;
+  accessCode: string;
+  candidateName: string;
+  candidateId: string;
+  candidateContact: string;
+  status: ExamSeatStatus;
+  startedAt: string | null;
+  submittedAt: string | null;
+}
+
+export interface ITenant {
   id: string;
   name: string;
-  location: string;
-  totalSeats: number;
-  agreement: string;
-  pricePerTest: number;
-  testAttempts: {
+  subdomain: string;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface ITenantStats {
+  sessions: {
+    total: number;
+    scheduled: number;
+    inProgress: number;
+    completed: number;
+  };
+  seats: {
     total: number;
     used: number;
-    remaining: number;
+    available: number;
   };
 }
 
-export interface TestSubmission {
-  id: string;
-  studentId: string;
-  studentName: string;
-  tenantId: string;
-  testDate: string;
-  submittedAt: string;
-  sections: {
-    listening?: {
-      answers: Record<string, string>;
-      score?: number;
-    };
-    reading?: {
-      answers: Record<string, string>;
-      score?: number;
-    };
-    writing?: {
-      answers: Record<string, string>;
-      score?: number;
-    };
-    speaking?: {
-      answers: Record<string, string>;
-      score?: number;
-    };
-  };
-  status: "pending-review" | "graded" | "published";
-  overallScore?: number;
+export interface ICreateExamSeatPayload {
+  sessionId?: string;
+  seatNumber?: number;
+  label?: string;
+  accessCode?: string;
+  candidateName?: string;
+  candidateId?: string;
+  candidateContact?: string;
+}
+
+export interface ICreateExamSessionPayload {
+  name: string;
+  examDate: string;
+  startTime: string;
+  endTime: string | null;
+  status: ExamSessionStatus;
+  seats: ICreateExamSeatPayload[];
 }

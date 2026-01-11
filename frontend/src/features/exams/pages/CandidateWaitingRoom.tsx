@@ -6,6 +6,8 @@ import { useAuth } from "../../auth/context/AuthContext";
 import { SECTIONS } from "../constants";
 
 export default function StudentWaitingRoomPage() {
+  const { seat } = useAuth();
+  console.log({ seat });
   const { activeSection, completedSections } = useExamStore();
   const { examSeatInfo } = useExamStore();
   const [connectionStatus, setConnectionStatus] = useState<
@@ -105,7 +107,7 @@ export default function StudentWaitingRoomPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-6">
       <div className="max-w-2xl w-full">
         {/* Main waiting card */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
@@ -140,13 +142,13 @@ export default function StudentWaitingRoomPage() {
                 <div className="bg-gray-50 rounded-lg p-4">
                   <p className="text-sm text-gray-600 mb-1">Student Name</p>
                   <p className="font-semibold text-gray-900">
-                    {examSeatInfo?.seat?.assignedStudentName}
+                    {seat?.candidateName}
                   </p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
                   <p className="text-sm text-gray-600 mb-1">Student ID</p>
                   <code className="font-semibold text-blue-600">
-                    {examSeatInfo?.seat?.assignedStudentId}
+                    {seat?.candidateId}
                   </code>
                 </div>
               </div>
