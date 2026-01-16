@@ -1,3 +1,13 @@
 {
-  "remote.autoForwardPortsFallback": 0
+  "remote.autoForwardPortsFallback": 0,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // IMPORTANT: Do NOT auto-run ESLint fixer on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "never"
+  },
+
+  // Optional but recommended: Let Prettier handle formatting
+  "prettier.useEditorConfig": false
 }

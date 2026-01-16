@@ -1,15 +1,13 @@
-import { validate } from '@/lib/api/validate'
-import { authUser } from '@/lib/auth'
 import { withErrorHandling } from '@/lib/errors/withErrorHandling'
-import { loginSchema } from '@/validators/auth.schema'
+import tenantsService from '@/services/tenants.service'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default withErrorHandling(
   async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
-      const credentials = validate(loginSchema, req.body)
-      const user = await authUser(credentials)
-      res.status(200).json(user)
+      const { tenantId } = req.query
+      const tenant = await tenantsService.deactivateTenant(tenantId as string)
+      res.status(200).json(tenant)
     } else {
       res.status(405).json({ error: 'Method not allowed' })
     }

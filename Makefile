@@ -23,6 +23,14 @@ generate:
 db-push:
 	docker compose exec backend yarn db:push
 
+# Run Prisma generate inside container
+gen-n:
+	docker compose exec next-js yarn prisma generate
+
+# Run Prisma db push inside container
+db-push-nextjs:
+	docker compose exec next-js yarn db:push
+
 # Run Prisma db reset inside container
 db-reset:
 	docker compose exec backend yarn db:reset
