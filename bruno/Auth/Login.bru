@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{BASE_URL}}/auth/login
+  url: {{NEST_BASE_URL}}/auth/login
   body: json
   auth: inherit
 }
@@ -25,7 +25,7 @@ body:json {
 }
 
 vars:pre-request {
-  BASE_URL: http://localhost:8080
+  NEST_BASE_URL: http://localhost:8080
 }
 
 script:post-response {
