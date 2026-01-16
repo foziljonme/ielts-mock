@@ -9,5 +9,8 @@
   },
 
   // Optional but recommended: Let Prettier handle formatting
-  "prettier.useEditorConfig": false
+  "prettier.useEditorConfig": false,
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
 }
