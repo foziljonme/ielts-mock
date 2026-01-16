@@ -19,6 +19,25 @@ services:
     networks:
       - app-network
 
+  db-nextjs:
+    image: postgres:18.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: ielts_mock
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data_nextjs:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
   # Backend Service (Development)
   backend:
     build:
@@ -59,8 +78,7 @@ services:
         condition: service_healthy
     networks:
       - app-network
-
-  # Backend Service (Production)
+    # Backend Service (Production)
   backend-prod:
     profiles: ["prod"]
     build:
@@ -85,7 +103,7 @@ services:
     tty: true
     # stdin_open: true
     ports:
-      - "3000:3000"
+      - "4000:4000"
     volumes:
       - ./frontend:/app
     working_dir: /app
@@ -104,8 +122,44 @@ services:
     networks:
       - app-network
 
+  # Nextjs (Development)
+  next-js:
+    build:
+      context: ./full-stack
+      target: dev # change to 'prod' for production
+    volumes:
+      - ./full-stack:/app # mount source for live reload
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgres://postgres:123@db-nextjs:5432/ielts_mock
+    command: yarn dev
+    networks:
+      - app-network
+
+  prisma-studio-nextjs:
+    build:
+      context: ./full-stack
+      target: dev
+    working_dir: /app
+    volumes:
+      - ./full-stack:/app
+      - /app/node_modules
+    environment:
+      DATABASE_URL: postgres://postgres:123@db-nextjs:5432/ielts_mock
+    command: npx prisma studio --port 5556 --browser none
+    ports:
+      - "5556:5556"
+    depends_on:
+      db-nextjs:
+        condition: service_healthy
+    networks:
+      - app-network
+
 volumes:
   postgres_data:
+  postgres_data_nextjs:
 
 networks:
   app-network:
