@@ -108,6 +108,7 @@ export const UserScalarFieldEnum = {
   password: 'password',
   name: 'name',
   roles: 'roles',
+  isDeleted: 'isDeleted',
   createdAt: 'createdAt'
 } as const
 
@@ -121,6 +122,7 @@ export const ExamSessionScalarFieldEnum = {
   name: 'name',
   examDate: 'examDate',
   status: 'status',
+  isArchived: 'isArchived',
   startTime: 'startTime',
   endTime: 'endTime',
   createdAt: 'createdAt'
@@ -131,6 +133,7 @@ export type ExamSessionScalarFieldEnum = (typeof ExamSessionScalarFieldEnum)[key
 
 export const ExamSeatScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   sessionId: 'sessionId',
   seatNumber: 'seatNumber',
   label: 'label',
@@ -140,7 +143,9 @@ export const ExamSeatScalarFieldEnum = {
   candidateContact: 'candidateContact',
   status: 'status',
   startedAt: 'startedAt',
-  submittedAt: 'submittedAt'
+  submittedAt: 'submittedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ExamSeatScalarFieldEnum = (typeof ExamSeatScalarFieldEnum)[keyof typeof ExamSeatScalarFieldEnum]

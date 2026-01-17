@@ -21,7 +21,7 @@ class AuthService {
       data: {
         ...user,
         password: hashedPassword,
-        roles: [UserRole.TENANT_ADMIN, UserRole.STAFF],
+        roles: user.roles || [UserRole.TENANT_ADMIN, UserRole.STAFF],
       },
     })
   }

@@ -1,14 +1,15 @@
 import { validate } from '@/lib/api/validate'
+import { withAuth } from '@/lib/auth/withAuth'
 import { AppError, ValidationError } from '@/lib/errors'
-import { withErrorHandling } from '@/lib/errors/withErrorHandling'
 import tenantsService from '@/services/tenants.service'
 import { PaginatedResponse } from '@/types/pagination'
 import { paginationSchema } from '@/validators/pagination.schema'
 import { createTenantSchema } from '@/validators/tenant.schema'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { ZodError, treeifyError } from 'zod'
+import { UserRole } from '../../../../prisma/generated/enums'
 
-export default withErrorHandling(
+export default withAuth(
   async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
       try {
@@ -48,4 +49,5 @@ export default withErrorHandling(
       res.status(405).json({ error: 'Method not allowed' })
     }
   },
+  { roles: [UserRole.PLATFORM_ADMIN] },
 )

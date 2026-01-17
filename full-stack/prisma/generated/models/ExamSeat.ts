@@ -36,6 +36,7 @@ export type ExamSeatSumAggregateOutputType = {
 
 export type ExamSeatMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   sessionId: string | null
   seatNumber: number | null
   label: string | null
@@ -46,10 +47,13 @@ export type ExamSeatMinAggregateOutputType = {
   status: $Enums.ExamSeatStatus | null
   startedAt: Date | null
   submittedAt: Date | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ExamSeatMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   sessionId: string | null
   seatNumber: number | null
   label: string | null
@@ -60,10 +64,13 @@ export type ExamSeatMaxAggregateOutputType = {
   status: $Enums.ExamSeatStatus | null
   startedAt: Date | null
   submittedAt: Date | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ExamSeatCountAggregateOutputType = {
   id: number
+  tenantId: number
   sessionId: number
   seatNumber: number
   label: number
@@ -74,6 +81,8 @@ export type ExamSeatCountAggregateOutputType = {
   status: number
   startedAt: number
   submittedAt: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -88,6 +97,7 @@ export type ExamSeatSumAggregateInputType = {
 
 export type ExamSeatMinAggregateInputType = {
   id?: true
+  tenantId?: true
   sessionId?: true
   seatNumber?: true
   label?: true
@@ -98,10 +108,13 @@ export type ExamSeatMinAggregateInputType = {
   status?: true
   startedAt?: true
   submittedAt?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type ExamSeatMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   sessionId?: true
   seatNumber?: true
   label?: true
@@ -112,10 +125,13 @@ export type ExamSeatMaxAggregateInputType = {
   status?: true
   startedAt?: true
   submittedAt?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type ExamSeatCountAggregateInputType = {
   id?: true
+  tenantId?: true
   sessionId?: true
   seatNumber?: true
   label?: true
@@ -126,6 +142,8 @@ export type ExamSeatCountAggregateInputType = {
   status?: true
   startedAt?: true
   submittedAt?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -217,6 +235,7 @@ export type ExamSeatGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type ExamSeatGroupByOutputType = {
   id: string
+  tenantId: string
   sessionId: string
   seatNumber: number
   label: string
@@ -227,6 +246,8 @@ export type ExamSeatGroupByOutputType = {
   status: $Enums.ExamSeatStatus
   startedAt: Date | null
   submittedAt: Date | null
+  createdAt: Date
+  updatedAt: Date
   _count: ExamSeatCountAggregateOutputType | null
   _avg: ExamSeatAvgAggregateOutputType | null
   _sum: ExamSeatSumAggregateOutputType | null
@@ -254,6 +275,7 @@ export type ExamSeatWhereInput = {
   OR?: Prisma.ExamSeatWhereInput[]
   NOT?: Prisma.ExamSeatWhereInput | Prisma.ExamSeatWhereInput[]
   id?: Prisma.StringFilter<"ExamSeat"> | string
+  tenantId?: Prisma.StringFilter<"ExamSeat"> | string
   sessionId?: Prisma.StringFilter<"ExamSeat"> | string
   seatNumber?: Prisma.IntFilter<"ExamSeat"> | number
   label?: Prisma.StringFilter<"ExamSeat"> | string
@@ -264,12 +286,15 @@ export type ExamSeatWhereInput = {
   status?: Prisma.EnumExamSeatStatusFilter<"ExamSeat"> | $Enums.ExamSeatStatus
   startedAt?: Prisma.DateTimeNullableFilter<"ExamSeat"> | Date | string | null
   submittedAt?: Prisma.DateTimeNullableFilter<"ExamSeat"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"ExamSeat"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ExamSeat"> | Date | string
   session?: Prisma.XOR<Prisma.ExamSessionScalarRelationFilter, Prisma.ExamSessionWhereInput>
   sections?: Prisma.SectionProgressListRelationFilter
 }
 
 export type ExamSeatOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrder
   seatNumber?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -280,6 +305,8 @@ export type ExamSeatOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   session?: Prisma.ExamSessionOrderByWithRelationInput
   sections?: Prisma.SectionProgressOrderByRelationAggregateInput
 }
@@ -291,6 +318,7 @@ export type ExamSeatWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ExamSeatWhereInput | Prisma.ExamSeatWhereInput[]
   OR?: Prisma.ExamSeatWhereInput[]
   NOT?: Prisma.ExamSeatWhereInput | Prisma.ExamSeatWhereInput[]
+  tenantId?: Prisma.StringFilter<"ExamSeat"> | string
   sessionId?: Prisma.StringFilter<"ExamSeat"> | string
   seatNumber?: Prisma.IntFilter<"ExamSeat"> | number
   label?: Prisma.StringFilter<"ExamSeat"> | string
@@ -300,12 +328,15 @@ export type ExamSeatWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumExamSeatStatusFilter<"ExamSeat"> | $Enums.ExamSeatStatus
   startedAt?: Prisma.DateTimeNullableFilter<"ExamSeat"> | Date | string | null
   submittedAt?: Prisma.DateTimeNullableFilter<"ExamSeat"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"ExamSeat"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ExamSeat"> | Date | string
   session?: Prisma.XOR<Prisma.ExamSessionScalarRelationFilter, Prisma.ExamSessionWhereInput>
   sections?: Prisma.SectionProgressListRelationFilter
 }, "id" | "accessCode" | "sessionId_seatNumber">
 
 export type ExamSeatOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrder
   seatNumber?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -316,6 +347,8 @@ export type ExamSeatOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.ExamSeatCountOrderByAggregateInput
   _avg?: Prisma.ExamSeatAvgOrderByAggregateInput
   _max?: Prisma.ExamSeatMaxOrderByAggregateInput
@@ -328,6 +361,7 @@ export type ExamSeatScalarWhereWithAggregatesInput = {
   OR?: Prisma.ExamSeatScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ExamSeatScalarWhereWithAggregatesInput | Prisma.ExamSeatScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ExamSeat"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"ExamSeat"> | string
   sessionId?: Prisma.StringWithAggregatesFilter<"ExamSeat"> | string
   seatNumber?: Prisma.IntWithAggregatesFilter<"ExamSeat"> | number
   label?: Prisma.StringWithAggregatesFilter<"ExamSeat"> | string
@@ -338,10 +372,13 @@ export type ExamSeatScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumExamSeatStatusWithAggregatesFilter<"ExamSeat"> | $Enums.ExamSeatStatus
   startedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ExamSeat"> | Date | string | null
   submittedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ExamSeat"> | Date | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"ExamSeat"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ExamSeat"> | Date | string
 }
 
 export type ExamSeatCreateInput = {
   id?: string
+  tenantId: string
   seatNumber: number
   label: string
   accessCode: string
@@ -351,12 +388,15 @@ export type ExamSeatCreateInput = {
   status?: $Enums.ExamSeatStatus
   startedAt?: Date | string | null
   submittedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   session: Prisma.ExamSessionCreateNestedOneWithoutSeatsInput
   sections?: Prisma.SectionProgressCreateNestedManyWithoutSeatInput
 }
 
 export type ExamSeatUncheckedCreateInput = {
   id?: string
+  tenantId: string
   sessionId: string
   seatNumber: number
   label: string
@@ -367,11 +407,14 @@ export type ExamSeatUncheckedCreateInput = {
   status?: $Enums.ExamSeatStatus
   startedAt?: Date | string | null
   submittedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   sections?: Prisma.SectionProgressUncheckedCreateNestedManyWithoutSeatInput
 }
 
 export type ExamSeatUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   seatNumber?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   accessCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -381,12 +424,15 @@ export type ExamSeatUpdateInput = {
   status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   session?: Prisma.ExamSessionUpdateOneRequiredWithoutSeatsNestedInput
   sections?: Prisma.SectionProgressUpdateManyWithoutSeatNestedInput
 }
 
 export type ExamSeatUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionId?: Prisma.StringFieldUpdateOperationsInput | string
   seatNumber?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
@@ -397,11 +443,14 @@ export type ExamSeatUncheckedUpdateInput = {
   status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sections?: Prisma.SectionProgressUncheckedUpdateManyWithoutSeatNestedInput
 }
 
 export type ExamSeatCreateManyInput = {
   id?: string
+  tenantId: string
   sessionId: string
   seatNumber: number
   label: string
@@ -412,10 +461,13 @@ export type ExamSeatCreateManyInput = {
   status?: $Enums.ExamSeatStatus
   startedAt?: Date | string | null
   submittedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ExamSeatUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   seatNumber?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   accessCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -425,10 +477,13 @@ export type ExamSeatUpdateManyMutationInput = {
   status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExamSeatUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionId?: Prisma.StringFieldUpdateOperationsInput | string
   seatNumber?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
@@ -439,6 +494,8 @@ export type ExamSeatUncheckedUpdateManyInput = {
   status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExamSeatListRelationFilter = {
@@ -458,6 +515,7 @@ export type ExamSeatSessionIdSeatNumberCompoundUniqueInput = {
 
 export type ExamSeatCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrder
   seatNumber?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -468,6 +526,8 @@ export type ExamSeatCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ExamSeatAvgOrderByAggregateInput = {
@@ -476,6 +536,7 @@ export type ExamSeatAvgOrderByAggregateInput = {
 
 export type ExamSeatMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrder
   seatNumber?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -486,10 +547,13 @@ export type ExamSeatMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ExamSeatMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrder
   seatNumber?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -500,6 +564,8 @@ export type ExamSeatMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ExamSeatSumOrderByAggregateInput = {
@@ -573,6 +639,7 @@ export type ExamSeatUpdateOneRequiredWithoutSectionsNestedInput = {
 
 export type ExamSeatCreateWithoutSessionInput = {
   id?: string
+  tenantId: string
   seatNumber: number
   label: string
   accessCode: string
@@ -582,11 +649,14 @@ export type ExamSeatCreateWithoutSessionInput = {
   status?: $Enums.ExamSeatStatus
   startedAt?: Date | string | null
   submittedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   sections?: Prisma.SectionProgressCreateNestedManyWithoutSeatInput
 }
 
 export type ExamSeatUncheckedCreateWithoutSessionInput = {
   id?: string
+  tenantId: string
   seatNumber: number
   label: string
   accessCode: string
@@ -596,6 +666,8 @@ export type ExamSeatUncheckedCreateWithoutSessionInput = {
   status?: $Enums.ExamSeatStatus
   startedAt?: Date | string | null
   submittedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   sections?: Prisma.SectionProgressUncheckedCreateNestedManyWithoutSeatInput
 }
 
@@ -630,6 +702,7 @@ export type ExamSeatScalarWhereInput = {
   OR?: Prisma.ExamSeatScalarWhereInput[]
   NOT?: Prisma.ExamSeatScalarWhereInput | Prisma.ExamSeatScalarWhereInput[]
   id?: Prisma.StringFilter<"ExamSeat"> | string
+  tenantId?: Prisma.StringFilter<"ExamSeat"> | string
   sessionId?: Prisma.StringFilter<"ExamSeat"> | string
   seatNumber?: Prisma.IntFilter<"ExamSeat"> | number
   label?: Prisma.StringFilter<"ExamSeat"> | string
@@ -640,10 +713,13 @@ export type ExamSeatScalarWhereInput = {
   status?: Prisma.EnumExamSeatStatusFilter<"ExamSeat"> | $Enums.ExamSeatStatus
   startedAt?: Prisma.DateTimeNullableFilter<"ExamSeat"> | Date | string | null
   submittedAt?: Prisma.DateTimeNullableFilter<"ExamSeat"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"ExamSeat"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ExamSeat"> | Date | string
 }
 
 export type ExamSeatCreateWithoutSectionsInput = {
   id?: string
+  tenantId: string
   seatNumber: number
   label: string
   accessCode: string
@@ -653,11 +729,14 @@ export type ExamSeatCreateWithoutSectionsInput = {
   status?: $Enums.ExamSeatStatus
   startedAt?: Date | string | null
   submittedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   session: Prisma.ExamSessionCreateNestedOneWithoutSeatsInput
 }
 
 export type ExamSeatUncheckedCreateWithoutSectionsInput = {
   id?: string
+  tenantId: string
   sessionId: string
   seatNumber: number
   label: string
@@ -668,6 +747,8 @@ export type ExamSeatUncheckedCreateWithoutSectionsInput = {
   status?: $Enums.ExamSeatStatus
   startedAt?: Date | string | null
   submittedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ExamSeatCreateOrConnectWithoutSectionsInput = {
@@ -688,6 +769,7 @@ export type ExamSeatUpdateToOneWithWhereWithoutSectionsInput = {
 
 export type ExamSeatUpdateWithoutSectionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   seatNumber?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   accessCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -697,11 +779,14 @@ export type ExamSeatUpdateWithoutSectionsInput = {
   status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   session?: Prisma.ExamSessionUpdateOneRequiredWithoutSeatsNestedInput
 }
 
 export type ExamSeatUncheckedUpdateWithoutSectionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionId?: Prisma.StringFieldUpdateOperationsInput | string
   seatNumber?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
@@ -712,10 +797,13 @@ export type ExamSeatUncheckedUpdateWithoutSectionsInput = {
   status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExamSeatCreateManySessionInput = {
   id?: string
+  tenantId: string
   seatNumber: number
   label: string
   accessCode: string
@@ -725,10 +813,13 @@ export type ExamSeatCreateManySessionInput = {
   status?: $Enums.ExamSeatStatus
   startedAt?: Date | string | null
   submittedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ExamSeatUpdateWithoutSessionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   seatNumber?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   accessCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -738,11 +829,14 @@ export type ExamSeatUpdateWithoutSessionInput = {
   status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sections?: Prisma.SectionProgressUpdateManyWithoutSeatNestedInput
 }
 
 export type ExamSeatUncheckedUpdateWithoutSessionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   seatNumber?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   accessCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -752,11 +846,14 @@ export type ExamSeatUncheckedUpdateWithoutSessionInput = {
   status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sections?: Prisma.SectionProgressUncheckedUpdateManyWithoutSeatNestedInput
 }
 
 export type ExamSeatUncheckedUpdateManyWithoutSessionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   seatNumber?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   accessCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -766,6 +863,8 @@ export type ExamSeatUncheckedUpdateManyWithoutSessionInput = {
   status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -801,6 +900,7 @@ export type ExamSeatCountOutputTypeCountSectionsArgs<ExtArgs extends runtime.Typ
 
 export type ExamSeatSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   sessionId?: boolean
   seatNumber?: boolean
   label?: boolean
@@ -811,6 +911,8 @@ export type ExamSeatSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   status?: boolean
   startedAt?: boolean
   submittedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   session?: boolean | Prisma.ExamSessionDefaultArgs<ExtArgs>
   sections?: boolean | Prisma.ExamSeat$sectionsArgs<ExtArgs>
   _count?: boolean | Prisma.ExamSeatCountOutputTypeDefaultArgs<ExtArgs>
@@ -818,6 +920,7 @@ export type ExamSeatSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 
 export type ExamSeatSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   sessionId?: boolean
   seatNumber?: boolean
   label?: boolean
@@ -828,11 +931,14 @@ export type ExamSeatSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   status?: boolean
   startedAt?: boolean
   submittedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   session?: boolean | Prisma.ExamSessionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["examSeat"]>
 
 export type ExamSeatSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   sessionId?: boolean
   seatNumber?: boolean
   label?: boolean
@@ -843,11 +949,14 @@ export type ExamSeatSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   status?: boolean
   startedAt?: boolean
   submittedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   session?: boolean | Prisma.ExamSessionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["examSeat"]>
 
 export type ExamSeatSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   sessionId?: boolean
   seatNumber?: boolean
   label?: boolean
@@ -858,9 +967,11 @@ export type ExamSeatSelectScalar = {
   status?: boolean
   startedAt?: boolean
   submittedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type ExamSeatOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sessionId" | "seatNumber" | "label" | "accessCode" | "candidateName" | "candidateId" | "candidateContact" | "status" | "startedAt" | "submittedAt", ExtArgs["result"]["examSeat"]>
+export type ExamSeatOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "sessionId" | "seatNumber" | "label" | "accessCode" | "candidateName" | "candidateId" | "candidateContact" | "status" | "startedAt" | "submittedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["examSeat"]>
 export type ExamSeatInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   session?: boolean | Prisma.ExamSessionDefaultArgs<ExtArgs>
   sections?: boolean | Prisma.ExamSeat$sectionsArgs<ExtArgs>
@@ -881,6 +992,7 @@ export type $ExamSeatPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     sessionId: string
     seatNumber: number
     label: string
@@ -891,6 +1003,8 @@ export type $ExamSeatPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     status: $Enums.ExamSeatStatus
     startedAt: Date | null
     submittedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["examSeat"]>
   composites: {}
 }
@@ -1317,6 +1431,7 @@ export interface Prisma__ExamSeatClient<T, Null = never, ExtArgs extends runtime
  */
 export interface ExamSeatFieldRefs {
   readonly id: Prisma.FieldRef<"ExamSeat", 'String'>
+  readonly tenantId: Prisma.FieldRef<"ExamSeat", 'String'>
   readonly sessionId: Prisma.FieldRef<"ExamSeat", 'String'>
   readonly seatNumber: Prisma.FieldRef<"ExamSeat", 'Int'>
   readonly label: Prisma.FieldRef<"ExamSeat", 'String'>
@@ -1327,6 +1442,8 @@ export interface ExamSeatFieldRefs {
   readonly status: Prisma.FieldRef<"ExamSeat", 'ExamSeatStatus'>
   readonly startedAt: Prisma.FieldRef<"ExamSeat", 'DateTime'>
   readonly submittedAt: Prisma.FieldRef<"ExamSeat", 'DateTime'>
+  readonly createdAt: Prisma.FieldRef<"ExamSeat", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"ExamSeat", 'DateTime'>
 }
     
 

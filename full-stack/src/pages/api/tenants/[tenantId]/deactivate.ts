@@ -1,8 +1,9 @@
-import { withErrorHandling } from '@/lib/errors/withErrorHandling'
+import { withAuth } from '@/lib/auth/withAuth'
 import tenantsService from '@/services/tenants.service'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { UserRole } from '../../../../../prisma/generated/enums'
 
-export default withErrorHandling(
+export default withAuth(
   async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
       const { tenantId } = req.query
@@ -12,4 +13,5 @@ export default withErrorHandling(
       res.status(405).json({ error: 'Method not allowed' })
     }
   },
+  { roles: [UserRole.PLATFORM_ADMIN] },
 )

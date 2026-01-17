@@ -56,6 +56,7 @@ model User {
   password  String
   name      String
   roles     UserRole[]
+  isDeleted Boolean    @default(false)
   createdAt DateTime   @default(now())
 
   tenant Tenant? @relation(fields: [tenantId], references: [id])
@@ -71,15 +72,16 @@ enum ExamSessionStatus {
 }
 
 model ExamSession {
-  id        String            @id @default(cuid())
-  tenantId  String
-  testId    String // External JSON test identifier
-  name      String
-  examDate  DateTime
-  status    ExamSessionStatus @default(SCHEDULED)
-  startTime DateTime?
-  endTime   DateTime?
-  createdAt DateTime          @default(now())
+  id         String            @id @default(cuid())
+  tenantId   String
+  testId     String // External JSON test identifier
+  name       String            @db.VarChar(255)
+  examDate   DateTime
+  status     ExamSessionStatus @default(SCHEDULED)
+  isArchived Boolean           @default(false)
+  startTime  DateTime?
+  endTime    DateTime?
+  createdAt  DateTime          @default(now())
 
   tenant Tenant     @relation(fields: [tenantId], references: [id])
   seats  ExamSeat[]
@@ -97,6 +99,7 @@ enum ExamSeatStatus {
 
 model ExamSeat {
   id               String         @id @default(cuid())
+  tenantId         String
   sessionId        String
   seatNumber       Int
   label            String // "Row 3, Seat 2"
@@ -107,6 +110,8 @@ model ExamSeat {
   status           ExamSeatStatus @default(NOT_STARTED)
   startedAt        DateTime?
   submittedAt      DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 
   session  ExamSession       @relation(fields: [sessionId], references: [id])
   sections SectionProgress[]
