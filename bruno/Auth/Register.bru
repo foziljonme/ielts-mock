@@ -1,0 +1,27 @@
+meta {
+  name: Register
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/auth/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "tenantId": "cmkjnws4p000r13qvsixtxpp8",
+  //   "email": "admin@test.net",
+    "email": "admin@global-academy.com",
+    "password": "demo",
+    "name": "Jack Holland",
+    "roles": ["TENANT_ADMIN", "STAFF"]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

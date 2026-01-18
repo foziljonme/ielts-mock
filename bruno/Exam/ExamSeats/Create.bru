@@ -1,0 +1,29 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{BASE_URL}}/sessions/:sessionId/seats
+  body: json
+  auth: inherit
+}
+
+params:path {
+  sessionId: cmkjoq0uo000u13qv1jv820s0
+}
+
+body:json {
+  {
+    "seatNumber": 31234,
+    "label": "Comp 1",
+    "candidateName": "Richard Kelli",
+    "candidateContact": "+998917461029"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

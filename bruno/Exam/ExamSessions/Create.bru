@@ -1,0 +1,25 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/sessions
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "testId": "cambridge-16-test-1",
+    "name": "Morning 10pm"
+    ,"examDate": "2026-01-24T00:00:00Z"
+  //   ,"examDate": "ddasd"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

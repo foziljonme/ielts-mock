@@ -1,0 +1,20 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{BASE_URL}}/sessions/:sessionId/seats
+  body: json
+  auth: inherit
+}
+
+params:path {
+  sessionId: cmkjoq0uo000u13qv1jv820s0
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

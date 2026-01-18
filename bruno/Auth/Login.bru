@@ -1,0 +1,30 @@
+meta {
+  name: Login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{BASE_URL}}/auth/login
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+  //   "email": "test1@test.net",
+    "email": "admin@global-academy.com",
+  //   "email": "saas@test.net",
+    "password": "demo"
+  }
+}
+
+script:post-response {
+  const accessToken = res.getBody().accessToken
+  bru.setEnvVar('token', accessToken)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

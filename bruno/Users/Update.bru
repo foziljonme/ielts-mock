@@ -1,0 +1,22 @@
+meta {
+  name: Update
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{BASE_URL}}/users/cmkhdgmgh000113mltsocxlsi
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+  //   "name": "Jack Holland"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

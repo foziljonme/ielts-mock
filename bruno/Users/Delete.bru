@@ -1,0 +1,22 @@
+meta {
+  name: Delete
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{BASE_URL}}/users/cmkhfe1qf000213mlohchfacs
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+  //   "name": "Jack Holland"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
