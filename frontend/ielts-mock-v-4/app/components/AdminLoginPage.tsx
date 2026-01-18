@@ -10,9 +10,7 @@ interface AdminLoginPageProps {
   onLogin: (email: string, password: string) => void;
 }
 
-export function AdminLoginPage({
-  onLogin,
-}: AdminLoginPageProps) {
+export function AdminLoginPage({ onLogin }: AdminLoginPageProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -40,12 +38,8 @@ export function AdminLoginPage({
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
             <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-semibold mb-2">
-            Admin Portal
-          </h1>
-          <p className="text-gray-600">
-            Sign in to manage your test center
-          </p>
+          <h1 className="text-2xl font-semibold mb-2">Admin Portal</h1>
+          <p className="text-gray-600">Sign in to manage your test center</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -106,9 +100,7 @@ export function AdminLoginPage({
         </div>
 
         <div className="mt-6 text-center">
-          <p className="text-xs text-gray-500">
-            Need help? Contact IT support
-          </p>
+          <p className="text-xs text-gray-500">Need help? Contact IT support</p>
         </div>
       </Card>
     </div>

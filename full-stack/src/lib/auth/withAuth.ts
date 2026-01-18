@@ -14,7 +14,7 @@ export function withAuth(
   options?: { roles?: string[]; candidateCanAccess?: boolean },
 ): NextApiHandler {
   return withErrorHandling(async (req, res) => {
-    const token = req.headers.authorization?.replace('Bearer ', '')
+    const token = req.cookies['auth_token']
 
     if (!token) {
       throw new AppError('Unauthorized', 401, 'No token provided')

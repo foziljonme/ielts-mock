@@ -1,11 +1,16 @@
+'use client'
+
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-import { AuthProvider } from '@/context/AuthContext'
+import ErrorBoundary from '@/components/ErrorBoundary'
+import { useAuthBootstrap } from '@/hooks/useAuthBootstrap'
 
 export default function App({ Component, pageProps }: AppProps) {
+  useAuthBootstrap()
+
   return (
-    <AuthProvider>
+    <ErrorBoundary>
       <Component {...pageProps} />
-    </AuthProvider>
+    </ErrorBoundary>
   )
 }

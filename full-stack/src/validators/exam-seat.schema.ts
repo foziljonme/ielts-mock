@@ -19,11 +19,9 @@
 import { z } from 'zod'
 
 export const createExamSeatSchema = z.object({
-  tenantId: z.string(),
-  seatNumber: z.number(),
-  label: z.string(),
   candidateName: z.string(),
   candidateContact: z.string(),
+  label: z.string().optional(),
 })
 
 export type CreateExamSeatSchema = z.infer<typeof createExamSeatSchema>

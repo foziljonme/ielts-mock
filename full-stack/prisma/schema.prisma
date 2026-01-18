@@ -101,8 +101,7 @@ model ExamSeat {
   id               String         @id @default(cuid())
   tenantId         String
   sessionId        String
-  seatNumber       Int
-  label            String // "Row 3, Seat 2"
+  label            String? // "Row 3, Seat 2"
   accessCode       String         @unique // Candidate login code
   candidateName    String
   candidateId      String
@@ -115,8 +114,6 @@ model ExamSeat {
 
   session  ExamSession       @relation(fields: [sessionId], references: [id])
   sections SectionProgress[]
-
-  @@unique([sessionId, seatNumber])
 }
 
 // ==========================

@@ -28,16 +28,25 @@ class ExamSeatsService {
   ) {
     const accessCode = this.generateAccessCode()
     const candidateId = Math.random().toString(36).substring(2, 8)
-    const seat = await db.examSeat.create({
-      data: {
-        ...data,
-        accessCode,
-        candidateId,
-        sessionId: examSessionId,
-        tenantId: ctx.user.tenantId,
-      },
+    return db.$transaction(async tx => {
+      const [seat] = await Promise.all([
+        await tx.examSeat.create({
+          data: {
+            ...data,
+            accessCode,
+            candidateId,
+            sessionId: examSessionId,
+            tenantId: ctx.user.tenantId,
+          },
+        }),
+        await tx.tenantSeatUsage.update({
+          where: { tenantId: ctx.user.tenantId },
+          data: { usedSeats: { increment: 1 } },
+        }),
+      ])
+
+      return seat
     })
-    return seat
   }
 
   async getSeats(

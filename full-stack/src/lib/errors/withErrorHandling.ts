@@ -12,7 +12,7 @@ export const withErrorHandling =
         return res.status(err.statusCode).json({
           error: {
             message: err.message,
-            // code: err.code,
+            code: err.code,
             details: err.details ?? null,
           },
         })
