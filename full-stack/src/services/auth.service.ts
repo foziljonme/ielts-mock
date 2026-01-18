@@ -1,76 +1,112 @@
 import { CreateUserSchema } from '@/validators/user.schema'
-import prisma from '../lib/db'
 import bcrypt from 'bcrypt'
 import { UserRole } from '../../prisma/generated/enums'
 import { AppError } from '@/lib/errors'
+import { AuthRequestContext, JwtBasePayload } from '@/lib/auth/types'
+import db from '../lib/db'
+import { ErrorCodes } from '@/lib/errors/codes'
+import { LoginSchema } from '@/validators/auth.schema'
+import jwt from 'jsonwebtoken'
+import tenantsService from './tenants.service'
+import { REFRESH_TOKEN_EXPIRES_IN, TOKEN_EXPIRES_IN } from '@/lib/constants'
 
 class AuthService {
   constructor() {}
 
   async register(user: CreateUserSchema) {
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await db.user.findUnique({
       where: { email: user.email },
     })
+
     if (existingUser) {
-      throw new AppError('User already exists', 400)
+      throw new AppError(
+        'User already exists',
+        400,
+        ErrorCodes.USER_ALREADY_EXISTS,
+        'User with this email already exists, try to login',
+      )
     }
 
     const hashedPassword = await bcrypt.hash(user.password, 10)
 
-    return await prisma.user.create({
+    return await db.user.create({
       data: {
         ...user,
         password: hashedPassword,
-        roles: [UserRole.TENANT_ADMIN, UserRole.STAFF],
+        roles: user.roles || [UserRole.TENANT_ADMIN, UserRole.STAFF],
       },
     })
   }
 
-  async login(email: string, password: string) {
-    const user = await prisma.user.findUnique({ where: { email } })
-    if (!user) {
-      throw new Error('User not found')
-    }
+  async login(loginData: LoginSchema) {
+    const { email, password } = loginData
+    return db.$transaction(async tx => {
+      const user = await tx.user.findUnique({
+        where: { email },
+      })
 
-    const isPasswordValid = await bcrypt.compare(password, user.password)
-    if (!isPasswordValid) {
-      throw new Error('Invalid password')
-    }
+      if (!user) {
+        throw new AppError('User not found', 404, ErrorCodes.USER_NOT_FOUND)
+      }
 
-    return user
-  }
+      const isPasswordValid = await bcrypt.compare(password, user.password)
 
-  async adminLogin(email: string, password: string) {
-    const user = await prisma.user.findUnique({ where: { email } })
-    if (!user) {
-      throw new Error('User not found')
-    }
+      if (!isPasswordValid) {
+        throw new AppError('Unauthorized', 401, ErrorCodes.UNAUTHORIZED)
+      }
+      const tokenPayload: JwtBasePayload = {
+        sub: user.id,
+        tenantId: user.tenantId || '',
+        roles: user.roles,
+      }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password)
-    if (!isPasswordValid) {
-      throw new Error('Invalid password')
-    }
+      const accessToken = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
+        expiresIn: TOKEN_EXPIRES_IN,
+      })
 
-    return user
-  }
+      const refreshToken = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
+        expiresIn: REFRESH_TOKEN_EXPIRES_IN,
+      })
 
-  async candidateLogin(candidateId: string, accessCode: string) {
-    const seat = await prisma.examSeat.findUnique({
-      where: { accessCode, candidateId },
+      const { password: ps, ...rest } = user
+
+      const tenant = await tenantsService.getTenant(tx, user.tenantId!)
+
+      return {
+        user: {
+          ...rest,
+          tenant,
+        },
+        accessToken,
+        refreshToken,
+        // expiresAt: new Date(Date.now() + TOKEN_EXPIRES_IN),
+      }
     })
-
-    if (!seat) {
-      throw new Error('Seat not found')
-    }
-
-    return seat
   }
 
-  async adminMe() {}
+  async getMe(ctx: AuthRequestContext) {
+    return db.$transaction(async tx => {
+      const user = await tx.user.findUnique({
+        where: { id: ctx.user.sub },
+      })
 
-  async candidateMe() {}
+      if (!user) {
+        throw new AppError(
+          'Unauthorized',
+          401,
+          ErrorCodes.UNAUTHORIZED,
+          'User not found',
+        )
+      }
 
-  async logout() {}
+      const tenant = await tenantsService.getTenant(tx, user.tenantId!)
+
+      return {
+        user: user,
+        tenant: tenant,
+      }
+    })
+  }
 }
 
 const authService = new AuthService()

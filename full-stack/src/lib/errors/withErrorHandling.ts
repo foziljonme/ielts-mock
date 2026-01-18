@@ -12,17 +12,21 @@ export const withErrorHandling =
         return res.status(err.statusCode).json({
           error: {
             message: err.message,
-            // code: err.code,
+            code: err.code,
             details: err.details ?? null,
           },
         })
       }
 
       console.error(err)
-
+      const message = (err as any).message?.includes(
+        '__TURBOPACK__imported__module__',
+      )
+        ? 'Internal server error'
+        : (err as any).message
       return res.status(500).json({
         error: {
-          message: 'Internal server error',
+          message,
           code: 'INTERNAL_ERROR',
         },
       })
