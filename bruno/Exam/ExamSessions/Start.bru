@@ -1,0 +1,20 @@
+meta {
+  name: Start
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{BASE_URL}}/sessions/:sessionId/start
+  body: none
+  auth: inherit
+}
+
+params:path {
+  sessionId: cmkmpezji000314sgvdm4gnoo
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Delete
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{BASE_URL}}/sessions/:sessionId
+  body: none
+  auth: inherit
+}
+
+params:path {
+  sessionId: cmkmpezji000314sgvdm4gnoo
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
