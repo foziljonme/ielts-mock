@@ -46,13 +46,23 @@ class AuthService {
       })
 
       if (!user) {
-        throw new AppError('User not found', 404, ErrorCodes.USER_NOT_FOUND)
+        throw new AppError(
+          'User not found',
+          404,
+          ErrorCodes.USER_NOT_FOUND,
+          'User with this email not found',
+        )
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password)
 
       if (!isPasswordValid) {
-        throw new AppError('Unauthorized', 401, ErrorCodes.UNAUTHORIZED)
+        throw new AppError(
+          'Unauthorized',
+          401,
+          ErrorCodes.UNAUTHORIZED,
+          'Invalid password',
+        )
       }
       const tokenPayload: JwtBasePayload = {
         sub: user.id,
@@ -85,6 +95,7 @@ class AuthService {
   }
 
   async getMe(ctx: AuthRequestContext) {
+    console.log({ ctx })
     return db.$transaction(async tx => {
       const user = await tx.user.findUnique({
         where: { id: ctx.user.sub },

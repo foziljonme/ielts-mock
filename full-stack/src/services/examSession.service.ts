@@ -5,15 +5,29 @@ import {
   CreateExamSessionSchema,
   UpdateExamSessionSchema,
 } from '@/validators/exam-session.schema'
+import examSeatsService from './examSeat.service'
+import { ErrorCodes } from '@/lib/errors/codes'
+import { ExamSessionStatus, Prisma } from '../../prisma/generated/client'
 
 class ExamSessionService {
   constructor() {}
 
   async createSession(ctx: AuthRequestContext, data: CreateExamSessionSchema) {
-    const session = await db.examSession.create({
-      data: { ...data, tenantId: ctx.user.tenantId },
+    return db.$transaction(async tx => {
+      const { seats: seatsData, ...sessionData } = data
+      const session = await tx.examSession.create({
+        data: { ...sessionData, tenantId: ctx.user.tenantId },
+      })
+
+      const seats = await examSeatsService.createSeats(
+        ctx,
+        tx,
+        session.id,
+        seatsData,
+      )
+
+      return { ...session, seats }
     })
-    return session
   }
 
   async getSessions(ctx: AuthRequestContext, page: number, pageSize: number) {
@@ -33,8 +47,12 @@ class ExamSessionService {
     return { items, totalItems }
   }
 
-  async getSessionById(ctx: AuthRequestContext, sessionId: string) {
-    const session = await db.examSession.findUnique({
+  async getSessionById(
+    tx: Prisma.TransactionClient,
+    ctx: AuthRequestContext,
+    sessionId: string,
+  ) {
+    const session = await tx.examSession.findUnique({
       where: { id: sessionId, tenantId: ctx.user.tenantId },
       include: {
         seats: true,
@@ -42,10 +60,21 @@ class ExamSessionService {
     })
 
     if (!session) {
-      throw new AppError('Session not found', 404)
+      throw new AppError(
+        'Session not found',
+        404,
+        ErrorCodes.NOT_FOUND,
+        'Session not found, please check the session id',
+      )
     }
 
     return session
+  }
+
+  async getSessionByIdWithTx(ctx: AuthRequestContext, sessionId: string) {
+    return db.$transaction(async tx => {
+      return this.getSessionById(tx, ctx, sessionId)
+    })
   }
 
   async updateSession(
@@ -53,23 +82,54 @@ class ExamSessionService {
     sessionId: string,
     data: UpdateExamSessionSchema,
   ) {
-    await this.getSessionById(ctx, sessionId)
+    return db.$transaction(async tx => {
+      await this.getSessionById(tx, ctx, sessionId)
 
-    const session = await db.examSession.update({
-      where: { id: sessionId, tenantId: ctx.user.tenantId },
-      data,
+      const session = await tx.examSession.update({
+        where: { id: sessionId, tenantId: ctx.user.tenantId },
+        data,
+      })
+      return session
     })
-    return session
   }
 
   async archiveSession(ctx: AuthRequestContext, sessionId: string) {
-    await this.getSessionById(ctx, sessionId)
+    return db.$transaction(async tx => {
+      await this.getSessionById(tx, ctx, sessionId)
 
-    const session = await db.examSession.update({
-      where: { id: sessionId, tenantId: ctx.user.tenantId },
-      data: { isArchived: true },
+      const session = await tx.examSession.update({
+        where: { id: sessionId, tenantId: ctx.user.tenantId },
+        data: { isArchived: true },
+      })
+      return session
     })
-    return session
+  }
+
+  async deleteSession(ctx: AuthRequestContext, sessionId: string) {
+    return db.$transaction(async tx => {
+      await this.getSessionById(tx, ctx, sessionId)
+
+      const seats = await examSeatsService.deleteAllSeats(tx, ctx, sessionId)
+
+      const session = await tx.examSession.delete({
+        where: { id: sessionId, tenantId: ctx.user.tenantId },
+      })
+
+      return { ...session, seats }
+    })
+  }
+
+  async startSession(ctx: AuthRequestContext, sessionId: string) {
+    return db.$transaction(async tx => {
+      await this.getSessionById(tx, ctx, sessionId)
+
+      const session = await tx.examSession.update({
+        where: { id: sessionId, tenantId: ctx.user.tenantId },
+        data: { status: ExamSessionStatus.OPEN },
+      })
+
+      return session
+    })
   }
 }
 

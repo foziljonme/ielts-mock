@@ -22,3 +22,8 @@ export interface ISeatInput {
   candidateName: string
   candidateContact: string
 }
+
+export interface IAvailableTest {
+  id: string
+  name: string
+}

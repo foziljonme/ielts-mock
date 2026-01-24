@@ -16,24 +16,24 @@ shell:
 	docker compose exec backend sh
 
 # Run Prisma generate inside container
-generate:
+generate-backend:
 	docker compose exec backend yarn prisma generate
 
 # Run Prisma db push inside container
-db-push:
+db-push-backend:
 	docker compose exec backend yarn db:push
 
 # Run Prisma generate inside container
-gen-n:
+generate:
 	docker compose exec next-js yarn prisma generate
 
 # Run Prisma db push inside container
-db-push-nextjs:
+db-push:
 	docker compose exec next-js yarn db:push
 
 # Run Prisma db reset inside container
 db-reset:
-	docker compose exec backend yarn db:reset
+	docker compose exec next-js yarn db:reset & docker compose exec next-js yarn db:push
 
 # Run both generate + db push
 sync:

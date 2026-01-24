@@ -1,0 +1,65 @@
+{
+  "testId": "test1",
+  "title": "Test 1 - Listening Answer Key",
+  "answers": {
+    "single": {
+      "Q1": "DW30 7YZ",
+      "Q2": "24(th) April",
+      "Q3": "dentist",
+      "Q4": "parking",
+      "Q5": "Claxby",
+      "Q6": "late",
+      "Q7": "evening",
+      "Q8": "supermarket",
+      "Q9": "pollution",
+      "Q10": "storage",
+
+      "Q11": "C",
+      "Q12": "A",
+      "Q13": "A",
+
+      "Q16": "B",
+      "Q17": "G",
+      "Q18": "D",
+      "Q19": "A",
+      "Q20": "F",
+
+      "Q21": "A",
+      "Q22": "B",
+      "Q23": "A",
+      "Q24": "C",
+      "Q25": "B",
+      "Q26": "A",
+
+      "Q31": "fences",
+      "Q32": "family",
+      "Q33": "helicopters",
+      "Q34": "stress",
+      "Q35": "sides",
+      "Q36": "breathing",
+      "Q37": "feet",
+      "Q38": "employment",
+      "Q39": "weapons",
+      "Q40": "tourism"
+    },
+    "multi": {
+      "Q27-Q28": {
+        "correct": ["A", "C"],
+        "count": 2,
+        "inEitherOrder": true,
+        "note": "Choose TWO letters, A–E"
+      },
+      "Q29-Q30": {
+        "correct": ["C", "E"],
+        "count": 2,
+        "inEitherOrder": true,
+        "note": "Choose TWO letters, A–E"
+      }
+    }
+  },
+  "tolerances": {
+    "Q1": "Accept with or without spaces, e.g. DW307YZ, DW30-7YZ",
+    "Q2": "Accept 24 April, 24th April, twenty-fourth April, etc.",
+    "general": "Answers are not case-sensitive. Minor spelling errors may be accepted in real test."
+  }
+}

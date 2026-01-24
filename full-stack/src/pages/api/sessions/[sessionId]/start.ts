@@ -1,7 +1,7 @@
 import { AuthRequestContext } from '@/lib/auth/types'
 import { withAuth } from '@/lib/auth/withAuth'
-import authService from '@/services/auth.service'
 import { NextApiRequest, NextApiResponse } from 'next'
+import examSessionService from '@/services/examSession.service'
 
 export default withAuth(
   async (
@@ -9,10 +9,13 @@ export default withAuth(
     res: NextApiResponse,
     ctx: AuthRequestContext,
   ) => {
-    if (req.method === 'GET') {
-      console.log('fgfofofo', { ctx })
-      const user = await authService.getMe(ctx)
-      res.status(200).json(user)
+    if (req.method === 'POST') {
+      const { sessionId } = req.query
+      const session = await examSessionService.startSession(
+        ctx,
+        sessionId as string,
+      )
+      res.status(201).json(session)
     } else {
       res.status(405).json({ error: 'Method not allowed' })
     }

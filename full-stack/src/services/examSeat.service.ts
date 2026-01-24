@@ -1,6 +1,7 @@
 import { AuthRequestContext } from '@/lib/auth/types'
 import { CreateExamSeatSchema } from '@/validators/exam-seat.schema'
 import db from '@/lib/db'
+import { Prisma } from '../../prisma/generated/client'
 
 class ExamSeatsService {
   constructor() {}
@@ -21,13 +22,17 @@ class ExamSeatsService {
     return chunks.join('-')
   }
 
+  private generateCandidateId() {
+    return Math.random().toString(36).substring(2, 8)
+  }
+
   async createSeat(
     ctx: AuthRequestContext,
     examSessionId: string,
     data: CreateExamSeatSchema,
   ) {
     const accessCode = this.generateAccessCode()
-    const candidateId = Math.random().toString(36).substring(2, 8)
+    const candidateId = this.generateCandidateId()
     return db.$transaction(async tx => {
       const [seat] = await Promise.all([
         await tx.examSeat.create({
@@ -49,6 +54,30 @@ class ExamSeatsService {
     })
   }
 
+  async createSeats(
+    ctx: AuthRequestContext,
+    tx: Prisma.TransactionClient,
+    examSessionId: string,
+    data: CreateExamSeatSchema[],
+  ) {
+    const seats = await tx.examSeat.createManyAndReturn({
+      data: data.map(seat => ({
+        ...seat,
+        accessCode: this.generateAccessCode(),
+        candidateId: this.generateCandidateId(),
+        sessionId: examSessionId,
+        tenantId: ctx.user.tenantId,
+      })),
+    })
+
+    await tx.tenantSeatUsage.update({
+      where: { tenantId: ctx.user.tenantId },
+      data: { usedSeats: { increment: data.length } },
+    })
+
+    return seats
+  }
+
   async getSeats(
     ctx: AuthRequestContext,
     examSessionId: string,
@@ -67,6 +96,23 @@ class ExamSeatsService {
       }),
     ])
     return { items, totalItems }
+  }
+
+  async deleteAllSeats(
+    tx: Prisma.TransactionClient,
+    ctx: AuthRequestContext,
+    sessionId: string,
+  ) {
+    const seats = await tx.examSeat.deleteMany({
+      where: { tenantId: ctx.user.tenantId, sessionId },
+    })
+
+    await tx.tenantSeatUsage.update({
+      where: { tenantId: ctx.user.tenantId },
+      data: { usedSeats: { decrement: seats.count } },
+    })
+
+    return seats
   }
 }
 

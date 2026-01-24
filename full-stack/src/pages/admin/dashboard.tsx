@@ -27,6 +27,7 @@ import { ScheduleTestPage } from './components/ScheduledTest'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { useAdminDashboardStore } from '@/stores/adminDashboard.store'
 import { ISession } from '@/types/sessions'
+import { useScheduleTestStore } from '@/stores/scheduleTest.store'
 // import { mockStudents, mockTestResults, mockTenants } from '../data/mockData'
 // import { ScheduleTestPage } from './ScheduleTestPage'
 // import { TestSubmissionsPage } from './TestSubmissionsPage'
@@ -38,8 +39,8 @@ interface AdminDashboardProps {
 }
 
 export function AdminDashboard() {
-  const { isLoading, tenant, sessions, fetchSessions } =
-    useAdminDashboardStore()
+  const { isLoading, tenant } = useAdminDashboardStore()
+  const { fetchSessions } = useScheduleTestStore()
   const [searchTerm, setSearchTerm] = useState('')
   const [activeTestControl, setActiveTestControl] = useState<ISession | null>(
     null,
@@ -61,7 +62,7 @@ export function AdminDashboard() {
     testAttempts: tenant.testAttempts,
   }
 
-  const handleStartTest = (test: ScheduledTest) => {
+  const handleStartTest = (test: ISession) => {
     setActiveTestControl(test)
   }
 
@@ -71,7 +72,7 @@ export function AdminDashboard() {
 
   useEffect(() => {
     fetchSessions()
-  }, [])
+  }, [fetchSessions])
 
   if (isLoading) {
     return <div>Loading...</div>

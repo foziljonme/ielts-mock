@@ -6,62 +6,31 @@ import { Label } from '@/components/label'
 import { Alert, AlertDescription } from '@/components/alert'
 import { Building2, LogIn } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth.store'
-import { login } from '@/api/auth'
 import { useRouter } from 'next/navigation'
-import { useAdminDashboardStore } from '@/stores/adminDashboard.store'
 
 export default function AdminLoginPage() {
-  const { setUser } = useAuthStore()
-  const { setTenant } = useAdminDashboardStore()
+  const { isAuthenticated, login } = useAuthStore()
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
-    try {
-      e.preventDefault()
-      if (!email.trim() || !password.trim()) {
-        setError('Please enter both email and password')
-        return
-      }
-
-      // Simple validation for demo
-      if (!email.includes('@')) {
-        setError('Please enter a valid email address')
-        return
-      }
-
-      await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      })
-        .then(res => {
-          if (!res.ok) {
-            throw new Error('Login failed')
-          }
-          return res.json()
-        })
-        .then(res => {
-          const { tenant, user } = res
-          setUser(user)
-          setTenant(tenant)
-          router.push('/admin/dashboard')
-        })
-        .catch(err => {
-          console.log(err)
-          setError(
-            'Login failed: ' + err.response?.data?.error?.message ||
-              'Unknown error',
-          )
-        })
-    } catch (error) {
-      console.error('', error)
-      setError('Login failed: ' + error)
+    e.preventDefault()
+    if (!email.trim() || !password.trim()) {
+      setError('Please enter both email and password')
+      return
     }
+
+    // Simple validation for demo
+    if (!email.includes('@')) {
+      setError('Please enter a valid email address')
+      return
+    }
+
+    await login(email, password).then(isAuthenticated => {
+      if (isAuthenticated) router.push('/admin/dashboard')
+    })
   }
 
   return (

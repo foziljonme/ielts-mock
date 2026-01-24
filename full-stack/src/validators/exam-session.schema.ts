@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { ExamSessionStatus } from '../../prisma/generated/enums'
+import { createExamSeatSchema } from './exam-seat.schema'
 
 // model ExamSession {
 //   id        String            @id @default(cuid())
@@ -18,7 +19,6 @@ import { ExamSessionStatus } from '../../prisma/generated/enums'
 
 export const createExamSessionSchema = z.object({
   testId: z.string(),
-  name: z.string().min(3).max(255),
   examDate: z
     .string()
     .refine(val => !isNaN(Date.parse(val)), {
@@ -26,12 +26,13 @@ export const createExamSessionSchema = z.object({
     })
     .transform(val => new Date(val)),
   status: z.enum(ExamSessionStatus).default(ExamSessionStatus.SCHEDULED),
+  seats: z.array(createExamSeatSchema).optional().default([]),
 })
 
 export type CreateExamSessionSchema = z.infer<typeof createExamSessionSchema>
 
 export const updateExamSessionSchema = createExamSessionSchema
   .partial()
-  .omit({})
+  .omit({ seats: true })
 
 export type UpdateExamSessionSchema = z.infer<typeof updateExamSessionSchema>

@@ -1,0 +1,540 @@
+{
+  "module": "LISTENING",
+  "parts": [
+    {
+      "part": 1,
+      "audio": {
+        "url": "/audio/listening-part-1.mp3",
+        "playOnce": true
+      },
+      "questions": [
+        {
+          "type": "NOTE_COMPLETION",
+          "range": "1-10",
+          "instructions": [
+            "Questions 1–10",
+            "Complete the notes below.",
+            "Write ONE WORD AND/OR A NUMBER for each answer."
+          ],
+          "layout": "FORM_NOTES",
+          "blocks": [
+            {
+              "type": "TITLE",
+              "text": "Transport survey"
+            },
+            {
+              "type": "ROW",
+              "label": "Name:",
+              "value": "Sadie Jones"
+            },
+            {
+              "type": "ROW",
+              "label": "Year of birth:",
+              "value": "1991"
+            },
+            {
+              "type": "QUESTION_ROW",
+              "questionId": "Q1",
+              "number": 1,
+              "label": "Postcode:",
+              "template": "{{blank}}",
+              "constraints": {
+                "maxWords": 1,
+                "allowed": "WORD_OR_NUMBER"
+              }
+            },
+            {
+              "type": "SECTION_HEADER",
+              "text": "Travelling by bus"
+            },
+            {
+              "type": "QUESTION_ROW",
+              "questionId": "Q2",
+              "number": 2,
+              "label": "Date of bus journey:",
+              "template": "{{blank}}",
+              "constraints": {
+                "maxWords": 1,
+                "allowed": "WORD_OR_NUMBER"
+              }
+            },
+            {
+              "type": "QUESTION_ROW",
+              "questionId": "Q3",
+              "number": 3,
+              "label": "Reason for trip:",
+              "template": "shopping and visit to the {{blank}}",
+              "constraints": {
+                "maxWords": 1,
+                "allowed": "WORD_OR_NUMBER"
+              }
+            },
+            {
+              "type": "QUESTION_ROW",
+              "questionId": "Q4",
+              "number": 4,
+              "label": "Travelled by bus because cost of",
+              "template": "{{blank}} too high",
+              "constraints": {
+                "maxWords": 1,
+                "allowed": "WORD_OR_NUMBER"
+              }
+            },
+            {
+              "type": "QUESTION_ROW",
+              "questionId": "Q5",
+              "number": 5,
+              "label": "Got on bus at",
+              "template": "{{blank}} Street",
+              "constraints": {
+                "maxWords": 1,
+                "allowed": "WORD_OR_NUMBER"
+              }
+            },
+            {
+              "type": "QUESTION_ROW",
+              "questionId": "Q6",
+              "number": 6,
+              "label": "Complaints about bus service:",
+              "template": "- bus today was {{blank}}",
+              "constraints": {
+                "maxWords": 1,
+                "allowed": "WORD_OR_NUMBER"
+              }
+            },
+            {
+              "type": "QUESTION_ROW",
+              "questionId": "Q7",
+              "number": 7,
+              "label": "",
+              "template": "- frequency of buses in the {{blank}}",
+              "constraints": {
+                "maxWords": 1,
+                "allowed": "WORD_OR_NUMBER"
+              }
+            },
+            {
+              "type": "SECTION_HEADER",
+              "text": "Travelling by car"
+            },
+            {
+              "type": "QUESTION_ROW",
+              "questionId": "Q8",
+              "number": 8,
+              "label": "Goes to the",
+              "template": "{{blank}} by car",
+              "constraints": {
+                "maxWords": 1,
+                "allowed": "WORD_OR_NUMBER"
+              }
+            },
+            {
+              "type": "SECTION_HEADER",
+              "text": "Travelling by bicycle"
+            },
+            {
+              "type": "QUESTION_ROW",
+              "questionId": "Q9",
+              "number": 9,
+              "template": "Dislikes travelling by bike in the city centre because of the {{blank}}",
+              "constraints": {
+                "maxWords": 1,
+                "allowed": "WORD_OR_NUMBER"
+              }
+            },
+            {
+              "type": "QUESTION_ROW",
+              "questionId": "Q10",
+              "number": 10,
+              "template": "Doesn’t own a bike because of a lack of {{blank}}",
+              "constraints": {
+                "maxWords": 1,
+                "allowed": "WORD_OR_NUMBER"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "part": 2,
+      "audio": {
+        "url": "/audio/listening-part-2.mp3",
+        "playOnce": true
+      },
+      "questions": [
+        {
+          "type": "MULTIPLE_CHOICE_SINGLE",
+          "range": "11-13",
+          "instructions": [
+            "Questions 11–13",
+            "Choose the correct letter, A, B or C."
+          ],
+          "items": [
+            {
+              "questionId": "Q11",
+              "number": 11,
+              "stem": "Why does the speaker apologise about the seats?",
+              "options": [
+                { "key": "A", "text": "They are too small." },
+                { "key": "B", "text": "There are not enough of them." },
+                { "key": "C", "text": "Some of them are very close together." }
+              ]
+            },
+            {
+              "questionId": "Q12",
+              "number": 12,
+              "stem": "What does the speaker say about the age of volunteers?",
+              "options": [
+                {
+                  "key": "A",
+                  "text": "The age of volunteers is less important than other factors."
+                },
+                {
+                  "key": "B",
+                  "text": "Young volunteers are less reliable than older ones."
+                },
+                {
+                  "key": "C",
+                  "text": "Most volunteers are about 60 years old."
+                }
+              ]
+            },
+            {
+              "questionId": "Q13",
+              "number": 13,
+              "stem": "What does the speaker say about training?",
+              "options": [
+                { "key": "A", "text": "It is continuous." },
+                { "key": "B", "text": "It is conducted by a manager." },
+                { "key": "C", "text": "It takes place online." }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "MULTIPLE_CHOICE_MULTIPLE",
+          "range": "14-15",
+          "instructions": [
+            "Questions 14 and 15",
+            "Choose TWO letters, A-E.",
+            "Which TWO issues does the speaker ask the audience to consider before they apply to be volunteers?"
+          ],
+          "selectCount": 2,
+          "options": [
+            { "key": "A", "text": "their financial situation" },
+            { "key": "B", "text": "their level of commitment" },
+            { "key": "C", "text": "their work experience" },
+            { "key": "D", "text": "their ambition" },
+            { "key": "E", "text": "their availability" }
+          ],
+          "questions": [
+            { "questionId": "Q14", "number": 14 },
+            { "questionId": "Q15", "number": 15 }
+          ]
+        },
+        {
+          "type": "MULTIPLE_CHOICE_MULTIPLE",
+          "range": "16-20",
+          "instructions": [
+            "Questions 16–20",
+            "What does the speaker suggest would be helpful for each of the following areas of voluntary work?",
+            "Choose FIVE answers from the box and write the correct letter, A–G, next to Questions 16–20."
+          ],
+          "selectCount": 5,
+          "stem": "Helpful things volunteers might offer",
+          "options": [
+            { "key": "A", "text": "experience on stage" },
+            { "key": "B", "text": "original, new ideas" },
+            { "key": "C", "text": "parenting skills" },
+            { "key": "D", "text": "an understanding of food and diet" },
+            { "key": "E", "text": "retail experience" },
+            { "key": "F", "text": "a good memory" },
+            { "key": "G", "text": "a good level of fitness" }
+          ],
+          "questions": [
+            { "questionId": "Q16", "number": 16, "label": "Fundraising" },
+            { "questionId": "Q17", "number": 17, "label": "Litter collection" },
+            { "questionId": "Q18", "number": 18, "label": "'Playmates'" },
+            { "questionId": "Q19", "number": 19, "label": "Story club" },
+            { "questionId": "Q20", "number": 20, "label": "First aid" }
+          ]
+        }
+      ]
+    },
+    {
+      "part": 3,
+      "audio": {
+        "url": "/audio/listening-part-3.mp3",
+        "playOnce": true
+      },
+      "questions": [
+        {
+          "type": "MULTIPLE_CHOICE_SINGLE",
+          "range": "21-26",
+          "instructions": [
+            "Questions 21-26",
+            "Choose the correct letter, A, B or C."
+          ],
+          "items": [
+            {
+              "questionId": "Q21",
+              "number": 21,
+              "stem": "What problem did Chantal have at the start of the talk?",
+              "options": [
+                { "key": "A", "text": "Her view of the speaker was blocked." },
+                { "key": "B", "text": "She was unable to find an empty seat." },
+                { "key": "C", "text": "The students next to her were talking." }
+              ]
+            },
+            {
+              "questionId": "Q22",
+              "number": 22,
+              "stem": "What were Hugo and Chantal surprised to hear about the job market?",
+              "options": [
+                {
+                  "key": "A",
+                  "text": "It has become more competitive than it used to be."
+                },
+                {
+                  "key": "B",
+                  "text": "There is more variety in it than they had realised."
+                },
+                {
+                  "key": "C",
+                  "text": "Some areas of it are more exciting than others."
+                }
+              ]
+            },
+            {
+              "questionId": "Q23",
+              "number": 23,
+              "stem": "Hugo and Chantal agree that the speaker’s message was",
+              "options": [
+                { "key": "A", "text": "unfair to them at times." },
+                { "key": "B", "text": "hard for them to follow." },
+                { "key": "C", "text": "critical of the industry." }
+              ]
+            },
+            {
+              "questionId": "Q24",
+              "number": 24,
+              "stem": "What do Hugo and Chantal criticise about their school careers advice?",
+              "options": [
+                { "key": "A", "text": "when they received the advice" },
+                { "key": "B", "text": "how much advice was given" },
+                { "key": "C", "text": "who gave the advice" }
+              ]
+            },
+            {
+              "questionId": "Q25",
+              "number": 25,
+              "stem": "When discussing their future, Hugo and Chantal disagree on",
+              "options": [
+                { "key": "A", "text": "which is the best career in fashion." },
+                { "key": "B", "text": "when to choose a career in fashion." },
+                {
+                  "key": "C",
+                  "text": "why they would like a career in fashion."
+                }
+              ]
+            },
+            {
+              "questionId": "Q26",
+              "number": 26,
+              "stem": "How does Hugo feel about being an unpaid assistant?",
+              "options": [
+                { "key": "A", "text": "He is realistic about the practice." },
+                { "key": "B", "text": "He feels the practice is dishonest." },
+                {
+                  "key": "C",
+                  "text": "He thinks others want to change the practice."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "MULTIPLE_CHOICE_MULTIPLE",
+          "range": "27-28",
+          "instructions": [
+            "Questions 27 and 28",
+            "Choose TWO letters, A–E.",
+            "Which TWO mistakes did the speaker admit she made in her first job?"
+          ],
+          "selectCount": 2,
+          "options": [
+            { "key": "A", "text": "being dishonest to her employer" },
+            {
+              "key": "B",
+              "text": "paying too much attention to how she looked"
+            },
+            { "key": "C", "text": "expecting to become well known" },
+            { "key": "D", "text": "trying to earn a lot of money" },
+            { "key": "E", "text": "openly disliking her client" }
+          ],
+          "questions": [
+            { "questionId": "Q27", "number": 27 },
+            { "questionId": "Q28", "number": 28 }
+          ]
+        },
+        {
+          "type": "MULTIPLE_CHOICE_MULTIPLE",
+          "range": "29-30",
+          "instructions": [
+            "Questions 29 and 30",
+            "Choose TWO letters, A–E.",
+            "Which TWO pieces of retail information do Hugo and Chantal agree would be useful?"
+          ],
+          "selectCount": 2,
+          "options": [
+            { "key": "A", "text": "the reasons people return fashion items" },
+            {
+              "key": "B",
+              "text": "how much time people have to shop for clothes"
+            },
+            {
+              "key": "C",
+              "text": "fashion designs people want but can't find"
+            },
+            { "key": "D", "text": "the best time of year for fashion buying" },
+            { "key": "E", "text": "the most popular fashion sizes" }
+          ],
+          "questions": [
+            { "questionId": "Q29", "number": 29 },
+            { "questionId": "Q30", "number": 30 }
+          ]
+        }
+      ]
+    },
+    {
+      "part": 4,
+      "audio": {
+        "url": "/audio/listening-part-4.mp3",
+        "playOnce": true
+      },
+      "questions": [
+        {
+          "type": "NOTE_COMPLETION",
+          "range": "31-40",
+          "instructions": [
+            "Questions 31-40",
+            "Complete the notes below.",
+            "Write ONE WORD ONLY for each answer."
+          ],
+          "layout": "FORM_NOTES",
+          "blocks": [
+            {
+              "type": "TITLE",
+              "text": "Elephant translocation"
+            },
+            {
+              "type": "SECTION_HEADER",
+              "text": "Reasons for overpopulation at Majete National Park"
+            },
+            {
+              "type": "ROW_BULLET",
+              "text": "strict enforcement of anti-poaching laws"
+            },
+            {
+              "type": "ROW_BULLET",
+              "text": "successful breeding"
+            },
+            {
+              "type": "SECTION_HEADER",
+              "text": "Problems caused by elephant overpopulation"
+            },
+            {
+              "type": "ROW_BULLET",
+              "text": "greater competition, causing hunger for elephants"
+            },
+            {
+              "type": "QUESTION_BULLET",
+              "questionId": "Q31",
+              "number": 31,
+              "template": "damage to {{blank}} in the park"
+            },
+            {
+              "type": "SECTION_HEADER",
+              "text": "The translocation process"
+            },
+            {
+              "type": "QUESTION_BULLET",
+              "questionId": "Q32",
+              "number": 32,
+              "template": "a suitable group of elephants from the same {{blank}} was selected"
+            },
+            {
+              "type": "QUESTION_BULLET",
+              "questionId": "Q33",
+              "number": 33,
+              "template": "vets and park staff made use of {{blank}} to help guide the elephants into an open plain"
+            },
+            {
+              "type": "ROW_BULLET",
+              "text": "elephants were immobilised with tranquilisers"
+            },
+            {
+              "type": "QUESTION_ROW_SUB",
+              "questionId": "Q34",
+              "number": 34,
+              "template": "– this process had to be completed quickly to reduce {{blank}}"
+            },
+            {
+              "type": "QUESTION_ROW_SUB",
+              "questionId": "Q35",
+              "number": 35,
+              "template": "– elephants had to be turned on their {{blank}} to avoid damage to their lungs"
+            },
+            {
+              "type": "QUESTION_ROW_SUB",
+              "questionId": "Q36",
+              "number": 36,
+              "template": "– elephants’ {{blank}} had to be monitored constantly"
+            },
+            {
+              "type": "ROW_SUB",
+              "text": "– tracking devices were fitted to the matriarchs"
+            },
+            {
+              "type": "QUESTION_ROW_SUB",
+              "questionId": "Q37",
+              "number": 37,
+              "template": "– data including the size of their tusks and {{blank}} was taken"
+            },
+            {
+              "type": "ROW_BULLET",
+              "text": "elephants were taken by truck to their new reserve"
+            },
+            {
+              "type": "SECTION_HEADER",
+              "text": "Advantages of translocation at Nkhotakota Wildlife Park"
+            },
+            {
+              "type": "QUESTION_BULLET",
+              "questionId": "Q38",
+              "number": 38,
+              "template": "{{blank}} opportunities"
+            },
+            {
+              "type": "QUESTION_BULLET",
+              "questionId": "Q49",
+              "number": 39,
+              "template": "a reduction in the number of poachers and {{blank}}"
+            },
+            {
+              "type": "QUESTION_BULLET",
+              "template": "an example of conservation that other parks can follow"
+            },
+            {
+              "type": "QUESTION_BULLET",
+              "questionId": "Q40",
+              "number": 40,
+              "template": "an increase in {{blank}} as a contributor to GDP"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

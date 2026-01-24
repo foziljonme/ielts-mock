@@ -17,7 +17,6 @@ export interface ISession {
 
 export interface ISessionInput {
   testId: string
-  name: string
   examDate: string
   seats: ISeatInput[]
 }

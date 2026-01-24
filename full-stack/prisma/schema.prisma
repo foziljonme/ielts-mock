@@ -67,6 +67,7 @@ model User {
 // ==========================
 enum ExamSessionStatus {
   SCHEDULED
+  OPEN
   IN_PROGRESS
   COMPLETED
 }
@@ -75,7 +76,7 @@ model ExamSession {
   id         String            @id @default(cuid())
   tenantId   String
   testId     String // External JSON test identifier
-  name       String            @db.VarChar(255)
+  // name       String            @db.VarChar(255)
   examDate   DateTime
   status     ExamSessionStatus @default(SCHEDULED)
   isArchived Boolean           @default(false)
@@ -112,7 +113,7 @@ model ExamSeat {
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 
-  session  ExamSession       @relation(fields: [sessionId], references: [id])
+  session  ExamSession       @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sections SectionProgress[]
 }
 

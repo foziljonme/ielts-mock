@@ -4,6 +4,7 @@ import { AuthRequestContext, JwtBasePayload } from './types'
 import { AppError } from '../errors'
 import { withErrorHandling } from '../errors/withErrorHandling'
 import { UserRole } from '../../../prisma/generated/enums'
+import { ErrorCodes } from '../errors/codes'
 
 export function withAuth(
   handler: (
@@ -36,6 +37,7 @@ export function withAuth(
       throw new AppError(
         'Forbidden',
         403,
+        ErrorCodes.FORBIDDEN,
         'You are not authorized to access this resource',
       )
     }
@@ -44,6 +46,7 @@ export function withAuth(
       throw new AppError(
         'Forbidden',
         403,
+        ErrorCodes.FORBIDDEN,
         'You are not authorized to access this resource',
       )
     }

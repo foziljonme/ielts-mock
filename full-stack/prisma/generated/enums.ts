@@ -21,6 +21,7 @@ export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 export const ExamSessionStatus = {
   SCHEDULED: 'SCHEDULED',
+  OPEN: 'OPEN',
   IN_PROGRESS: 'IN_PROGRESS',
   COMPLETED: 'COMPLETED'
 } as const

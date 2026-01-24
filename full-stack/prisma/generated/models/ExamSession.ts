@@ -28,7 +28,6 @@ export type ExamSessionMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
   testId: string | null
-  name: string | null
   examDate: Date | null
   status: $Enums.ExamSessionStatus | null
   isArchived: boolean | null
@@ -41,7 +40,6 @@ export type ExamSessionMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
   testId: string | null
-  name: string | null
   examDate: Date | null
   status: $Enums.ExamSessionStatus | null
   isArchived: boolean | null
@@ -54,7 +52,6 @@ export type ExamSessionCountAggregateOutputType = {
   id: number
   tenantId: number
   testId: number
-  name: number
   examDate: number
   status: number
   isArchived: number
@@ -69,7 +66,6 @@ export type ExamSessionMinAggregateInputType = {
   id?: true
   tenantId?: true
   testId?: true
-  name?: true
   examDate?: true
   status?: true
   isArchived?: true
@@ -82,7 +78,6 @@ export type ExamSessionMaxAggregateInputType = {
   id?: true
   tenantId?: true
   testId?: true
-  name?: true
   examDate?: true
   status?: true
   isArchived?: true
@@ -95,7 +90,6 @@ export type ExamSessionCountAggregateInputType = {
   id?: true
   tenantId?: true
   testId?: true
-  name?: true
   examDate?: true
   status?: true
   isArchived?: true
@@ -181,7 +175,6 @@ export type ExamSessionGroupByOutputType = {
   id: string
   tenantId: string
   testId: string
-  name: string
   examDate: Date
   status: $Enums.ExamSessionStatus
   isArchived: boolean
@@ -215,7 +208,6 @@ export type ExamSessionWhereInput = {
   id?: Prisma.StringFilter<"ExamSession"> | string
   tenantId?: Prisma.StringFilter<"ExamSession"> | string
   testId?: Prisma.StringFilter<"ExamSession"> | string
-  name?: Prisma.StringFilter<"ExamSession"> | string
   examDate?: Prisma.DateTimeFilter<"ExamSession"> | Date | string
   status?: Prisma.EnumExamSessionStatusFilter<"ExamSession"> | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFilter<"ExamSession"> | boolean
@@ -230,7 +222,6 @@ export type ExamSessionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   testId?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   examDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isArchived?: Prisma.SortOrder
@@ -248,7 +239,6 @@ export type ExamSessionWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ExamSessionWhereInput | Prisma.ExamSessionWhereInput[]
   tenantId?: Prisma.StringFilter<"ExamSession"> | string
   testId?: Prisma.StringFilter<"ExamSession"> | string
-  name?: Prisma.StringFilter<"ExamSession"> | string
   examDate?: Prisma.DateTimeFilter<"ExamSession"> | Date | string
   status?: Prisma.EnumExamSessionStatusFilter<"ExamSession"> | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFilter<"ExamSession"> | boolean
@@ -263,7 +253,6 @@ export type ExamSessionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   testId?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   examDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isArchived?: Prisma.SortOrder
@@ -282,7 +271,6 @@ export type ExamSessionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"ExamSession"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"ExamSession"> | string
   testId?: Prisma.StringWithAggregatesFilter<"ExamSession"> | string
-  name?: Prisma.StringWithAggregatesFilter<"ExamSession"> | string
   examDate?: Prisma.DateTimeWithAggregatesFilter<"ExamSession"> | Date | string
   status?: Prisma.EnumExamSessionStatusWithAggregatesFilter<"ExamSession"> | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolWithAggregatesFilter<"ExamSession"> | boolean
@@ -294,7 +282,6 @@ export type ExamSessionScalarWhereWithAggregatesInput = {
 export type ExamSessionCreateInput = {
   id?: string
   testId: string
-  name: string
   examDate: Date | string
   status?: $Enums.ExamSessionStatus
   isArchived?: boolean
@@ -309,7 +296,6 @@ export type ExamSessionUncheckedCreateInput = {
   id?: string
   tenantId: string
   testId: string
-  name: string
   examDate: Date | string
   status?: $Enums.ExamSessionStatus
   isArchived?: boolean
@@ -322,7 +308,6 @@ export type ExamSessionUncheckedCreateInput = {
 export type ExamSessionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   testId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamSessionStatusFieldUpdateOperationsInput | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -337,7 +322,6 @@ export type ExamSessionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   testId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamSessionStatusFieldUpdateOperationsInput | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -351,7 +335,6 @@ export type ExamSessionCreateManyInput = {
   id?: string
   tenantId: string
   testId: string
-  name: string
   examDate: Date | string
   status?: $Enums.ExamSessionStatus
   isArchived?: boolean
@@ -363,7 +346,6 @@ export type ExamSessionCreateManyInput = {
 export type ExamSessionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   testId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamSessionStatusFieldUpdateOperationsInput | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -376,7 +358,6 @@ export type ExamSessionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   testId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamSessionStatusFieldUpdateOperationsInput | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -399,7 +380,6 @@ export type ExamSessionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   testId?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   examDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isArchived?: Prisma.SortOrder
@@ -412,7 +392,6 @@ export type ExamSessionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   testId?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   examDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isArchived?: Prisma.SortOrder
@@ -425,7 +404,6 @@ export type ExamSessionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   testId?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   examDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isArchived?: Prisma.SortOrder
@@ -506,7 +484,6 @@ export type ExamSessionUpdateOneRequiredWithoutSeatsNestedInput = {
 export type ExamSessionCreateWithoutTenantInput = {
   id?: string
   testId: string
-  name: string
   examDate: Date | string
   status?: $Enums.ExamSessionStatus
   isArchived?: boolean
@@ -519,7 +496,6 @@ export type ExamSessionCreateWithoutTenantInput = {
 export type ExamSessionUncheckedCreateWithoutTenantInput = {
   id?: string
   testId: string
-  name: string
   examDate: Date | string
   status?: $Enums.ExamSessionStatus
   isArchived?: boolean
@@ -562,7 +538,6 @@ export type ExamSessionScalarWhereInput = {
   id?: Prisma.StringFilter<"ExamSession"> | string
   tenantId?: Prisma.StringFilter<"ExamSession"> | string
   testId?: Prisma.StringFilter<"ExamSession"> | string
-  name?: Prisma.StringFilter<"ExamSession"> | string
   examDate?: Prisma.DateTimeFilter<"ExamSession"> | Date | string
   status?: Prisma.EnumExamSessionStatusFilter<"ExamSession"> | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFilter<"ExamSession"> | boolean
@@ -574,7 +549,6 @@ export type ExamSessionScalarWhereInput = {
 export type ExamSessionCreateWithoutSeatsInput = {
   id?: string
   testId: string
-  name: string
   examDate: Date | string
   status?: $Enums.ExamSessionStatus
   isArchived?: boolean
@@ -588,7 +562,6 @@ export type ExamSessionUncheckedCreateWithoutSeatsInput = {
   id?: string
   tenantId: string
   testId: string
-  name: string
   examDate: Date | string
   status?: $Enums.ExamSessionStatus
   isArchived?: boolean
@@ -616,7 +589,6 @@ export type ExamSessionUpdateToOneWithWhereWithoutSeatsInput = {
 export type ExamSessionUpdateWithoutSeatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   testId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamSessionStatusFieldUpdateOperationsInput | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -630,7 +602,6 @@ export type ExamSessionUncheckedUpdateWithoutSeatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   testId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamSessionStatusFieldUpdateOperationsInput | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -642,7 +613,6 @@ export type ExamSessionUncheckedUpdateWithoutSeatsInput = {
 export type ExamSessionCreateManyTenantInput = {
   id?: string
   testId: string
-  name: string
   examDate: Date | string
   status?: $Enums.ExamSessionStatus
   isArchived?: boolean
@@ -654,7 +624,6 @@ export type ExamSessionCreateManyTenantInput = {
 export type ExamSessionUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   testId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamSessionStatusFieldUpdateOperationsInput | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -667,7 +636,6 @@ export type ExamSessionUpdateWithoutTenantInput = {
 export type ExamSessionUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   testId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamSessionStatusFieldUpdateOperationsInput | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -680,7 +648,6 @@ export type ExamSessionUncheckedUpdateWithoutTenantInput = {
 export type ExamSessionUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   testId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamSessionStatusFieldUpdateOperationsInput | $Enums.ExamSessionStatus
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -724,7 +691,6 @@ export type ExamSessionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   id?: boolean
   tenantId?: boolean
   testId?: boolean
-  name?: boolean
   examDate?: boolean
   status?: boolean
   isArchived?: boolean
@@ -740,7 +706,6 @@ export type ExamSessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   tenantId?: boolean
   testId?: boolean
-  name?: boolean
   examDate?: boolean
   status?: boolean
   isArchived?: boolean
@@ -754,7 +719,6 @@ export type ExamSessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   tenantId?: boolean
   testId?: boolean
-  name?: boolean
   examDate?: boolean
   status?: boolean
   isArchived?: boolean
@@ -768,7 +732,6 @@ export type ExamSessionSelectScalar = {
   id?: boolean
   tenantId?: boolean
   testId?: boolean
-  name?: boolean
   examDate?: boolean
   status?: boolean
   isArchived?: boolean
@@ -777,7 +740,7 @@ export type ExamSessionSelectScalar = {
   createdAt?: boolean
 }
 
-export type ExamSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "testId" | "name" | "examDate" | "status" | "isArchived" | "startTime" | "endTime" | "createdAt", ExtArgs["result"]["examSession"]>
+export type ExamSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "testId" | "examDate" | "status" | "isArchived" | "startTime" | "endTime" | "createdAt", ExtArgs["result"]["examSession"]>
 export type ExamSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   seats?: boolean | Prisma.ExamSession$seatsArgs<ExtArgs>
@@ -800,7 +763,6 @@ export type $ExamSessionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     id: string
     tenantId: string
     testId: string
-    name: string
     examDate: Date
     status: $Enums.ExamSessionStatus
     isArchived: boolean
@@ -1235,7 +1197,6 @@ export interface ExamSessionFieldRefs {
   readonly id: Prisma.FieldRef<"ExamSession", 'String'>
   readonly tenantId: Prisma.FieldRef<"ExamSession", 'String'>
   readonly testId: Prisma.FieldRef<"ExamSession", 'String'>
-  readonly name: Prisma.FieldRef<"ExamSession", 'String'>
   readonly examDate: Prisma.FieldRef<"ExamSession", 'DateTime'>
   readonly status: Prisma.FieldRef<"ExamSession", 'ExamSessionStatus'>
   readonly isArchived: Prisma.FieldRef<"ExamSession", 'Boolean'>

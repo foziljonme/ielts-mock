@@ -1,0 +1,139 @@
+{
+  "module": "LISTENING",
+  "part": 1,
+  "audio": {
+    "url": "/audio/listening-part-1.mp3",
+    "playOnce": true
+  },
+  "questionGroups": [
+    {
+      "questionsRange": "1-10",
+      "questionType": "NOTES_COMPLETION",
+      "instructions": [
+        "Complete the notes below.",
+        "Write ONE WORD AND/OR A NUMBER for each answer."
+      ],
+      "blocks": [
+        {
+          "type": "TITLE",
+          "text": "Transport survey"
+        },
+
+        {
+          "type": "ROW",
+          "label": "Name:",
+          "value": "Sadie Jones"
+        },
+        {
+          "type": "ROW",
+          "label": "Year of birth:",
+          "value": "1991"
+        },
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q1",
+          "number": 1,
+          "label": "Postcode:",
+          "template": "{{blank}}",
+          "maxWords": 1
+        },
+
+        {
+          "type": "SECTION_HEADER",
+          "text": "Travelling by bus"
+        },
+
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q2",
+          "number": 2,
+          "label": "Date of bus journey:",
+          "template": "{{blank}}",
+          "maxWords": 1
+        },
+
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q3",
+          "number": 3,
+          "label": "Reason for trip:",
+          "template": "shopping and visit to the {{blank}}",
+          "maxWords": 1
+        },
+
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q4",
+          "number": 4,
+          "label": "Travelled by bus because cost of",
+          "template": "{{blank}} too high",
+          "maxWords": 1
+        },
+
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q5",
+          "number": 5,
+          "label": "Got on bus at",
+          "template": "{{blank}} Street",
+          "maxWords": 1
+        },
+
+        {
+          "type": "TEXT",
+          "text": "Complaints about bus service:"
+        },
+
+        {
+          "type": "QUESTION_BULLET",
+          "questionId": "Q6",
+          "number": 6,
+          "template": "bus today was {{blank}}",
+          "maxWords": 1
+        },
+        {
+          "type": "QUESTION_BULLET",
+          "questionId": "Q7",
+          "number": 7,
+          "template": "frequency of buses in the {{blank}}",
+          "maxWords": 1
+        },
+
+        {
+          "type": "SECTION_HEADER",
+          "text": "Travelling by car"
+        },
+
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q8",
+          "number": 8,
+          "label": "Goes to the",
+          "template": "{{blank}} by car",
+          "maxWords": 1
+        },
+
+        {
+          "type": "SECTION_HEADER",
+          "text": "Travelling by bicycle"
+        },
+
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q9",
+          "number": 9,
+          "template": "Dislikes travelling by bike in the city centre because of the {{blank}}",
+          "maxWords": 1
+        },
+
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q10",
+          "number": 10,
+          "template": "Doesn’t own a bike because of a lack of {{blank}}",
+          "maxWords": 1
+        }
+      ]
+    }
+  ]
+}

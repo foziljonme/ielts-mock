@@ -1,0 +1,126 @@
+{
+  "module": "LISTENING",
+  "part": 2,
+  "audio": {
+    "url": "/audio/listening-part-2.mp3",
+    "playOnce": true
+  },
+  "questions": [
+    {
+      "type": "NOTE_COMPLETION",
+      "range": "11-15",
+      "instructions": [
+        "Questions 11–15",
+        "Complete the notes below.",
+        "Write ONE WORD AND/OR A NUMBER for each answer."
+      ],
+      "layout": "FORM_NOTES",
+      "blocks": [
+        {
+          "type": "TITLE",
+          "text": "Talk about a new sports centre"
+        },
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q11",
+          "number": 11,
+          "label": "Name of centre:",
+          "template": "{{blank}} Sports Centre",
+          "constraints": { "maxWords": 1, "allowed": "WORD_OR_NUMBER" }
+        },
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q12",
+          "number": 12,
+          "label": "Location:",
+          "template": "next to the {{blank}}",
+          "constraints": { "maxWords": 1, "allowed": "WORD_OR_NUMBER" }
+        },
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q13",
+          "number": 13,
+          "label": "Opening date:",
+          "template": "{{blank}} 2026",
+          "constraints": { "maxWords": 1, "allowed": "WORD_OR_NUMBER" }
+        },
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q14",
+          "number": 14,
+          "label": "Main facilities:",
+          "template": "swimming pool and {{blank}}",
+          "constraints": { "maxWords": 1, "allowed": "WORD_OR_NUMBER" }
+        },
+        {
+          "type": "QUESTION_ROW",
+          "questionId": "Q15",
+          "number": 15,
+          "label": "Cost of membership:",
+          "template": "£{{blank}} per month",
+          "constraints": { "maxWords": 1, "allowed": "WORD_OR_NUMBER" }
+        }
+      ]
+    },
+    {
+      "type": "MULTIPLE_CHOICE_SINGLE",
+      "range": "16-20",
+      "instructions": [
+        "Questions 16-20",
+        "Choose the correct letter, A, B or C."
+      ],
+      "items": [
+        {
+          "questionId": "Q16",
+          "number": 16,
+          "stem": "The speaker says the new sports centre will be popular mainly because",
+          "options": [
+            { "key": "A", "text": "it is near the city centre" },
+            { "key": "B", "text": "it has the latest equipment" },
+            { "key": "C", "text": "it offers low-cost membership" }
+          ]
+        },
+        {
+          "questionId": "Q17",
+          "number": 17,
+          "stem": "What does the speaker say about parking at the centre?",
+          "options": [
+            { "key": "A", "text": "There is a large car park." },
+            { "key": "B", "text": "Parking is free in the evenings." },
+            { "key": "C", "text": "Only members can use the car park." }
+          ]
+        },
+        {
+          "questionId": "Q18",
+          "number": 18,
+          "stem": "The centre will offer classes in",
+          "options": [
+            { "key": "A", "text": "yoga and pilates only" },
+            { "key": "B", "text": "a range of martial arts" },
+            { "key": "C", "text": "dance and keep-fit" }
+          ]
+        },
+        {
+          "questionId": "Q19",
+          "number": 19,
+          "stem": "What is planned for the cafeteria?",
+          "options": [
+            { "key": "A", "text": "It will serve only healthy food." },
+            { "key": "B", "text": "It will be open all day." },
+            { "key": "C", "text": "It will have seating for 200 people." }
+          ]
+        },
+        {
+          "questionId": "Q20",
+          "number": 20,
+          "stem": "The speaker suggests that people who join the centre",
+          "options": [
+            { "key": "A", "text": "must attend an induction session" },
+            { "key": "B", "text": "will receive a free gift" },
+            { "key": "C", "text": "can bring a friend for free" }
+          ]
+        }
+      ]
+    }
+  ]
+}

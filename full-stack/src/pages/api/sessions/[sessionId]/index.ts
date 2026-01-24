@@ -15,7 +15,10 @@ export default withAuth(
     const { sessionId } = req.query as { sessionId: string }
 
     if (req.method === 'GET') {
-      const session = await examSessionService.getSessionById(ctx, sessionId)
+      const session = await examSessionService.getSessionByIdWithTx(
+        ctx,
+        sessionId,
+      )
       res.status(200).json(session)
     } else if (req.method === 'PATCH') {
       const data = validate(updateExamSessionSchema, req.body)
@@ -26,8 +29,8 @@ export default withAuth(
       )
       res.status(200).json(session)
     } else if (req.method === 'DELETE') {
-      // const session = await examSessionService.deleteSession(req.query.sessionId)
-      // res.status(200).json(session)
+      const session = await examSessionService.deleteSession(ctx, sessionId)
+      res.status(200).json(session)
     } else {
       res.status(405).json({ error: 'Method not allowed' })
     }

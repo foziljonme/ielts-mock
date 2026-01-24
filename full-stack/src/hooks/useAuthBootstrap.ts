@@ -19,8 +19,8 @@ export function useAuthBootstrap() {
     async function load() {
       try {
         const user = await httpClient.get<UserResponse>('/auth/me')
-        const { tenant, ...rest } = user.data
 
+        const { tenant, ...rest } = user
         if (!cancelled) {
           setUser(rest)
           setTenant(tenant)
