@@ -23,30 +23,30 @@ import {
   Building2,
   LogOut,
 } from 'lucide-react'
-import { ScheduleTestPage } from './components/ScheduledTest'
+// import { ScheduleTestPage } from '@/admin/components/ScheduledTest'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
-import { useTenantStore } from '@/stores/tenant.store'
 import { ISession } from '@/types/sessions'
 import { useScheduleTestStore } from '@/stores/scheduleTest.store'
 import { useAuthStore } from '@/stores/auth.store'
+import { AdminTestControl } from '../components/AdminTestControl'
+import { useRouter } from 'next/router'
+import Loading from '@/components/Loading'
+import { useTenantStore } from '@/stores/tenant.store'
 // import { mockStudents, mockTestResults, mockTenants } from '../data/mockData'
 // import { ScheduleTestPage } from './ScheduleTestPage'
 // import { TestSubmissionsPage } from './TestSubmissionsPage'
 // import { AdminTestControl } from './AdminTestControl'
 // import { ScheduledTest } from '../types'
 
-interface AdminDashboardProps {
-  onLogout?: () => void
-}
-
-export function AdminDashboard() {
+export function ExamDashboard() {
   const { logout } = useAuthStore()
-  const { isLoading, tenant } = useTenantStore()
-  const { fetchSessions } = useScheduleTestStore()
+  const { tenant } = useTenantStore()
+  const { fetchCurrentSession } = useScheduleTestStore()
   const [searchTerm, setSearchTerm] = useState('')
   const [activeTestControl, setActiveTestControl] = useState<ISession | null>(
     null,
   )
+  const router = useRouter()
 
   // const students = []
   // const results = []
@@ -73,21 +73,49 @@ export function AdminDashboard() {
   }
 
   useEffect(() => {
-    fetchSessions()
-  }, [fetchSessions])
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
+    const examId = router.query.examId as string
+    if (!examId) return
+    fetchCurrentSession(examId)
+  }, [router.query.examId])
 
   if (!tenant) {
-    return <div>No tenant found</div>
+    return <Loading />
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      {/* Stats cards */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div className="min-h-screen bg-gray-50 space-y-6">
+      {/* Header */}
+      <div className="bg-white border-b px-6 py-4 shadow-sm">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Building2 className="w-8 h-8 text-blue-600" />
+              <div>
+                <h1 className="text-xl font-semibold">{tenant.name}</h1>
+                {/* <p className="text-sm text-gray-600">{tenant.location}</p> */}
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {/* <Badge variant="outline" className="text-sm">
+                {tenant.agreement}
+              </Badge> */}
+              <Button variant="outline" size="sm">
+                <Download className="w-4 h-4 mr-2" />
+                Export Data
+              </Button>
+              <Button variant="outline" size="sm" onClick={logout}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className="max-w-7xl mx-auto p-6">
+        {/* Stats cards */}
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <Card className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -148,28 +176,26 @@ export function AdminDashboard() {
           </Card>
         </div> */}
 
-      {/* Tabs */}
-      <Tabs defaultValue="schedule" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="schedule">Schedule Tests</TabsTrigger>
-          <TabsTrigger value="submissions">Test Submissions</TabsTrigger>
-          <TabsTrigger value="students">Candidates</TabsTrigger>
-          <TabsTrigger value="results">Test Results</TabsTrigger>
-          <TabsTrigger value="quota">Quota Management</TabsTrigger>
-        </TabsList>
+        {/* Tabs */}
+        <Tabs defaultValue="control" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="control">Control Panel</TabsTrigger>
+            <TabsTrigger value="submissions">Test Submissions</TabsTrigger>
+            <TabsTrigger value="students">Candidates</TabsTrigger>
+            <TabsTrigger value="results">Test Results</TabsTrigger>
+          </TabsList>
 
-        {/* Schedule Tests Tab */}
-        <TabsContent value="schedule">
-          <ScheduleTestPage />
-        </TabsContent>
+          <TabsContent value="control">
+            <AdminTestControl />
+          </TabsContent>
 
-        {/* Test Submissions Tab */}
-        {/* <TabsContent value="submissions">
+          {/* Test Submissions Tab */}
+          {/* <TabsContent value="submissions">
             <TestSubmissionsPage tenant={tenant} />
           </TabsContent> */}
 
-        {/* Students Tab */}
-        {/* <TabsContent value="students" className="space-y-4">
+          {/* Students Tab */}
+          {/* <TabsContent value="students" className="space-y-4">
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold">Student Management</h2>
@@ -236,8 +262,8 @@ export function AdminDashboard() {
             </Card>
           </TabsContent> */}
 
-        {/* Results Tab */}
-        {/* <TabsContent value="results" className="space-y-4">
+          {/* Results Tab */}
+          {/* <TabsContent value="results" className="space-y-4">
             <Card className="p-6">
               <h2 className="text-lg font-semibold mb-4">Test Results</h2>
 
@@ -282,144 +308,18 @@ export function AdminDashboard() {
               </Table>
             </Card>
           </TabsContent> */}
-
-        {/* Quota Management Tab */}
-        <TabsContent value="quota" className="space-y-4">
-          <Card className="p-6">
-            <h2 className="text-lg font-semibold mb-4">
-              Quota Management & Custom Quotes
-            </h2>
-
-            {/* Current quota status */}
-            <Card className="p-6 bg-blue-50 border-blue-200 mb-6">
-              <h3 className="font-semibold mb-4">Current Test Seats Quota</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm">Total Purchased Seats:</span>
-                  <span className="font-semibold">{tenant?.seatQuota}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm">Used Seats:</span>
-                  <span className="font-semibold text-red-600">
-                    {tenant?.seatUsage}
-                  </span>
-                </div>
-                <div className="flex justify-between pt-2 border-t">
-                  <span className="font-semibold">Remaining Seats:</span>
-                  <span className="font-semibold text-green-600">
-                    {tenant?.seatQuota - tenant?.seatUsage}
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                  <div
-                    className="bg-blue-600 h-2 rounded-full"
-                    style={{
-                      width: `${(tenant.seatUsage / tenant.seatQuota) * 100}%`,
-                    }}
-                  >
-                    aaaaaaaaaaaa
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <h3 className="font-semibold">
-                  Purchase Additional Test Seats
-                </h3>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    Number of Test Seats
-                  </label>
-                  <Input type="number" placeholder="50" defaultValue="50" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    Contract Duration (months)
-                  </label>
-                  <Input type="number" placeholder="6" defaultValue="6" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    Volume Discount
-                  </label>
-                  <Input
-                    type="number"
-                    placeholder="10"
-                    defaultValue="10"
-                    disabled
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    10% discount for orders over 50 attempts
-                  </p>
-                </div>
-              </div>
-
-              <Card className="p-6 bg-green-50 border-green-200">
-                <h3 className="font-semibold mb-4">Quote Summary</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-sm">Base Price per Attempt:</span>
-                    <span className="font-semibold">
-                      £{tenant.pricePerTest}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">Test Attempts:</span>
-                    <span className="font-semibold">50</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">Subtotal:</span>
-                    <span className="font-semibold">
-                      £{50 * tenant.pricePerTest}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">Volume Discount (10%):</span>
-                    <span className="font-semibold text-green-600">
-                      -£
-                      {(50 * tenant.pricePerTest * 0.1).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-lg pt-2 border-t">
-                    <span className="font-semibold">Total Amount:</span>
-                    <span className="font-semibold text-green-600">
-                      £{(50 * tenant.pricePerTest * 0.9).toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-                <Button className="w-full mt-4">Generate Quote PDF</Button>
-              </Card>
-            </div>
-
-            <div className="bg-gray-50 p-4 rounded-lg mt-6">
-              <h4 className="font-medium mb-2">Package Details</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
-                <li>• {tenant.agreement}</li>
-                <li>• {tenant.totalSeats} workstations available</li>
-                <li>
-                  • Test attempts are managed independently of student
-                  enrollment
-                </li>
-                <li>• Full technical support included</li>
-                <li>• Detailed analytics and reporting</li>
-                <li>• Custom branding options</li>
-              </ul>
-            </div>
-          </Card>
-        </TabsContent>
-      </Tabs>
+        </Tabs>
+      </div>
     </div>
   )
 }
 
-const ProtectedAdminDashboard = () => {
+const ProtectedExamDashboard = () => {
   return (
     <ProtectedRoute>
-      <AdminDashboard />
+      <ExamDashboard />
     </ProtectedRoute>
   )
 }
 
-export default ProtectedAdminDashboard
+export default ProtectedExamDashboard

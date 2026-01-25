@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -11,7 +12,7 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-export default function Home() {
+function Home() {
   return (
     <div
       className={`${geistSans.className} ${geistMono.className} flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black`}
@@ -76,3 +77,13 @@ export default function Home() {
     </div>
   )
 }
+
+const ProtectedHomePage = () => {
+  return (
+    <ProtectedRoute>
+      <Home />
+    </ProtectedRoute>
+  )
+}
+
+export default ProtectedHomePage

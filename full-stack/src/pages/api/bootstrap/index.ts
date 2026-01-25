@@ -25,7 +25,7 @@ const tenants = [
       {
         name: 'saas@test.net',
         email: 'saas@test.net',
-        password: 'demo',
+        password: 'something123',
         roles: [UserRole.PLATFORM_ADMIN, UserRole.TENANT_ADMIN, UserRole.STAFF],
       },
     ],
@@ -38,7 +38,7 @@ const tenants = [
       {
         name: 'hello-academy@test.net',
         email: 'hello-academy@test.net',
-        password: 'demo',
+        password: 'something123',
         roles: [UserRole.PLATFORM_ADMIN, UserRole.TENANT_ADMIN, UserRole.STAFF],
       },
     ],

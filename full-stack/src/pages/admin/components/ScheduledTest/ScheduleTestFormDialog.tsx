@@ -12,7 +12,6 @@ import {
 } from '@/components/dialog'
 import { Alert, AlertDescription } from '@/components/alert'
 import { Plus, AlertCircle, Minus } from 'lucide-react'
-import { useAdminDashboardStore } from '@/stores/adminDashboard.store'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { ISessionInput } from '@/types/sessions'
 import { useScheduleTestStore } from '@/stores/scheduleTest.store'
@@ -23,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/select'
+import { useTenantStore } from '@/stores/tenant.store'
 
 type CandidateForm = {
   candidateName: string
@@ -39,7 +39,7 @@ type ExamForm = {
 export function ScheduleTestFormDialog() {
   const { createSession, availableTests, fetchAvailableTests, sessions } =
     useScheduleTestStore()
-  const { tenant } = useAdminDashboardStore()
+  const { tenant } = useTenantStore()
 
   const { formState, register, handleSubmit, control, reset, setValue } =
     useForm<ExamForm>({
@@ -79,8 +79,6 @@ export function ScheduleTestFormDialog() {
 
   const handleScheduleTest = async () => {
     return await handleSubmit(async data => {
-      console.log({ formData: data })
-
       const newTest: ISessionInput = {
         testId: data.test,
         examDate: data.examDate,

@@ -38,7 +38,11 @@ class ExamSessionService {
         where: { tenantId: ctx.user.tenantId },
         orderBy: { createdAt: 'desc' },
         include: {
-          seats: true,
+          seats: {
+            include: {
+              sections: true,
+            },
+          },
         },
       }),
       db.examSession.count({ where: { tenantId: ctx.user.tenantId } }),

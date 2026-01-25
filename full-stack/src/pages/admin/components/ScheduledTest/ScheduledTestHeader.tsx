@@ -1,10 +1,10 @@
 import { Card } from '@/components/card'
 import { Users, Clock, CheckCircle2 } from 'lucide-react'
-import { useAdminDashboardStore } from '@/stores/adminDashboard.store'
 import { useScheduleTestStore } from '@/stores/scheduleTest.store'
+import { useTenantStore } from '@/stores/tenant.store'
 
 export default function ScheduledTestHeader() {
-  const { tenant } = useAdminDashboardStore()
+  const { tenant } = useTenantStore()
   const { totalSessions } = useScheduleTestStore()
 
   if (!tenant) {

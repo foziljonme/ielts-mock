@@ -5,10 +5,18 @@ import { AppError } from '@/lib/errors'
 import { AuthRequestContext, JwtBasePayload } from '@/lib/auth/types'
 import db from '../lib/db'
 import { ErrorCodes } from '@/lib/errors/codes'
-import { LoginSchema } from '@/validators/auth.schema'
+import {
+  ChangePasswordSchema,
+  LoginCandidateSchema,
+  LoginSchema,
+} from '@/validators/auth.schema'
 import jwt from 'jsonwebtoken'
 import tenantsService from './tenants.service'
-import { REFRESH_TOKEN_EXPIRES_IN, TOKEN_EXPIRES_IN } from '@/lib/constants'
+import {
+  CANDIDATE_TOKEN_EXPIRES_IN,
+  REFRESH_TOKEN_EXPIRES_IN,
+  TOKEN_EXPIRES_IN,
+} from '@/lib/constants'
 
 class AuthService {
   constructor() {}
@@ -95,7 +103,6 @@ class AuthService {
   }
 
   async getMe(ctx: AuthRequestContext) {
-    console.log({ ctx })
     return db.$transaction(async tx => {
       const user = await tx.user.findUnique({
         where: { id: ctx.user.sub },
@@ -115,6 +122,108 @@ class AuthService {
       return {
         user: user,
         tenant: tenant,
+      }
+    })
+  }
+
+  async changePassword(ctx: AuthRequestContext, data: ChangePasswordSchema) {
+    return db.$transaction(async tx => {
+      const user = await tx.user.findUnique({
+        where: { id: ctx.user.sub },
+      })
+
+      if (!user) {
+        throw new AppError(
+          'Unauthorized',
+          401,
+          ErrorCodes.UNAUTHORIZED,
+          'User not found',
+        )
+      }
+
+      const isPasswordValid = await bcrypt.compare(
+        data.currentPassword,
+        user.password,
+      )
+
+      if (!isPasswordValid) {
+        throw new AppError(
+          'Unauthorized',
+          401,
+          ErrorCodes.UNAUTHORIZED,
+          'Invalid password',
+        )
+      }
+
+      const hashedPassword = await bcrypt.hash(data.newPassword, 10)
+
+      await tx.user.update({
+        where: { id: user.id },
+        data: { password: hashedPassword },
+      })
+
+      return { message: 'Password changed successfully' }
+    })
+  }
+
+  async loginCandidate(loginData: LoginCandidateSchema) {
+    return db.$transaction(async tx => {
+      const seat = await tx.examSeat.findUnique({
+        where: {
+          accessCode: loginData.accessCode,
+          candidateId: loginData.candidateId,
+        },
+      })
+      if (!seat) {
+        throw new AppError(
+          'Unauthorized',
+          401,
+          ErrorCodes.UNAUTHORIZED,
+          'Seat not found',
+        )
+      }
+
+      const tokenPayload: JwtBasePayload = {
+        sub: seat.id,
+        tenantId: seat.tenantId || '',
+        sessionId: seat.sessionId,
+        roles: [UserRole.CANDIDATE],
+      }
+
+      const accessToken = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
+        expiresIn: CANDIDATE_TOKEN_EXPIRES_IN,
+      })
+
+      const tenant = await tenantsService.getTenant(tx, seat.tenantId!)
+
+      return {
+        seat,
+        tenant,
+        accessToken,
+      }
+    })
+  }
+
+  async getMeCandidate(ctx: AuthRequestContext) {
+    return await db.$transaction(async tx => {
+      const seat = await tx.examSeat.findUnique({
+        where: { id: ctx.user.sub },
+      })
+
+      if (!seat) {
+        throw new AppError(
+          'Unauthorized',
+          401,
+          ErrorCodes.UNAUTHORIZED,
+          'Seat not found',
+        )
+      }
+
+      const tenant = await tenantsService.getTenant(tx, seat.tenantId)
+
+      return {
+        seat,
+        tenant,
       }
     })
   }
