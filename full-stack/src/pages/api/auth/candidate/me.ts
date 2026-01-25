@@ -10,10 +10,11 @@ export default withAuth(
     ctx: AuthRequestContext,
   ) => {
     if (req.method === 'GET') {
-      const user = await authService.getMe(ctx)
-      res.status(200).json(user)
+      const result = await authService.getMeCandidate(ctx)
+      return res.status(200).json(result)
     } else {
-      res.status(405).json({ error: 'Method not allowed' })
+      return res.status(405).json({ error: 'Method Not Allowed' })
     }
   },
+  { candidateCanAccess: true },
 )

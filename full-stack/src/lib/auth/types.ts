@@ -1,6 +1,7 @@
 export type JwtBasePayload = {
   sub: string
   tenantId: string
+  sessionId?: string
   roles: string[]
 }
 

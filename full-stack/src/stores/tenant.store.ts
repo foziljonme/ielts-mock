@@ -1,25 +1,19 @@
-import { ISeat } from '@/types/seats'
-import { ISession } from '@/types/sessions'
 import { ITenant } from '@/types/tenant'
 import { create } from 'zustand'
 
-type AdminDashboardState = {
+type TenantState = {
   isLoading: boolean
-  error: string | null
   tenant: ITenant | null
   setLoading: (isLoading: boolean) => void
-  setError: (error: string | null) => void
   setTenant: (tenant: ITenant | null) => void
   appendSeats: (count: number) => void
   removeSeats: (count: number) => void
 }
 
-export const useAdminDashboardStore = create<AdminDashboardState>()(set => ({
+export const useTenantStore = create<TenantState>()(set => ({
   isLoading: false,
-  error: null,
   tenant: null,
   setLoading: (isLoading: boolean) => set({ isLoading }),
-  setError: (error: string | null) => set({ error }),
   setTenant: (tenant: ITenant | null) => set({ tenant }),
   appendSeats: (count: number) =>
     set(state => ({

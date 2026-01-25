@@ -41,3 +41,6 @@ sync:
 
 fr-log:
 	docker compose logs -f frontend
+
+socket-log:
+	docker compose logs -f websocket

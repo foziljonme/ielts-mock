@@ -1,32 +1,26 @@
 // src/hooks/useAuthBootstrap.ts
 import { useEffect } from 'react'
-import { useAuthStore } from '@/stores/auth.store'
-import { IUser } from '@/types/user'
-import httpClient from '@/lib/httpClient'
-import { ITenant } from '@/types/tenant'
-import { useAdminDashboardStore } from '@/stores/adminDashboard.store'
-
-type UserResponse = IUser & { tenant: ITenant }
+import { AuthType, useAuthStore } from '@/stores/auth.store'
+import { useTenantStore } from '@/stores/tenant.store'
 
 export function useAuthBootstrap() {
+  const restoreAuth = useAuthStore(s => s.restoreAuth)
   const setUser = useAuthStore(s => s.setUser)
-  const setTenant = useAdminDashboardStore(s => s.setTenant)
   const setLoading = useAuthStore(s => s.setLoading)
+  const hasHydrated = useAuthStore(s => s.hasHydrated)
 
   useEffect(() => {
     let cancelled = false
 
     async function load() {
       try {
-        const user = await httpClient.get<UserResponse>('/auth/me')
-
-        const { tenant, ...rest } = user
-        if (!cancelled) {
-          setUser(rest)
-          setTenant(tenant)
+        if (hasHydrated) {
+          await restoreAuth()
         }
       } catch {
-        if (!cancelled) setUser(null)
+        if (!cancelled) {
+          setUser(null)
+        }
       } finally {
         if (!cancelled) setLoading(false)
       }
@@ -37,5 +31,5 @@ export function useAuthBootstrap() {
     return () => {
       cancelled = true
     }
-  }, [setUser, setLoading])
+  }, [setUser, setLoading, hasHydrated])
 }

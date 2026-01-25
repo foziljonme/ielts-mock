@@ -1,10 +1,10 @@
 import { IAvailableTest } from '@/types/seats'
 import { ISession, ISessionInput } from '@/types/sessions'
 import { create } from 'zustand'
-import { useAdminDashboardStore } from './adminDashboard.store'
 import httpClient from '@/lib/httpClient'
 import { toastSuccess } from '@/lib/notifications/toastSuccess'
 import { toastError } from '@/lib/notifications/toastError'
+import { useTenantStore } from './tenant.store'
 
 type ScheduleTestStore = {
   isLoading: boolean
@@ -12,12 +12,13 @@ type ScheduleTestStore = {
   availableTests: IAvailableTest[]
   sessions: ISession[]
   totalSessions: number
-  scheduledTest: ISession | null
+  currentSession: ISession | null
   fetchSessions: () => Promise<void>
   fetchAvailableTests: () => Promise<void>
   createSession: (session: ISessionInput) => Promise<void>
   startSession: (sessionId: string) => Promise<void>
   deleteSession: (sessionId: string) => Promise<void>
+  fetchCurrentSession: (sessionId: string) => Promise<void>
 }
 
 export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
@@ -26,7 +27,7 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
   availableTests: [],
   sessions: [],
   totalSessions: 0,
-  scheduledTest: null,
+  currentSession: null,
   fetchSessions: async () => {
     try {
       const response = await httpClient.get('/sessions')
@@ -36,6 +37,14 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
       })
     } catch (error) {
       toastError({ title: 'Failed to fetch sessions', error })
+    }
+  },
+  fetchCurrentSession: async (sessionId: string) => {
+    try {
+      const response = await httpClient.get(`/sessions/${sessionId}`)
+      set({ currentSession: response })
+    } catch (error) {
+      toastError({ title: 'Failed to fetch current session', error })
     }
   },
   fetchAvailableTests: async () => {
@@ -53,12 +62,11 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
     set({ isLoading: true })
     try {
       const response = await httpClient.post('/sessions', session)
-      console.log(response)
       set(state => ({
         sessions: [response, ...state.sessions],
         totalSessions: state.totalSessions + 1,
       }))
-      useAdminDashboardStore.getState().appendSeats(response.seats.length)
+      useTenantStore.getState().appendSeats(response.seats.length)
     } catch (error) {
       toastError({ title: 'Failed to create exam session', error })
     } finally {
@@ -80,11 +88,11 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
         )
         return {
           sessions: updatedSessions,
-          scheduledTest:
-            updatedSessions.find(session => session.id === sessionId) ?? null,
+          currentSession: updatedSessions.find(
+            session => session.id === sessionId,
+          ),
         }
       })
-      toastSuccess({ title: 'Exam session started successfully' })
     } catch (error) {
       toastError({ title: 'Failed to start exam session', error })
     } finally {
@@ -101,7 +109,7 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
         sessions: state.sessions.filter(session => session.id !== sessionId),
         totalSessions: state.totalSessions - 1,
       }))
-      useAdminDashboardStore.getState().removeSeats(session?.seats.length || 0)
+      useTenantStore.getState().removeSeats(session?.seats.length || 0)
     } catch (error) {
       toastError({ title: 'Failed to delete exam session', error })
     } finally {

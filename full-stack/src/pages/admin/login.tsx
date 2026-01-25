@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from '@/components/alert'
 import { Building2, LogIn } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth.store'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function AdminLoginPage() {
   const { isAuthenticated, login } = useAuthStore()
@@ -32,6 +33,10 @@ export default function AdminLoginPage() {
       if (isAuthenticated) router.push('/admin/dashboard')
     })
   }
+
+  // if (isAuthenticated) {
+  //   router.push('/admin/dashboard')
+  // }
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -83,6 +88,12 @@ export default function AdminLoginPage() {
             <LogIn className="w-4 h-4 mr-2" />
             Sign In
           </Button>
+          <Link
+            href="/candidate/login"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground hover:bg-primary/90 h-10 rounded-md px-6 has-[>svg]:px-4 w-full"
+          >
+            Login as Candidate
+          </Link>
         </form>
 
         <div className="mt-8 pt-6 border-t">
@@ -90,14 +101,14 @@ export default function AdminLoginPage() {
             Demo Credentials:
           </p>
           <div
-            className="bg-gray-50 p-3 rounded text-xs font-mono"
+            className="bg-gray-50 p-3 rounded text-xs font-mono cursor-pointer"
             onClick={() => {
               setEmail('admin@global-academy.com')
-              setPassword('demo')
+              setPassword('something123')
             }}
           >
             <p>Email: admin@global-academy.com</p>
-            <p>Password: demo</p>
+            <p>Password: something123</p>
           </div>
         </div>
 

@@ -18,24 +18,27 @@ import {
   DialogTrigger,
 } from '@/components/dialog'
 import { Calendar, Trash2, Play } from 'lucide-react'
-import { useAdminDashboardStore } from '@/stores/adminDashboard.store'
 import { ExamSessionStatus } from '@/../prisma/generated/enums'
 import { useScheduleTestStore } from '@/stores/scheduleTest.store'
 import ScheduledTestHeader from './ScheduledTestHeader'
 import { ScheduleTestFormDialog } from './ScheduleTestFormDialog'
 import Loading from '@/components/Loading'
+import { useRouter } from 'next/navigation'
+import { useTenantStore } from '@/stores/tenant.store'
 
 export function ScheduleTestPage() {
   const { fetchAvailableTests, sessions, deleteSession, startSession } =
     useScheduleTestStore()
-  const { tenant } = useAdminDashboardStore()
+  const { tenant } = useTenantStore()
+  const router = useRouter()
 
   const handleDeleteScheduledTest = async (sessionId: string) => {
     await deleteSession(sessionId)
   }
 
-  const handleEditScheduledTest = async (sessionId: string) => {
+  const handleStartScheduledTest = async (sessionId: string) => {
     await startSession(sessionId)
+    router.push(`/admin/${sessionId}/control`)
   }
 
   useEffect(() => {
@@ -85,7 +88,11 @@ export function ScheduleTestPage() {
             </TableHeader>
             <TableBody>
               {sessions.map(session => (
-                <TableRow key={session.id}>
+                <TableRow
+                  key={session.id}
+                  onClick={() => router.push(`/admin/${session.id}`)}
+                  className="cursor-pointer"
+                >
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-gray-400" />
@@ -181,7 +188,7 @@ export function ScheduleTestPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleEditScheduledTest(session.id)}
+                          onClick={() => handleStartScheduledTest(session.id)}
                         >
                           <Play className="w-4 h-4 text-green-500" />
                         </Button>
