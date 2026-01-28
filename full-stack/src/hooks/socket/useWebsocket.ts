@@ -8,7 +8,12 @@ import { ConnectionStatus, useSocketStore } from '@/stores/socket.store'
 export function useWebsocket() {
   const socketRef = useRef<Socket | null>(null)
 
-  const { setConnectionStatus, candidateJoined } = useSocketStore()
+  const {
+    setConnectionStatus,
+    candidateJoined,
+    restoreCandidates,
+    candidateLeft,
+  } = useSocketStore()
 
   useEffect(() => {
     const socket = getSocket()
@@ -29,14 +34,16 @@ export function useWebsocket() {
     socket.on('connect_error', onConnectError)
 
     socket.on('exam:candidate:joined', candidateJoined)
-    // socket.on('exam:candidate:left', leaveCandidate)
+    socket.on('exam:candidates', restoreCandidates)
+    socket.on('exam:candidate:left', candidateLeft)
 
     return () => {
       socket.off('connect', onConnect)
       socket.off('disconnect', onDisconnect)
       socket.off('connect_error', onConnectError)
       socket.off('exam:candidate:joined', candidateJoined)
-      // socket.off('exam:candidate:left', leaveCandidate)
+      socket.off('exam:candidates', restoreCandidates)
+      socket.off('exam:candidate:left', candidateLeft)
     }
   }, [setConnectionStatus, candidateJoined])
 

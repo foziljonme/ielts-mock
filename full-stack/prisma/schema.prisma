@@ -73,16 +73,17 @@ enum ExamSessionStatus {
 }
 
 model ExamSession {
-  id         String            @id @default(cuid())
-  tenantId   String
-  testId     String // External JSON test identifier
+  id             String            @id @default(cuid())
+  tenantId       String
+  testId         String // External JSON test identifier
   // name       String            @db.VarChar(255)
-  examDate   DateTime
-  status     ExamSessionStatus @default(SCHEDULED)
-  isArchived Boolean           @default(false)
-  startTime  DateTime?
-  endTime    DateTime?
-  createdAt  DateTime          @default(now())
+  examDate       DateTime
+  status         ExamSessionStatus @default(SCHEDULED)
+  currentSection TestSection?
+  isArchived     Boolean           @default(false)
+  startTime      DateTime?
+  endTime        DateTime?
+  createdAt      DateTime          @default(now())
 
   tenant Tenant     @relation(fields: [tenantId], references: [id])
   seats  ExamSeat[]

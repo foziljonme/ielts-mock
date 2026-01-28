@@ -121,6 +121,7 @@ export const ExamSessionScalarFieldEnum = {
   testId: 'testId',
   examDate: 'examDate',
   status: 'status',
+  currentSection: 'currentSection',
   isArchived: 'isArchived',
   startTime: 'startTime',
   endTime: 'endTime',

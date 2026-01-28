@@ -35,10 +35,6 @@ import { useAuthStore } from '@/stores/auth.store'
 // import { AdminTestControl } from './AdminTestControl'
 // import { ScheduledTest } from '../types'
 
-interface AdminDashboardProps {
-  onLogout?: () => void
-}
-
 export function AdminDashboard() {
   const { logout } = useAuthStore()
   const { isLoading, tenant } = useTenantStore()

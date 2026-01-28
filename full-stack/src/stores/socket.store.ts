@@ -1,5 +1,5 @@
 // stores/useSocketStore.ts
-import { ICandidateJoinData } from '@/types/socket.events'
+import { ICandidateJoinData, ICandidateLeaveData } from '@/types/socket.events'
 import { create } from 'zustand'
 
 export enum ConnectionStatus {
@@ -10,26 +10,44 @@ export enum ConnectionStatus {
 
 type SocketState = {
   connectionStatus: ConnectionStatus
-  connectedCandidates: string[]
+  connectedCandidates: Set<string>
   setConnectionStatus: (status: ConnectionStatus) => void
   candidateJoined: (candidateJoinData: ICandidateJoinData) => void
-  leaveCandidate: (id: string) => void
+  restoreCandidates: (candidates: ICandidateJoinData[]) => void
+  candidateLeft: (candidateLeaveData: ICandidateLeaveData) => void
 }
 
 export const useSocketStore = create<SocketState>(set => ({
-  connectedCandidates: [],
+  connectedCandidates: new Set<string>(),
   connectionStatus: ConnectionStatus.Connecting,
   setConnectionStatus: status => set({ connectionStatus: status }),
   candidateJoined: candidateJoinData => {
-    console.log('jopineddddd', candidateJoinData)
-    set(s => ({
-      connectedCandidates: [
-        ...new Set([...s.connectedCandidates, candidateJoinData.candidateId]),
-      ],
-    }))
+    set(s => {
+      const currentConnectedCandidates = s.connectedCandidates
+      currentConnectedCandidates.add(candidateJoinData.candidateId)
+      return {
+        connectedCandidates: currentConnectedCandidates,
+      }
+    })
   },
-  leaveCandidate: id =>
-    set(s => ({
-      connectedCandidates: s.connectedCandidates.filter(x => x !== id),
-    })),
+  restoreCandidates: candidates => {
+    set(s => {
+      const currentConnectedCandidates = new Set<string>()
+      candidates.forEach(candidate => {
+        currentConnectedCandidates.add(candidate.candidateId)
+      })
+      return {
+        connectedCandidates: currentConnectedCandidates,
+      }
+    })
+  },
+  candidateLeft: candidateLeaveData =>
+    set(s => {
+      const currentConnectedCandidates = s.connectedCandidates
+      currentConnectedCandidates.delete(candidateLeaveData.candidateId)
+
+      return {
+        connectedCandidates: currentConnectedCandidates,
+      }
+    }),
 }))

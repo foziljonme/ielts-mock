@@ -25,9 +25,11 @@ import { ScheduleTestFormDialog } from './ScheduleTestFormDialog'
 import Loading from '@/components/Loading'
 import { useRouter } from 'next/navigation'
 import { useTenantStore } from '@/stores/tenant.store'
+import useExamStore from '@/stores/exam.store'
 
 export function ScheduleTestPage() {
-  const { fetchAvailableTests, sessions, deleteSession, startSession } =
+  const { startSession } = useExamStore()
+  const { fetchAvailableTests, sessions, deleteSession } =
     useScheduleTestStore()
   const { tenant } = useTenantStore()
   const router = useRouter()

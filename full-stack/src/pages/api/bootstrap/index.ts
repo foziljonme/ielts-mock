@@ -36,8 +36,8 @@ const tenants = [
     seatQuota: 30,
     users: [
       {
-        name: 'hello-academy@test.net',
-        email: 'hello-academy@test.net',
+        name: 'admin@global-academy.com',
+        email: 'admin@global-academy.com',
         password: 'something123',
         roles: [UserRole.PLATFORM_ADMIN, UserRole.TENANT_ADMIN, UserRole.STAFF],
       },
@@ -62,16 +62,16 @@ const onboard = async () => {
     const createdDataPromises = tenants.map(tenant => {
       return tx.tenant
         .upsert({
-          where: { subdomain: 'saas' },
+          where: { subdomain: tenant.subdomain },
           create: {
-            subdomain: 'saas',
-            name: 'SaaS',
-            seatQuota: 20,
+            subdomain: tenant.subdomain,
+            name: tenant.name,
+            seatQuota: tenant.seatQuota,
           },
           update: {
-            name: 'SaaS',
-            subdomain: 'saas',
-            seatQuota: 20,
+            name: tenant.name,
+            subdomain: tenant.subdomain,
+            seatQuota: tenant.seatQuota,
           },
         })
         .then(async result => {

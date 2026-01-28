@@ -1234,6 +1234,7 @@ export const ExamSessionScalarFieldEnum = {
   testId: 'testId',
   examDate: 'examDate',
   status: 'status',
+  currentSection: 'currentSection',
   isArchived: 'isArchived',
   startTime: 'startTime',
   endTime: 'endTime',
@@ -1427,20 +1428,6 @@ export type ListEnumExamSessionStatusFieldRefInput<$PrismaModel> = FieldRefInput
 
 
 /**
- * Reference to a field of type 'ExamSeatStatus'
- */
-export type EnumExamSeatStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExamSeatStatus'>
-    
-
-
-/**
- * Reference to a field of type 'ExamSeatStatus[]'
- */
-export type ListEnumExamSeatStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExamSeatStatus[]'>
-    
-
-
-/**
  * Reference to a field of type 'TestSection'
  */
 export type EnumTestSectionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TestSection'>
@@ -1451,6 +1438,20 @@ export type EnumTestSectionFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'TestSection[]'
  */
 export type ListEnumTestSectionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TestSection[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ExamSeatStatus'
+ */
+export type EnumExamSeatStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExamSeatStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ExamSeatStatus[]'
+ */
+export type ListEnumExamSeatStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExamSeatStatus[]'>
     
 
 

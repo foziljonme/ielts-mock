@@ -21,6 +21,7 @@ import { useWebsocket } from '@/hooks/socket/useWebsocket'
 import { Card } from '@/components/card'
 import { Badge } from '@/components/badge'
 import { useSocketStore } from '@/stores/socket.store'
+import useExamStore from '@/stores/exam.store'
 // import { ScheduledTest } from '@/pages/admin/types'
 // import { projectId, publicAnonKey } from '@/utils/supabase/info'
 // import { TestSessionDemo } from '@/pages/admin/components/TestControl/TestSessionDemo'
@@ -42,8 +43,8 @@ import { useSocketStore } from '@/stores/socket.store'
 export function AdminTestControl() {
   const { connectedCandidates } = useSocketStore()
   const { joinExamRoom } = useWebsocket()
-  const { fetchCurrentSession, currentSession, startSession } =
-    useScheduleTestStore()
+  const { currentSession, startSession } = useExamStore()
+
   const router = useRouter()
   const [sessionProgress, setSessionProgress] = useState<ISessionProgress>({
     completedCandidates: new Map(),
@@ -101,33 +102,17 @@ export function AdminTestControl() {
   // }, [session.id])
 
   const handleStartSection = async (sectionName: TestSection) => {
-    // const now = Date.now()
-    // try {
-    //   const response = await fetch(
-    //     `https://${projectId}.supabase.co/functions/v1/make-server-9af6c772/sessions/${session.id}/start-section`,
-    //     {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         Authorization: `Bearer ${publicAnonKey}`,
-    //       },
-    //       body: JSON.stringify({ section: sectionName, startTime: now }),
-    //     },
-    //   )
-    //   if (!response.ok) {
-    //     throw new Error('Failed to start section')
-    //   }
-    //   const data = await response.json()
-    //   console.log(`Section ${sectionName} started successfully:`, data)
-    //   setSession(prev => ({
-    //     ...prev,
-    //     currentSection: sectionName,
-    //     sectionStartTime: now,
-    //   }))
-    // } catch (error) {
-    //   console.error('Error starting section:', error)
-    //   alert('Failed to start section. Please try again.')
-    // }
+    const now = new Date().getTime()
+    try {
+      // setSession(prev => ({
+      //   ...prev,
+      //   currentSection: sectionName,
+      //   sectionStartTime: now,
+      // }))
+    } catch (error) {
+      console.error('Error starting section:', error)
+      alert('Failed to start section. Please try again.')
+    }
   }
 
   const handleStopSection = async () => {
@@ -182,9 +167,6 @@ export function AdminTestControl() {
   }
 
   useEffect(() => {
-    if (!currentSession && router.query.examId) {
-      fetchCurrentSession(router.query.examId as string)
-    }
     joinExamRoom(router.query.examId as string)
   }, [router.query.examId])
 
@@ -204,7 +186,7 @@ export function AdminTestControl() {
       {showHelp && <TestSessionDemo onClose={() => setShowHelp(false)} />}
 
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Test Control Panel Header */}
 
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex justify-between items-start mb-4">
@@ -250,7 +232,13 @@ export function AdminTestControl() {
                 >
                   {currentSession.status}
                 </Badge>
-                <p className="text-sm text-gray-600">Overall exam state</p>
+                <p className="text-sm text-gray-600">
+                  {currentSession.status === ExamSessionStatus.SCHEDULED
+                    ? 'Exam is scheduled, open it to start accepting candidates'
+                    : currentSession.status === ExamSessionStatus.OPEN
+                      ? 'Exam is open, candidates can join'
+                      : 'Exam is completed, no more changes allowed'}
+                </p>
               </div>
               <div>
                 {currentSession.status === ExamSessionStatus.SCHEDULED && (
@@ -279,11 +267,10 @@ export function AdminTestControl() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-blue-600 font-medium">
-                    Connected Students
+                    Connected Candidates
                   </p>
                   <p className="text-2xl font-bold text-blue-900 mt-1">
-                    {connectedCandidates.length} /{' '}
-                    {currentSession?.seats.length}
+                    {connectedCandidates.size} / {currentSession?.seats.length}
                   </p>
                 </div>
                 <Users className="w-8 h-8 text-blue-500" />
@@ -419,14 +406,14 @@ export function AdminTestControl() {
           </div>
         </div>
 
-        {/* Connected Students List */}
+        {/* Connected Candidates List */}
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="flex items-center mb-4">
             <h2 className="text-xl font-semibold text-gray-900">
               Student Status
             </h2>
             <p className="text-gray-600">
-              {connectedCandidates.length}/{currentSession.seats.length}
+              {connectedCandidates.size}/{currentSession.seats.length}
             </p>
           </div>
 
@@ -456,9 +443,7 @@ export function AdminTestControl() {
               </thead>
               <tbody>
                 {currentSession.seats.map(candidate => {
-                  const isConnected = connectedCandidates.some(
-                    sId => sId === candidate.id,
-                  )
+                  const isConnected = connectedCandidates.has(candidate.id)
                   const completedSections = Array.from(
                     sessionProgress.completedCandidates.entries(),
                   )
@@ -537,7 +522,7 @@ export function AdminTestControl() {
                 </h3>
                 <ul className="text-sm text-yellow-800 space-y-1">
                   <li>
-                    • Ensure all students are connected before starting a
+                    • Ensure all candidates are connected before starting a
                     section
                   </li>
                   <li>
@@ -545,7 +530,7 @@ export function AdminTestControl() {
                     Writing → Speaking
                   </li>
                   <li>
-                    • Once a section is started, all students will begin
+                    • Once a section is started, all candidates will begin
                     simultaneously
                   </li>
                   <li>

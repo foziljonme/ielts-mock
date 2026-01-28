@@ -2,32 +2,34 @@ import { IAvailableTest } from '@/types/seats'
 import { ISession, ISessionInput } from '@/types/sessions'
 import { create } from 'zustand'
 import httpClient from '@/lib/httpClient'
-import { toastSuccess } from '@/lib/notifications/toastSuccess'
 import { toastError } from '@/lib/notifications/toastError'
 import { useTenantStore } from './tenant.store'
 
 type ScheduleTestStore = {
   isLoading: boolean
-  error: string | null
   availableTests: IAvailableTest[]
   sessions: ISession[]
   totalSessions: number
-  currentSession: ISession | null
+
   fetchSessions: () => Promise<void>
   fetchAvailableTests: () => Promise<void>
   createSession: (session: ISessionInput) => Promise<void>
-  startSession: (sessionId: string) => Promise<void>
   deleteSession: (sessionId: string) => Promise<void>
-  fetchCurrentSession: (sessionId: string) => Promise<void>
+  updateLocalSession: (sessionId: string, session: ISession) => void
 }
 
 export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
   isLoading: false,
-  error: null,
   availableTests: [],
   sessions: [],
   totalSessions: 0,
-  currentSession: null,
+  updateLocalSession: (sessionId: string, session: ISession) => {
+    set({
+      sessions: get().sessions.map(s =>
+        s.id === sessionId ? { ...s, ...session } : s,
+      ),
+    })
+  },
   fetchSessions: async () => {
     try {
       const response = await httpClient.get('/sessions')
@@ -37,14 +39,6 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
       })
     } catch (error) {
       toastError({ title: 'Failed to fetch sessions', error })
-    }
-  },
-  fetchCurrentSession: async (sessionId: string) => {
-    try {
-      const response = await httpClient.get(`/sessions/${sessionId}`)
-      set({ currentSession: response })
-    } catch (error) {
-      toastError({ title: 'Failed to fetch current session', error })
     }
   },
   fetchAvailableTests: async () => {
@@ -69,32 +63,6 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
       useTenantStore.getState().appendSeats(response.seats.length)
     } catch (error) {
       toastError({ title: 'Failed to create exam session', error })
-    } finally {
-      set({ isLoading: false })
-    }
-  },
-  startSession: async (sessionId: string) => {
-    set({ isLoading: true })
-    try {
-      const sessionUpdated = await httpClient.post(
-        `/sessions/${sessionId}/start`,
-        {},
-      )
-      set(state => {
-        const updatedSessions = state.sessions.map(session =>
-          session.id === sessionId
-            ? { ...session, ...sessionUpdated }
-            : session,
-        )
-        return {
-          sessions: updatedSessions,
-          currentSession: updatedSessions.find(
-            session => session.id === sessionId,
-          ),
-        }
-      })
-    } catch (error) {
-      toastError({ title: 'Failed to start exam session', error })
     } finally {
       set({ isLoading: false })
     }

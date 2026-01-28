@@ -4,8 +4,11 @@ import { env } from "../config/env";
 const cookie = require("cookie");
 
 export interface JwtPayload {
-  userId: string;
-  role: "ADMIN" | "STUDENT";
+  userId?: string;
+  sub: string;
+  role?: string;
+  roles?: string[];
+  [key: string]: any;
 }
 
 // export function socketAuth(socket: Socket, next: (err?: Error) => void) {

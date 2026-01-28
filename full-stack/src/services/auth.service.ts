@@ -1,6 +1,6 @@
 import { CreateUserSchema } from '@/validators/user.schema'
 import bcrypt from 'bcrypt'
-import { UserRole } from '../../prisma/generated/enums'
+import { ExamSessionStatus, UserRole } from '../../prisma/generated/enums'
 import { AppError } from '@/lib/errors'
 import { AuthRequestContext, JwtBasePayload } from '@/lib/auth/types'
 import db from '../lib/db'
@@ -173,13 +173,35 @@ class AuthService {
           accessCode: loginData.accessCode,
           candidateId: loginData.candidateId,
         },
+        include: {
+          session: true,
+        },
       })
+
       if (!seat) {
         throw new AppError(
           'Unauthorized',
           401,
           ErrorCodes.UNAUTHORIZED,
           'Seat not found',
+        )
+      }
+
+      if (seat.session.status === ExamSessionStatus.COMPLETED) {
+        throw new AppError(
+          'Unauthorized',
+          401,
+          ErrorCodes.UNAUTHORIZED,
+          'Session already completed',
+        )
+      }
+
+      if (seat.session.status === ExamSessionStatus.SCHEDULED) {
+        throw new AppError(
+          'Bad Request',
+          400,
+          ErrorCodes.BAD_REQUEST,
+          'Session is not open for candidates, please contact administrator',
         )
       }
 

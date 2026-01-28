@@ -107,7 +107,7 @@ export default function CandidateLoginPage() {
             Demo Access Codes:
           </p>
           <div className="flex flex-wrap gap-2 justify-center mt-2">
-            {['5lnb8b:jNGw-FqjC-mt5q', 'ktimob:dyhr-vABD-ki7C'].map(code => (
+            {['wbmnbh:QRES-qbmc-Hi3D', 'ktimob:dyhr-vABD-ki7C'].map(code => (
               <button
                 key={code}
                 onClick={() => {

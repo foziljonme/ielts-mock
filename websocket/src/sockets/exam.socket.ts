@@ -3,15 +3,35 @@ import { Server, Socket } from "socket.io";
 export function registerExamSockets(io: Server) {
   io.on("connection", (socket: Socket) => {
     console.log("Connected socket", socket.id);
-    socket.on("exam:join", ({ examId }) => {
-      console.log("jopineddddd", socket.data.user);
-      socket.join(examId);
 
-      if (socket.data.user.roles.includes("CANDIDATE")) {
+    socket.on("exam:join", async ({ examId }) => {
+      socket.join(examId);
+      socket.data.examId = examId;
+
+      const user = socket.data.user;
+      const roles = user.roles || [];
+
+      if (roles.includes("CANDIDATE")) {
         socket.to(examId).emit("exam:candidate:joined", {
-          candidateId: socket.data.user.sub,
-          status: "JOINED",
+          candidateId: user.sub,
         });
+      } else {
+        // Assume Admin/Staff if not CANDIDATE (or check roles explicitely if needed)
+        // Fetch all sockets in the room
+        const sockets = await io.in(examId).fetchSockets();
+        const candidates = sockets
+          .filter((s) => {
+            const sUser = s.data.user as any;
+            return sUser?.roles?.includes("CANDIDATE");
+          })
+          .map((s) => {
+            const sUser = s.data.user as any;
+            return {
+              candidateId: sUser.sub,
+            };
+          });
+
+        socket.emit("exam:candidates", candidates);
       }
     });
 
@@ -25,6 +45,15 @@ export function registerExamSockets(io: Server) {
         userId: socket.data.user.userId,
         progress: payload.progress,
       });
+    });
+
+    socket.on("disconnect", () => {
+      const examId = socket.data.examId;
+      if (examId && socket.data.user?.roles?.includes("CANDIDATE")) {
+        socket.to(examId).emit("exam:candidate:left", {
+          candidateId: socket.data.user.sub,
+        });
+      }
     });
   });
 }

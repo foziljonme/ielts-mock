@@ -100,7 +100,7 @@ export const useAuthStore = create<AuthState>()(
             return false
           }
         } catch (error: any) {
-          toastError({ title: 'Get me failed', error })
+          toastError({ title: 'Login failed', error })
           set({ isAuthenticated: false, user: null, seat: null, type: null })
           return false
         } finally {

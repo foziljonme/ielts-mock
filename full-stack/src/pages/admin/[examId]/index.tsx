@@ -32,6 +32,7 @@ import { AdminTestControl } from '../components/AdminTestControl'
 import { useRouter } from 'next/router'
 import Loading from '@/components/Loading'
 import { useTenantStore } from '@/stores/tenant.store'
+import useExamStore from '@/stores/exam.store'
 // import { mockStudents, mockTestResults, mockTenants } from '../data/mockData'
 // import { ScheduleTestPage } from './ScheduleTestPage'
 // import { TestSubmissionsPage } from './TestSubmissionsPage'
@@ -41,7 +42,7 @@ import { useTenantStore } from '@/stores/tenant.store'
 export function ExamDashboard() {
   const { logout } = useAuthStore()
   const { tenant } = useTenantStore()
-  const { fetchCurrentSession } = useScheduleTestStore()
+  const { fetchCurrentSession } = useExamStore()
   const [searchTerm, setSearchTerm] = useState('')
   const [activeTestControl, setActiveTestControl] = useState<ISession | null>(
     null,
@@ -83,39 +84,9 @@ export function ExamDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 space-y-6">
-      {/* Header */}
-      <div className="bg-white border-b px-6 py-4 shadow-sm">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Building2 className="w-8 h-8 text-blue-600" />
-              <div>
-                <h1 className="text-xl font-semibold">{tenant.name}</h1>
-                {/* <p className="text-sm text-gray-600">{tenant.location}</p> */}
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              {/* <Badge variant="outline" className="text-sm">
-                {tenant.agreement}
-              </Badge> */}
-              <Button variant="outline" size="sm">
-                <Download className="w-4 h-4 mr-2" />
-                Export Data
-              </Button>
-              <Button variant="outline" size="sm" onClick={logout}>
-                <LogOut className="w-4 h-4 mr-2" />
-                Logout
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main content */}
-      <div className="max-w-7xl mx-auto p-6">
-        {/* Stats cards */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div className="max-w-7xl mx-auto p-6">
+      {/* Stats cards */}
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <Card className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -176,26 +147,26 @@ export function ExamDashboard() {
           </Card>
         </div> */}
 
-        {/* Tabs */}
-        <Tabs defaultValue="control" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="control">Control Panel</TabsTrigger>
-            <TabsTrigger value="submissions">Test Submissions</TabsTrigger>
-            <TabsTrigger value="students">Candidates</TabsTrigger>
-            <TabsTrigger value="results">Test Results</TabsTrigger>
-          </TabsList>
+      {/* Tabs */}
+      <Tabs defaultValue="control" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="control">Control Panel</TabsTrigger>
+          <TabsTrigger value="submissions">Test Submissions</TabsTrigger>
+          <TabsTrigger value="students">Candidates</TabsTrigger>
+          <TabsTrigger value="results">Test Results</TabsTrigger>
+        </TabsList>
 
-          <TabsContent value="control">
-            <AdminTestControl />
-          </TabsContent>
+        <TabsContent value="control">
+          <AdminTestControl />
+        </TabsContent>
 
-          {/* Test Submissions Tab */}
-          {/* <TabsContent value="submissions">
+        {/* Test Submissions Tab */}
+        {/* <TabsContent value="submissions">
             <TestSubmissionsPage tenant={tenant} />
           </TabsContent> */}
 
-          {/* Students Tab */}
-          {/* <TabsContent value="students" className="space-y-4">
+        {/* Students Tab */}
+        {/* <TabsContent value="students" className="space-y-4">
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold">Student Management</h2>
@@ -262,8 +233,8 @@ export function ExamDashboard() {
             </Card>
           </TabsContent> */}
 
-          {/* Results Tab */}
-          {/* <TabsContent value="results" className="space-y-4">
+        {/* Results Tab */}
+        {/* <TabsContent value="results" className="space-y-4">
             <Card className="p-6">
               <h2 className="text-lg font-semibold mb-4">Test Results</h2>
 
@@ -308,8 +279,7 @@ export function ExamDashboard() {
               </Table>
             </Card>
           </TabsContent> */}
-        </Tabs>
-      </div>
+      </Tabs>
     </div>
   )
 }

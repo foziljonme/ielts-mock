@@ -84,7 +84,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                     5
                   </span>
                   <span className="text-gray-700">
-                    All connected students begin that section simultaneously
+                    All connected candidates begin that section simultaneously
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
@@ -98,11 +98,11 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
               </ol>
             </div>
 
-            {/* Student Flow */}
+            {/* Candidate Flow */}
             <div className="bg-green-50 rounded-lg p-6 border-2 border-green-200">
               <div className="flex items-center gap-2 mb-4">
                 <Monitor className="w-6 h-6 text-green-600" />
-                <h4 className="font-bold text-green-900">Student Flow</h4>
+                <h4 className="font-bold text-green-900">Candidate Flow</h4>
               </div>
               <ol className="space-y-3 text-sm">
                 <li className="flex items-start gap-2">
