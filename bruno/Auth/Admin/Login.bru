@@ -15,12 +15,13 @@ body:json {
     //   "email": "test1@test.net",
     "email": "admin@global-academy.com",
   //   "email": "saas@test.net",
-    "password": "demo"
+    "password": "something123"
   }
 }
 
 script:post-response {
-  const accessToken = res.getBody().accessToken
+  const accessToken = res.getHeaders()['set-cookie']
+  console.log("token", accessToken[0])
   bru.setEnvVar('token', accessToken)
 }
 

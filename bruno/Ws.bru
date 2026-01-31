@@ -1,0 +1,19 @@
+meta {
+  name: Ws
+  type: ws
+  seq: 6
+}
+
+ws {
+  url: ws://localhost:4001/socket
+  body: ws
+  auth: inherit
+}
+
+body:ws {
+  name: message 1
+  type: json
+  content: '''
+    {}
+  '''
+}

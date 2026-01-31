@@ -10,6 +10,12 @@ script:pre-request {
     const headers = req.getHeaders()
     headers[bru.getEnvVar('TENANT_HEADER')] = bru.getEnvVar('TENANT')
   //   headers[bru.getEnvVar('TENANT_HEADER')] = bru.getEnvVar('TENANT_TEST')
-    console.log(req.getHeaders())
+  //   console.log('jarr',req.getHeaders())
   }
+  
+  // const jar = bru.cookies.jar();
+  // jar.setCookie(bru.getEnvVar('token'));
+  
+  // bru.cookies.jar()
+  
 }

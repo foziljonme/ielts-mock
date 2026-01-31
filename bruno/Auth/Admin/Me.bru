@@ -10,6 +10,10 @@ get {
   auth: inherit
 }
 
+headers {
+  Cookie: auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWwyNjQ1bm8wMDBrMTNudmMwc2hjZm5oIiwidGVuYW50SWQiOiJjbWwyNjQ1bGowMDBnMTNudjl5aG03cDQ0Iiwicm9sZXMiOlsiUExBVEZPUk1fQURNSU4iLCJURU5BTlRfQURNSU4iLCJTVEFGRiJdLCJpYXQiOjE3Njk4NTY3MjMsImV4cCI6MTc2OTg1ODUyM30.bnA2WcXiGuRCqNS2980vyovEn5BIJXbXM2xJZsBbPyw; Max-Age=1; Path=/; Expires=Sat, 31 Jan 2026 10:52:05 GMT; HttpOnly; SameSite=Lax
+}
+
 script:post-response {
   const accessToken = res.getBody().accessToken
   bru.setEnvVar('token', accessToken)
