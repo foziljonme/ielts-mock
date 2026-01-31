@@ -44,3 +44,10 @@ fr-log:
 
 socket-log:
 	docker compose logs -f websocket
+
+db-push-express:
+	docker compose exec express yarn db:push
+
+db-reset-express:
+	docker compose exec express yarn db:reset
+

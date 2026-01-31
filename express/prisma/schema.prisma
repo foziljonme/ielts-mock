@@ -1,0 +1,201 @@
+// ==========================
+// Prisma Configuration
+// ==========================
+generator client {
+  provider     = "prisma-client"
+  output       = "./generated"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================
+// TENANT (Education Center)
+// ==========================
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  subdomain String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  seatQuota Int      @default(0) // Maximum number of seats this tenant is allowed to allocate overall
+
+  users           User[]
+  sessions        ExamSession[]
+  tenantSeatUsage TenantSeatUsage?
+}
+
+// ==========================
+// TENANT SEAT USAGE (Quota Tracker)
+// ==========================
+model TenantSeatUsage {
+  id        String @id @default(cuid())
+  tenantId  String @unique
+  usedSeats Int    @default(0) // Current number of allocated seats across all sessions
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+}
+
+// ==========================
+// PLATFORM USERS (Admins / Staff)
+// ==========================
+enum UserRole {
+  PLATFORM_ADMIN
+  TENANT_ADMIN
+  STAFF
+  CANDIDATE
+}
+
+model User {
+  id        String     @id @default(cuid())
+  tenantId  String?
+  email     String     @unique
+  password  String
+  name      String
+  roles     UserRole[]
+  isDeleted Boolean    @default(false)
+  createdAt DateTime   @default(now())
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id])
+}
+
+// ==========================
+// EXAM SESSION (IELTS Sitting)
+// ==========================
+enum ExamSessionStatus {
+  SCHEDULED
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+}
+
+model ExamSession {
+  id             String            @id @default(cuid())
+  tenantId       String
+  testId         String // External JSON test identifier
+  // name       String            @db.VarChar(255)
+  examDate       DateTime
+  status         ExamSessionStatus @default(SCHEDULED)
+  currentSection TestSection?
+  isArchived     Boolean           @default(false)
+  startTime      DateTime?
+  endTime        DateTime?
+  createdAt      DateTime          @default(now())
+
+  tenant Tenant     @relation(fields: [tenantId], references: [id])
+  seats  ExamSeat[]
+}
+
+// ==========================
+// EXAM SEAT (One seat = one candidate = one exam run)
+// ==========================
+enum ExamSeatStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  SUBMITTED
+  EXPIRED
+}
+
+model ExamSeat {
+  id               String         @id @default(cuid())
+  tenantId         String
+  sessionId        String
+  label            String? // "Row 3, Seat 2"
+  accessCode       String         @unique // Candidate login code
+  candidateName    String
+  candidateId      String
+  candidateContact String
+  status           ExamSeatStatus @default(NOT_STARTED)
+  startedAt        DateTime?
+  submittedAt      DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  session  ExamSession       @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sections SectionProgress[]
+}
+
+// ==========================
+// SECTION PROGRESS
+// ==========================
+enum TestSection {
+  LISTENING
+  READING
+  WRITING
+  SPEAKING
+}
+
+model SectionProgress {
+  id           String         @id @default(cuid())
+  seatId       String
+  section      TestSection
+  status       ExamSeatStatus @default(NOT_STARTED)
+  startedAt    DateTime?
+  remainingSec Int? // Countdown sync
+
+  seat      ExamSeat           @relation(fields: [seatId], references: [id])
+  questions QuestionResponse[]
+
+  @@unique([seatId, section])
+}
+
+// ==========================
+// QUESTION RESPONSE
+// ==========================
+model QuestionResponse {
+  id         String    @id @default(cuid())
+  sectionId  String
+  questionId String // External JSON ID (Q1, Q14, etc.)
+  isFlagged  Boolean   @default(false)
+  visitedAt  DateTime?
+
+  section    SectionProgress @relation(fields: [sectionId], references: [id])
+  answer     Answer?
+  highlights Highlight[]
+  drafts     WritingDraft[]
+
+  @@unique([sectionId, questionId])
+}
+
+// ==========================
+// ANSWER
+// ==========================
+model Answer {
+  id                 String   @id @default(cuid())
+  questionResponseId String   @unique
+  value              String // Text / selected options JSON
+  wordCount          Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  question QuestionResponse @relation(fields: [questionResponseId], references: [id])
+}
+
+// ==========================
+// HIGHLIGHT (Reading)
+// ==========================
+model Highlight {
+  id                 String @id @default(cuid())
+  questionResponseId String
+  startOffset        Int
+  endOffset          Int
+  color              String @default("yellow")
+
+  question QuestionResponse @relation(fields: [questionResponseId], references: [id])
+}
+
+// ==========================
+// WRITING DRAFT (Autosave)
+// ==========================
+model WritingDraft {
+  id                 String   @id @default(cuid())
+  questionResponseId String
+  content            String
+  wordCount          Int
+  savedAt            DateTime @default(now())
+
+  question QuestionResponse @relation(fields: [questionResponseId], references: [id])
+}

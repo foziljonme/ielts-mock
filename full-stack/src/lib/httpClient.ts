@@ -65,6 +65,7 @@ class HttpClient {
       headers: {
         'Content-Type': 'application/json',
       },
+      withCredentials: true,
     })
   }
 

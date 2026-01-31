@@ -7,7 +7,10 @@ import { registerExamSockets } from "./sockets/exam.socket";
 const httpServer = createServer();
 
 const io = new Server(httpServer, {
-  cors: { origin: "*", credentials: true },
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true,
+  },
   path: "/socket",
 });
 

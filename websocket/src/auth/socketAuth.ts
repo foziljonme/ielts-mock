@@ -28,6 +28,10 @@ export interface JwtPayload {
 
 export async function socketAuth(socket: Socket, next: (err?: Error) => void) {
   try {
+    console.log(
+      "socket.handshake.headers.cookie",
+      socket.handshake.headers.cookie,
+    );
     const cookieHeader = socket.handshake.headers.cookie;
 
     if (!cookieHeader) {
