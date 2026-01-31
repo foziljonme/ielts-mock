@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { JwtBasePayload } from "../lib/auth/types";
-import { AppError } from "../lib/errors";
-import { ErrorCodes } from "../lib/errors/codes";
+import { JwtBasePayload } from "../modules/auth/auth.types";
+import { AppError } from "../shared/utils/errors";
+import { ErrorCodes } from "../shared/utils/errors/codes";
 import { UserRole } from "../../prisma/generated/client";
 
 export interface AuthRequest extends Request {

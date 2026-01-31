@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import { AppError } from '../lib/errors/AppError';
+import { Request, Response, NextFunction } from "express";
+import { AppError } from "../shared/utils/errors/AppError";
 
 export const errorHandler = (
   err: Error,
@@ -20,8 +20,8 @@ export const errorHandler = (
   console.error(err);
   return res.status(500).json({
     error: {
-      message: 'Internal server error',
-      code: 'INTERNAL_ERROR',
+      message: "Internal server error",
+      code: "INTERNAL_ERROR",
     },
   });
 };

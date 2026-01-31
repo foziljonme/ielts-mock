@@ -6,7 +6,7 @@ dotenv.config({
 import express from "express";
 import { json, urlencoded } from "body-parser";
 import cookieParser from "cookie-parser";
-import mainRouter from "./routes";
+import mainRouter from "./modules/mainRouter";
 import { errorHandler } from "./middlewares/errorHandler";
 import cors from "cors";
 
