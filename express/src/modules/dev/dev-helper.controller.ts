@@ -3,6 +3,7 @@ import { UserRole } from "../../../prisma/generated/enums";
 import db from "@/config/db";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
+const debug = require("debug")("myapp:server");
 
 const candidateGenerator = (count: number) => {
   const candidates = [];
@@ -57,6 +58,7 @@ const tenants = [
 ];
 
 export const bootstrap = async (req: Request, res: Response) => {
+  debug("Bootstrap endpoint called", req);
   const result = await db.$transaction(async (tx) => {
     const createdDataPromises = tenants.map((tenant) => {
       return tx.tenant

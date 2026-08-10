@@ -82,7 +82,7 @@ export function ExamDashboard() {
   if (!tenant) {
     return <Loading />
   }
-
+  console.log('tenant', tenant)
   return (
     <div className="max-w-7xl mx-auto p-6">
       {/* Stats cards */}

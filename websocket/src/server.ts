@@ -17,6 +17,6 @@ const io = new Server(httpServer, {
 io.use(socketAuth);
 registerExamSockets(io);
 
-httpServer.listen(env.port, () => {
+httpServer.listen(env.port, "0.0.0.0", () => {
   console.log(`WebSocket server running on :${env.port}`);
 });

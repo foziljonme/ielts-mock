@@ -24,6 +24,13 @@ db-push-backend:
 	docker compose exec backend yarn db:push
 
 # Run Prisma generate inside container
+generate-express:
+	docker compose exec express yarn generate
+# Run Prisma db push inside container
+db-push-express:
+	docker compose exec express yarn db:push
+
+# Run Prisma generate inside container
 generate:
 	docker compose exec next-js yarn prisma generate
 

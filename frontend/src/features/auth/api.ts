@@ -18,7 +18,7 @@ export const loginAdmin = async ({
   password: string;
 }) => {
   const response = await apiClient
-    .post<IAdminLoginResponse>("/auth/admin/login", {
+    .post<IAdminLoginResponse>("/auth/login", {
       email,
       password,
     })

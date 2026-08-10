@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Inject,
   Injectable,
   NotFoundException,
@@ -31,7 +32,7 @@ export class TenantsService {
 
     if (tenantExists) {
       this.logger.error('Tenant already exists');
-      throw new BadRequestException('Tenant already exists');
+      throw new ConflictException('Tenant already exists');
     }
 
     this.logger.log('Creating tenant');

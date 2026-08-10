@@ -21,7 +21,7 @@ interface IExamStore {
   completeSection: (section: TestSection) => void
 }
 
-const useExamStore = create<IExamStore>(set => ({
+const useExamStore = create<IExamStore>((set, get) => ({
   isLoading: false,
   examSeatInfo: null,
   activeSection: null,
@@ -32,7 +32,7 @@ const useExamStore = create<IExamStore>(set => ({
   fetchCurrentSession: async (sessionId: string) => {
     try {
       const response = await httpClient.get(`/sessions/${sessionId}`)
-      set({ currentSession: response })
+      get().setCurrentSession(response)
     } catch (error) {
       toastError({ title: 'Failed to fetch current session', error })
     }
@@ -41,14 +41,12 @@ const useExamStore = create<IExamStore>(set => ({
   startSession: async (sessionId: string) => {
     set({ isLoading: true })
     try {
-      const sessionUpdated = await httpClient.post(
+      const sessionUpdated: any = await httpClient.post(
         `/sessions/${sessionId}/start`,
         {},
       )
 
-      set({
-        currentSession: sessionUpdated,
-      })
+      set({ currentSession: sessionUpdated })
 
       useScheduleTestStore
         .getState()

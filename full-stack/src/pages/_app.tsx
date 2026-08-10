@@ -1,6 +1,6 @@
 'use client'
 
-import '@/styles/globals.css'
+import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { useAuthBootstrap } from '@/hooks/useAuthBootstrap'
@@ -9,7 +9,7 @@ import { Layout } from './_layout'
 
 export default function App({ Component, pageProps }: AppProps) {
   useAuthBootstrap()
-
+  // console.log('App')
   return (
     <Layout>
       <ErrorBoundary>

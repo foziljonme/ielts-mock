@@ -48,66 +48,73 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto, isPlatformAdmin = false) {
-    this.logger.log('Logging in user');
+    try {
+      this.logger.log('Logging in user');
+      const { email, password } = loginDto;
+      const user = await this.prismaService.user.findUnique({
+        where: {
+          email,
+        },
+      });
 
-    const { email, password } = loginDto;
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (!user) {
-      throw new UnauthorizedException(
-        'User not found, please make sure you are using the correct email and tenant',
-      );
-    }
-
-    if (isPlatformAdmin) {
-      if (!user.roles.includes(UserRole.PLATFORM_ADMIN)) {
+      if (!user) {
         throw new UnauthorizedException(
-          'User is not a platform admin, please make sure you are using the correct email',
+          'User not found, please make sure you are using the correct email and tenant',
         );
       }
-    }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (isPlatformAdmin) {
+        if (!user.roles.includes(UserRole.PLATFORM_ADMIN)) {
+          throw new UnauthorizedException(
+            'User is not a platform admin, please make sure you are using the correct email',
+          );
+        }
+      }
 
-    if (!isPasswordValid) {
-      this.logger.error({
-        message: 'Invalid password',
-      });
-      throw new UnauthorizedException(
-        'Invalid password, please make sure you are using the correct password',
-      );
-    }
+      const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    const payload: JwtPayloadBase = {
-      sub: user.id,
-      tenantId: user.tenantId!,
-      roles: user.roles,
-    };
+      if (!isPasswordValid) {
+        this.logger.error({
+          message: 'Invalid password',
+        });
+        throw new UnauthorizedException(
+          'Invalid password, please make sure you are using the correct password',
+        );
+      }
 
-    const accessToken = this.jwtService.sign(payload);
-
-    const refreshToken = this.jwtService.sign(
-      {
+      const payload: JwtPayloadBase = {
         sub: user.id,
-        tenantId: user.tenantId,
+        tenantId: user.tenantId!,
         roles: user.roles,
-      },
-      { expiresIn: '7d' },
-    );
+      };
 
-    this.logger.log('Login successful');
-    const { password: userPassword, ...rest } = user;
+      const accessToken = this.jwtService.sign(payload);
 
-    return {
-      accessToken,
-      refreshToken,
-      expiresAt: this.getExpiresAt(ADMIN_TOKEN_EXPIRES_IN),
-      user: rest,
-    };
+      const refreshToken = this.jwtService.sign(
+        {
+          sub: user.id,
+          tenantId: user.tenantId,
+          roles: user.roles,
+        },
+        { expiresIn: '7d' },
+      );
+
+      this.logger.log('Login successful');
+      const { password: userPassword, ...rest } = user;
+
+      return {
+        accessToken,
+        refreshToken,
+        expiresAt: this.getExpiresAt(ADMIN_TOKEN_EXPIRES_IN),
+        user: rest,
+      };
+    } catch (error: any) {
+      this.logger.error({
+        message: 'Login failed',
+        error: error.message,
+      });
+      throw new InternalServerErrorException('Login failed');
+    }
   }
 
   public async getAdminMe(userId: string) {

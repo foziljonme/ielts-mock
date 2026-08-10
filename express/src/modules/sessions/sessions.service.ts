@@ -8,6 +8,7 @@ import examSeatsService from "./seats/seat.service";
 import { AppError } from "@/shared/utils/errors";
 import { ErrorCodes } from "@/shared/utils/errors/codes";
 import { ExamSessionStatus, Prisma } from "../../../prisma/generated/client";
+import progressService from "./progress/progress.service";
 
 class ExamSessionService {
   constructor() {}
@@ -26,7 +27,12 @@ class ExamSessionService {
         seatsData,
       );
 
-      return { ...session, seats };
+      const progress = await progressService.createProgressRecords(
+        tx,
+        session.id,
+      );
+
+      return { ...session, seats, progress };
     });
   }
 
@@ -43,6 +49,7 @@ class ExamSessionService {
               sections: true,
             },
           },
+          progress: true,
         },
       }),
       db.examSession.count({ where: { tenantId: ctx.user.tenantId } }),
@@ -60,6 +67,7 @@ class ExamSessionService {
       where: { id: sessionId, tenantId: ctx.user.tenantId },
       include: {
         seats: true,
+        progress: true,
       },
     });
 
@@ -130,6 +138,10 @@ class ExamSessionService {
       const session = await tx.examSession.update({
         where: { id: sessionId, tenantId: ctx.user.tenantId },
         data: { status: ExamSessionStatus.OPEN },
+        include: {
+          seats: true,
+          progress: true,
+        },
       });
 
       return session;

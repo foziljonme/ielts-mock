@@ -1,6 +1,5 @@
 import { Socket } from "socket.io";
 import jwt from "jsonwebtoken";
-import { env } from "../config/env";
 const cookie = require("cookie");
 
 export interface JwtPayload {
@@ -30,8 +29,11 @@ export async function socketAuth(socket: Socket, next: (err?: Error) => void) {
       return next(new Error("Missing auth token"));
     }
 
+    if (!process.env.jwtSecret) {
+      return next(new Error("JWT secret not set"));
+    }
     // const user = await verifyJwt(token);
-    const payload = jwt.verify(token, env.jwtSecret) as JwtPayload;
+    const payload = jwt.verify(token, process.env.jwtSecret) as JwtPayload;
 
     socket.data.user = payload; // attach user to socket
     console.log("Authenticated user");

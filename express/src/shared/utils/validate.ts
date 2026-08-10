@@ -1,4 +1,3 @@
-// src/lib/api/validate.ts
 import { ZodType, ZodError, treeifyError } from "zod";
 import { ValidationError } from "./errors";
 

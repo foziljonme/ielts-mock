@@ -10,6 +10,8 @@ RUN yarn install --frozen-lockfile
 # Copy source code
 COPY . .
 
+RUN npx prisma generate
+
 # Stage 2: Development image
 FROM base AS dev
 

@@ -44,6 +44,7 @@ export function AdminTestControl() {
   const { connectedCandidates } = useSocketStore()
   const { joinExamRoom } = useWebsocket()
   const { currentSession, startSession } = useExamStore()
+  console.log('Current Session:', currentSession)
 
   const router = useRouter()
   const [sessionProgress, setSessionProgress] = useState<ISessionProgress>({
@@ -262,7 +263,7 @@ export function AdminTestControl() {
           </div>
 
           {/* Current Session Status */}
-          <div className="grid grid-cols-3 gap-4 mt-6">
+          <div className="grid grid-cols-2 gap-4 mt-6">
             <div className="bg-blue-50 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -291,7 +292,7 @@ export function AdminTestControl() {
               </div>
             </div>
 
-            <div className="bg-purple-50 rounded-lg p-4">
+            {/* <div className="bg-purple-50 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-purple-600 font-medium">
@@ -303,7 +304,7 @@ export function AdminTestControl() {
                 </div>
                 <CheckCircle className="w-8 h-8 text-purple-500" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

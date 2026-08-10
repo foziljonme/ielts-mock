@@ -1,110 +1,112 @@
 services:
   # Database Service
 
-  db-nextjs:
-    image: postgres:18.1-alpine
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: ielts_mock
-    ports:
-      - "5434:5432"
-    volumes:
-      - postgres_data_nextjs:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - app-network
+  # db-nextjs:
+  #   image: postgres:18.1-alpine
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: 123
+  #     POSTGRES_DB: ielts_mock
+  #   ports:
+  #     - "5434:5432"
+  #   volumes:
+  #     - postgres_data_nextjs:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
+  #   networks:
+  #     - app-network
 
   # Backend Service (Development)
-  backend:
-    build:
-      context: ./backend
-      target: development
-    environment:
-      NODE_ENV: development
-      DATABASE_URL: postgres://postgres:123@db:5432/ielts_mock
-      JWT_SECRET: "Pk+BOapIuucuFMdUZsM2cyeZPb7Dh8rZF6OfEGo183we98JIctuWUWPNTZEzAQdUTmGq3c9CHpo/r6ibWg8XktWHM23KcOU5rOP23yiV8qsh/LggC4gdFJXVYJCh5jtHg88MYn6+JnxS6xM9ppQhk1GS/xC6Wq00rV273JyMz7vr7eF7DDturUVtcOiwEUJ0Rg8YsvyFpxISzG0rWRSj48K+Qd5Hons/walFdkkVsy+f/n++wYhRO3Gbj0dLD7ErNUTqVZG1YEHiOeuNjGdW9DGWEDxllqulusy8FdylQfz/d7E81VhdjEenWs1c23jHey/ZbtyCMLbR60ZTKolmCQ=="
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./backend:/app
-    working_dir: /app
-    command: /bin/sh -c "yarn prisma generate && yarn db:push && yarn start:dev"
-    tty: true
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - app-network
+  # backend:
+  #   build:
+  #     context: ./backend
+  #     target: development
+  #   environment:
+  #     NODE_ENV: development
+  #     DATABASE_URL: postgres://postgres:123@db:5432/ielts_mock
+  #     JWT_SECRET: "Pk+BOapIuucuFMdUZsM2cyeZPb7Dh8rZF6OfEGo183we98JIctuWUWPNTZEzAQdUTmGq3c9CHpo/r6ibWg8XktWHM23KcOU5rOP23yiV8qsh/LggC4gdFJXVYJCh5jtHg88MYn6+JnxS6xM9ppQhk1GS/xC6Wq00rV273JyMz7vr7eF7DDturUVtcOiwEUJ0Rg8YsvyFpxISzG0rWRSj48K+Qd5Hons/walFdkkVsy+f/n++wYhRO3Gbj0dLD7ErNUTqVZG1YEHiOeuNjGdW9DGWEDxllqulusy8FdylQfz/d7E81VhdjEenWs1c23jHey/ZbtyCMLbR60ZTKolmCQ=="
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./backend:/app
+  #   working_dir: /app
+  #   command: /bin/sh -c "yarn prisma generate && yarn db:push && yarn start:dev"
+  #   tty: true
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   networks:
+  #     - app-network
 
-  prisma-studio:
-    build:
-      context: ./backend
-      target: development
-    working_dir: /app
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    environment:
-      DATABASE_URL: postgres://postgres:123@db:5432/ielts_mock
-    command: npx prisma studio --port 5555 --browser none
-    ports:
-      - "5555:5555"
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - app-network
-    # Backend Service (Production)
-  backend-prod:
-    profiles: ["prod"]
-    build:
-      context: ./backend
-      target: production
-    environment:
-      NODE_ENV: production
-      DATABASE_URL: postgres://postgres:123@db:5432/education-center
-      JWT_SECRET: "Pk+BOapIuucuFMdUZsM2cyeZPb7Dh8rZF6OfEGo183we98JIctuWUWPNTZEzAQdUTmGq3c9CHpo/r6ibWg8XktWHM23KcOU5rOP23yiV8qsh/LggC4gdFJXVYJCh5jtHg88MYn6+JnxS6xM9ppQhk1GS/xC6Wq00rV273JyMz7vr7eF7DDturUVtcOiwEUJ0Rg8YsvyFpxISzG0rWRSj48K+Qd5Hons/walFdkkVsy+f/n++wYhRO3Gbj0dLD7ErNUTqVZG1YEHiOeuNjGdW9DGWEDxllqulusy8FdylQfz/d7E81VhdjEenWs1c23jHey/ZbtyCMLbR60ZTKolmCQ=="
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-    networks:
-      - app-network
+  # prisma-studio:
+  #   build:
+  #     context: ./backend
+  #     target: development
+  #   working_dir: /app
+  #   volumes:
+  #     - ./backend:/app
+  #     - /app/node_modules
+  #   environment:
+  #     DATABASE_URL: postgres://postgres:123@db:5432/ielts_mock
+  #   command: npx prisma studio --port 5555 --browser none
+  #   ports:
+  #     - "5555:5555"
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   networks:
+  #     - app-network
+  # Backend Service (Production)
+  # backend-prod:
+  #   profiles: ["prod"]
+  #   build:
+  #     context: ./backend
+  #     target: production
+  #   environment:
+  #     NODE_ENV: production
+  #     DATABASE_URL: postgres://postgres:123@db:5432/education-center
+  #     JWT_SECRET: "Pk+BOapIuucuFMdUZsM2cyeZPb7Dh8rZF6OfEGo183we98JIctuWUWPNTZEzAQdUTmGq3c9CHpo/r6ibWg8XktWHM23KcOU5rOP23yiV8qsh/LggC4gdFJXVYJCh5jtHg88MYn6+JnxS6xM9ppQhk1GS/xC6Wq00rV273JyMz7vr7eF7DDturUVtcOiwEUJ0Rg8YsvyFpxISzG0rWRSj48K+Qd5Hons/walFdkkVsy+f/n++wYhRO3Gbj0dLD7ErNUTqVZG1YEHiOeuNjGdW9DGWEDxllqulusy8FdylQfz/d7E81VhdjEenWs1c23jHey/ZbtyCMLbR60ZTKolmCQ=="
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - app-network
 
   # Frontend Service (Development)
-  frontend:
-    build:
-      context: ./frontend
-      target: development
-    tty: true
-    environment:
-      JWT_SECRET: "Pk+BOapIuucuFMdUZsM2cyeZPb7Dh8rZF6OfEGo183we98JIctuWUWPNTZEzAQdUTmGq3c9CHpo/r6ibWg8XktWHM23KcOU5rOP23yiV8qsh/LggC4gdFJXVYJCh5jtHg88MYn6+JnxS6xM9ppQhk1GS/xC6Wq00rV273JyMz7vr7eF7DDturUVtcOiwEUJ0Rg8YsvyFpxISzG0rWRSj48K+Qd5Hons/walFdkkVsy+f/n++wYhRO3Gbj0dLD7ErNUTqVZG1YEHiOeuNjGdW9DGWEDxllqulusy8FdylQfz/d7E81VhdjEenWs1c23jHey/ZbtyCMLbR60ZTKolmCQ=="
-    # stdin_open: true
-    ports:
-      - "4000:4000"
-    volumes:
-      - ./frontend:/app
-    working_dir: /app
-    command: /bin/sh -c "yarn start:dev --logLevel info"
-    networks:
-      - app-network
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     target: development
+  #   tty: true
+  #   environment:
+  #     JWT_SECRET: "Pk+BOapIuucuFMdUZsM2cyeZPb7Dh8rZF6OfEGo183we98JIctuWUWPNTZEzAQdUTmGq3c9CHpo/r6ibWg8XktWHM23KcOU5rOP23yiV8qsh/LggC4gdFJXVYJCh5jtHg88MYn6+JnxS6xM9ppQhk1GS/xC6Wq00rV273JyMz7vr7eF7DDturUVtcOiwEUJ0Rg8YsvyFpxISzG0rWRSj48K+Qd5Hons/walFdkkVsy+f/n++wYhRO3Gbj0dLD7ErNUTqVZG1YEHiOeuNjGdW9DGWEDxllqulusy8FdylQfz/d7E81VhdjEenWs1c23jHey/ZbtyCMLbR60ZTKolmCQ=="
+  #   # stdin_open: true
+  #   ports:
+  #     - "4000:4000"
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #     - ./frontend:/app
+  #   working_dir: /app
+  #   command: /bin/sh -c "yarn start:dev --logLevel info"
+  #   networks:
+  #     - app-network
 
   # Frontend Service (Production)
-  frontend-prod:
-    profiles: ["prod"]
-    build:
-      context: ./frontend
-      target: production
-    ports:
-      - "3000:80"
-    networks:
-      - app-network
+  # frontend-prod:
+  #   profiles: ["prod"]
+  #   build:
+  #     context: ./frontend
+  #     target: production
+  #   ports:
+  #     - "3000:80"
+  #   networks:
+  #     - app-network
 
   # Nextjs (Development)
   next-js:
@@ -113,12 +115,16 @@ services:
       target: dev # change to 'prod' for production
     volumes:
       - ./full-stack:/app # mount source for live reload
+      - /app/node_modules
+      - /app/.next
     ports:
       - "3000:3000"
     environment:
       NODE_ENV: development
       DATABASE_URL: postgres://postgres:123@db-nextjs:5432/ielts_mock
       JWT_SECRET: Pk+BOapIuucuFMdUZsM2cyeZPb7Dh8rZF6OfEGo183we98JIctuWUWPNTZEzAQdUTmGq3c9CHpo/r6ibWg8XktWHM23KcOU5rOP23yiV8qsh/LggC4gdFJXVYJCh5jtHg88MYn6+JnxS6xM9ppQhk1GS/xC6Wq00rV273JyMz7vr7eF7DDturUVtcOiwEUJ0Rg8YsvyFpxISzG0rWRSj48K+Qd5Hons/walFdkkVsy+f/n++wYhRO3Gbj0dLD7ErNUTqVZG1YEHiOeuNjGdW9DGWEDxllqulusy8FdylQfz/d7E81VhdjEenWs1c23jHey/ZbtyCMLbR60ZTKolmCQ==
+      NEXT_TELEMETRY_DISABLED: "1"
+      TURBOPACK_POLLING: "1000"
     command: yarn dev
     networks:
       - app-network
@@ -143,14 +149,19 @@ services:
       - app-network
 
   express:
+    restart: unless-stopped
+    command: sh -c "npx prisma generate && yarn dev"
     build:
       context: ./express
       target: dev
     volumes:
       - ./express:/app
+      - /app/node_modules
     ports:
       - "3001:3001"
+      - "9229:9229"
     environment:
+      NODE_ENV: development
       DATABASE_URL: postgres://postgres:123@db:5432/ielts_mock
       JWT_SECRET: Pk+BOapIuucuFMdUZsM2cyeZPb7Dh8rZF6OfEGo183we98JIctuWUWPNTZEzAQdUTmGq3c9CHpo/r6ibWg8XktWHM23KcOU5rOP23yiV8qsh/LggC4gdFJXVYJCh5jtHg88MYn6+JnxS6xM9ppQhk1GS/xC6Wq00rV273JyMz7vr7eF7DDturUVtcOiwEUJ0Rg8YsvyFpxISzG0rWRSj48K+Qd5Hons/walFdkkVsy+f/n++wYhRO3Gbj0dLD7ErNUTqVZG1YEHiOeuNjGdW9DGWEDxllqulusy8FdylQfz/d7E81VhdjEenWs1c23jHey/ZbtyCMLbR60ZTKolmCQ==
       PORT: 3001
@@ -176,32 +187,33 @@ services:
     networks:
       - app-network
 
-  prisma-studio-nextjs:
-    build:
-      context: ./full-stack
-      target: dev
-    working_dir: /app
-    volumes:
-      - ./full-stack:/app
-      - /app/node_modules
-    environment:
-      DATABASE_URL: postgres://postgres:123@db-nextjs:5432/ielts_mock
-    command: npx prisma studio --port 5556 --browser none
-    ports:
-      - "5556:5556"
-    depends_on:
-      db-nextjs:
-        condition: service_healthy
-    networks:
-      - app-network
+  # prisma-studio-nextjs:
+  #   build:
+  #     context: ./full-stack
+  #     target: dev
+  #   working_dir: /app
+  #   volumes:
+  #     - ./full-stack:/app
+  #     - /app/node_modules
+  #   environment:
+  #     DATABASE_URL: postgres://postgres:123@db-nextjs:5432/ielts_mock
+  #   command: npx prisma studio --port 5556 --browser none
+  #   ports:
+  #     - "5556:5556"
+  #   depends_on:
+  #     db-nextjs:
+  #       condition: service_healthy
+  #   networks:
+  #     - app-network
 
   websocket:
+    restart: unless-stopped
     build:
       context: ./websocket
       target: development
     container_name: websocket
     ports:
-      - "4001:4001"
+      - "4010:4001"
     environment:
       NODE_ENV: development
       PORT: 4001

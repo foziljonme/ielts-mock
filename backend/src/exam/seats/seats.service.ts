@@ -53,6 +53,7 @@ export class SeatsService {
             candidateId,
             ...rest,
             sessionId,
+            tenantId: this.contextStorageService.tenantId,
           },
         });
 

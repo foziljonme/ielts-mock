@@ -19,6 +19,8 @@ async function bootstrap() {
       'http://localhost:8000', // Custom port
       /http:\/\/(.+\.)?localhost:8000$/,
       'http://172.31.227.158:8000',
+      /http:\/\/(.+\.)?localhost:4000$/,
+      'http://172.31.227.158:4000',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Allowed methods
     credentials: true, // If you need to handle cookies/sessions
@@ -39,6 +41,7 @@ async function bootstrap() {
       },
     }),
   );
+  app.setGlobalPrefix('api');
   await app.listen(process.env.PORT ?? 8080);
 }
 bootstrap();

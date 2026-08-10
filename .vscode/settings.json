@@ -7,7 +7,9 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "never"
   },
-
+  "search.exclude": {
+    "**/.next/**": true
+  },
   // Optional but recommended: Let Prettier handle formatting
   "prettier.useEditorConfig": false,
   "[prisma]": {

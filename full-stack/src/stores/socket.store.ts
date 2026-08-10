@@ -32,6 +32,7 @@ export const useSocketStore = create<SocketState>(set => ({
   },
   restoreCandidates: candidates => {
     set(s => {
+      console.log('Restoring candidates:', candidates)
       const currentConnectedCandidates = new Set<string>()
       candidates.forEach(candidate => {
         currentConnectedCandidates.add(candidate.candidateId)

@@ -10,6 +10,7 @@ import {
   startSession,
 } from "@/modules/sessions/sessions.controller";
 import seatsRouter from "./seats/seat.routes";
+import sectionsRouter from "./sections/sections.routes";
 
 const router = Router();
 
@@ -28,5 +29,7 @@ router.post("/:sessionId/archive", auth(), archiveSession);
 router.use("/:sessionId/seats", seatsRouter);
 
 router.post("/:sessionId/start", auth(), startSession);
+
+router.use("/:sessionId/sections", sectionsRouter);
 
 export default router;

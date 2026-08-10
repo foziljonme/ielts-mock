@@ -188,6 +188,7 @@ export class ExamsService {
 
       const examSeat = await tx.examSeat.create({
         data: {
+          tenantId: tenant.id,
           candidateContact: 'helloworld@test.com',
           sessionId: examSession.id,
           seatNumber: 1,

@@ -50,9 +50,9 @@ export class TenantResolverMiddleware implements NestMiddleware {
 
     if (!tenant) {
       this.logger.error(`Tenant with subdomain ${subdomain} not found`);
-      // throw new NotFoundException('Tenant not found');
-      next();
-      return;
+      throw new NotFoundException('Tenant not found');
+      // next();
+      // return;
     }
 
     req['tenantId'] = tenant.id;

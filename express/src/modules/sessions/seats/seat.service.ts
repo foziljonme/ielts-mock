@@ -60,7 +60,7 @@ class ExamSeatsService {
     examSessionId: string,
     data: CreateExamSeatSchema[],
   ) {
-    const seats = await tx.examSeat.createMany({
+    const seats = await tx.examSeat.createManyAndReturn({
       data: data.map((seat) => ({
         ...seat,
         accessCode: this.generateAccessCode(),
@@ -69,7 +69,7 @@ class ExamSeatsService {
         tenantId: ctx.user.tenantId,
       })),
     });
-
+    console.log(seats);
     await tx.tenantSeatUsage.update({
       where: { tenantId: ctx.user.tenantId },
       data: { usedSeats: { increment: data.length } },

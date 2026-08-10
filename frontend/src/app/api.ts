@@ -1,8 +1,8 @@
 import axios, { type AxiosInstance } from "axios";
 import { ACCESS_TOKEN } from "../features/auth/constants";
 
-export const SERVER_BASE_URL = "localhost:8080";
-export const API_BASE_URL = `http://${SERVER_BASE_URL}`;
+export const SERVER_BASE_URL = "localhost:3001";
+export const API_BASE_URL = `http://${SERVER_BASE_URL}/api`;
 export const WS_BASE_URL = `ws://${SERVER_BASE_URL}/controls`;
 
 class ApiClient {
@@ -28,7 +28,7 @@ class ApiClient {
       },
       (error) => {
         return Promise.reject(error);
-      }
+      },
     );
   }
 

@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import * as winston from 'winston';
@@ -64,6 +64,26 @@ import { AdminModule } from './admin/admin.module';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(TenantResolverMiddleware).forRoutes('*');
+    consumer
+      .apply(TenantResolverMiddleware)
+      .exclude(
+        {
+          path: 'tenants',
+          method: RequestMethod.ALL,
+        },
+        {
+          path: 'seed-platform-admin-accounts',
+          method: RequestMethod.ALL,
+        },
+        {
+          path: 'onboarding',
+          method: RequestMethod.ALL,
+        },
+        {
+          path: 'bootstrap',
+          method: RequestMethod.ALL,
+        },
+      )
+      .forRoutes('*');
   }
 }

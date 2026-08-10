@@ -51,6 +51,7 @@ export function ScheduleTestPage() {
     return <Loading />
   }
 
+  console.log('sessions', sessions)
   return (
     <div className="space-y-6">
       {/* Header with stats */}

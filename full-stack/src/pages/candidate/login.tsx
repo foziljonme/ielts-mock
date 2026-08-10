@@ -107,8 +107,12 @@ export default function CandidateLoginPage() {
             Demo Access Codes:
           </p>
           <div className="flex flex-wrap gap-2 justify-center mt-2">
-            {['g3p3os:UsDa-sKv1-bcA0', 'qd16u7:edOa-vzUr-1Ecv'].map(code => (
-              <button
+            {[
+              's4qsll:RoG8-RCYN-RNdg',
+              'w753ac:Ypty-oKcE-4Fwi',
+              's06nds:Tx5X-dSUo-SrpG',
+            ].map(code => (
+              <p
                 key={code}
                 onClick={() => {
                   const [candidateId, accessCode] = code.split(':')
@@ -118,7 +122,7 @@ export default function CandidateLoginPage() {
                 className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded"
               >
                 {code}
-              </button>
+              </p>
             ))}
           </div>
         </div>

@@ -1,0 +1,1 @@
+The functional code in here is only in full-stack for frontend, express for backend and websocket for websocket connections, bruno for bruno collection. All the other dirs are legacy and not functional at this time, you can start each server by going to the corresponding dir in terminal and running "yarn dev"

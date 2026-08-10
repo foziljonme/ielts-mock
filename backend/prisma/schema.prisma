@@ -20,11 +20,12 @@ model Tenant {
   subdomain String   @unique
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
   seatQuota Int      @default(0) // Maximum number of seats this tenant is allowed to allocate overall
 
   users           User[]
   sessions        ExamSession[]
+  tests           Test[]
   tenantSeatUsage TenantSeatUsage?
 }
 
@@ -35,6 +36,7 @@ model TenantSeatUsage {
   id        String @id @default(cuid())
   tenantId  String @unique
   usedSeats Int    @default(0) // Current number of allocated seats across all sessions
+  version   Int    @default(0) // optimistic lock: seat allocation happens concurrently across sessions
 
   tenant Tenant @relation(fields: [tenantId], references: [id])
 }
@@ -53,12 +55,48 @@ model User {
   id        String     @id @default(cuid())
   tenantId  String?
   email     String     @unique
-  password  String
-  name      String
+  password  String // must be a salted hash, never plaintext
+  name      String     @default("Unnamed User")
   roles     UserRole[]
+  isActive  Boolean    @default(true)
   createdAt DateTime   @default(now())
 
-  tenant Tenant? @relation(fields: [tenantId], references: [id])
+  tenant       Tenant?                  @relation(fields: [tenantId], references: [id])
+  invigilating ExamSessionInvigilator[]
+}
+
+// ==========================
+// TEST CATALOG
+// Snapshots key metadata about an external JSON test definition so that
+// (a) admins can pick from a reusable library when scheduling a session, and
+// (b) editing the source JSON later can't retroactively change the duration/
+//     structure of exams that already ran against it.
+// ==========================
+model Test {
+  id          String   @id @default(cuid())
+  tenantId    String? // null = shared/platform-wide library test, set = tenant-custom test
+  title       String
+  externalRef String // pointer/key into the external JSON content store
+  contentHash String? // hash of the JSON content at import time, to detect drift
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  tenant       Tenant?             @relation(fields: [tenantId], references: [id])
+  sections     TestSectionConfig[]
+  examSessions ExamSession[]
+}
+
+model TestSectionConfig {
+  id            String      @id @default(cuid())
+  testId        String
+  section       TestSection
+  order         Int
+  durationSec   Int // canonical section duration, copied into ExamSessionProgress at session start
+  questionCount Int
+
+  test Test @relation(fields: [testId], references: [id])
+
+  @@unique([testId, section])
 }
 
 // ==========================
@@ -68,21 +106,102 @@ enum ExamSessionStatus {
   SCHEDULED
   IN_PROGRESS
   COMPLETED
+  CANCELLED
 }
 
 model ExamSession {
   id        String            @id @default(cuid())
   tenantId  String
-  testId    String // External JSON test identifier
+  testId    String
   name      String
-  examDate  DateTime
+  examDate  DateTime          @db.Timestamptz(3)
   status    ExamSessionStatus @default(SCHEDULED)
-  startTime DateTime?
-  endTime   DateTime?
+  startTime DateTime?         @db.Timestamptz(3)
+  endTime   DateTime?         @db.Timestamptz(3)
   createdAt DateTime          @default(now())
+  createdBy String? // userId of staff who created it; intentionally not a hard FK so
+  // history survives staff deactivation — join to User in app code when needed
 
-  tenant Tenant     @relation(fields: [tenantId], references: [id])
-  seats  ExamSeat[]
+  tenant       Tenant                   @relation(fields: [tenantId], references: [id])
+  test         Test                     @relation(fields: [testId], references: [id])
+  progress     ExamSessionProgress[]
+  seats        ExamSeat[]
+  invigilators ExamSessionInvigilator[]
+  events       ExamSessionEvent[]
+
+  @@index([tenantId, status])
+}
+
+// Which staff members are invigilating a given session. Real FK/join table
+// (unlike the audit fields above) because this drives live access control.
+model ExamSessionInvigilator {
+  id         String   @id @default(cuid())
+  sessionId  String
+  userId     String
+  assignedAt DateTime @default(now())
+
+  session ExamSession @relation(fields: [sessionId], references: [id])
+  user    User        @relation(fields: [userId], references: [id])
+
+  @@unique([sessionId, userId])
+}
+
+// Append-only audit log for every invigilator/system action that affects
+// timing or candidate state. This is the "who did what, when" record —
+// state tables (below) only need to reflect *current* state.
+enum ExamEventType {
+  SECTION_STARTED
+  SECTION_PAUSED
+  SECTION_RESUMED
+  SECTION_ENDED
+  SEAT_FORCE_SUBMITTED
+  SEAT_TIME_EXTENDED
+  SESSION_CREATED
+  SESSION_CANCELLED
+  NOTE
+}
+
+model ExamSessionEvent {
+  id          String        @id @default(cuid())
+  sessionId   String
+  seatId      String? // set when the event targets a specific candidate
+  section     TestSection?
+  type        ExamEventType
+  metadata    Json? // free-form details, e.g. { "extendedBySec": 300 }
+  actorUserId String? // not a hard FK — same reasoning as ExamSession.createdBy
+  createdAt   DateTime      @default(now())
+
+  session ExamSession @relation(fields: [sessionId], references: [id])
+
+  @@index([sessionId, createdAt])
+}
+
+// Canonical, session-wide state per section. This — not SectionProgress —
+// is the single source of truth for "has this section started, and when."
+// Every seat's countdown is derived from startedAt + plannedDurationSec
+// (+ that seat's extraTimeSec) - totalPausedSec, never stored per-seat.
+enum ExamSessionProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  PAUSED
+  COMPLETED
+}
+
+model ExamSessionProgress {
+  id                 String                    @id @default(cuid())
+  sessionId          String
+  section            TestSection
+  status             ExamSessionProgressStatus @default(NOT_STARTED)
+  plannedDurationSec Int // frozen from TestSectionConfig when the session was created
+  startedAt          DateTime?                 @db.Timestamptz(3) // server-set once, on invigilator trigger
+  pausedAt           DateTime?                 @db.Timestamptz(3)
+  totalPausedSec     Int                       @default(0)
+  endedAt            DateTime?                 @db.Timestamptz(3)
+  createdAt          DateTime                  @default(now())
+
+  session ExamSession @relation(fields: [sessionId], references: [id])
+
+  @@unique([sessionId, section])
 }
 
 // ==========================
@@ -93,44 +212,48 @@ enum ExamSeatStatus {
   IN_PROGRESS
   SUBMITTED
   EXPIRED
+  ABSENT
 }
 
 model ExamSeat {
   id               String         @id @default(cuid())
   sessionId        String
+  tenantId         String // denormalized from session for fast tenant-scoped queries / RLS
   seatNumber       Int
   label            String // "Row 3, Seat 2"
   accessCode       String         @unique // Candidate login code
   candidateName    String
   candidateId      String
   candidateContact String
+  extraTimeSec     Int            @default(0) // accommodation: added to every section's planned duration
   status           ExamSeatStatus @default(NOT_STARTED)
-  startedAt        DateTime?
-  submittedAt      DateTime?
+  startedAt        DateTime?      @db.Timestamptz(3)
+  submittedAt      DateTime?      @db.Timestamptz(3)
 
   session  ExamSession       @relation(fields: [sessionId], references: [id])
   sections SectionProgress[]
+  scores   SectionScore[]
 
   @@unique([sessionId, seatNumber])
+  @@index([sessionId, status])
 }
 
 // ==========================
-// SECTION PROGRESS
+// SECTION PROGRESS (per candidate)
+// Deliberately just a state marker. Remaining time is always derived from
+// ExamSessionProgress + ExamSeat.extraTimeSec — nothing here duplicates it.
+// If you need connection/liveness monitoring later, model it as discrete
+// ExamSessionEvent rows (SEAT_DISCONNECTED / SEAT_RECONNECTED) so you keep
+// the whole timeline, rather than a mutable field that only remembers the
+// most recent ping.
 // ==========================
-enum TestSection {
-  LISTENING
-  READING
-  WRITING
-  SPEAKING
-}
-
 model SectionProgress {
-  id           String         @id @default(cuid())
-  seatId       String
-  section      TestSection
-  status       ExamSeatStatus @default(NOT_STARTED)
-  startedAt    DateTime?
-  remainingSec Int? // Countdown sync
+  id          String         @id @default(cuid())
+  seatId      String
+  section     TestSection
+  status      ExamSeatStatus @default(NOT_STARTED)
+  startedAt   DateTime?      @db.Timestamptz(3) // normally mirrors session start; diverges for late admission
+  submittedAt DateTime?      @db.Timestamptz(3)
 
   seat      ExamSeat           @relation(fields: [seatId], references: [id])
   questions QuestionResponse[]
@@ -164,6 +287,7 @@ model Answer {
   questionResponseId String   @unique
   value              String // Text / selected options JSON
   wordCount          Int?
+  version            Int      @default(0) // optimistic lock: autosave races across tabs/reconnects
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
@@ -185,6 +309,8 @@ model Highlight {
 
 // ==========================
 // WRITING DRAFT (Autosave)
+// Consider a retention/pruning policy once volume grows — every autosave
+// tick per essay per candidate adds up fast across sessions.
 // ==========================
 model WritingDraft {
   id                 String   @id @default(cuid())
@@ -194,4 +320,32 @@ model WritingDraft {
   savedAt            DateTime @default(now())
 
   question QuestionResponse @relation(fields: [questionResponseId], references: [id])
+}
+
+// ==========================
+// SECTION SCORE (Results)
+// ==========================
+model SectionScore {
+  id        String      @id @default(cuid())
+  seatId    String
+  section   TestSection
+  rawScore  Float? // e.g. correct-answer count for auto-graded Listening/Reading
+  bandScore Float? // 0.0-9.0 in 0.5 increments
+  scoredBy  String? // not a hard FK — see ExamSession.createdBy rationale; null = auto-graded
+  scoredAt  DateTime    @default(now())
+  notes     String?
+
+  seat ExamSeat @relation(fields: [seatId], references: [id])
+
+  @@unique([seatId, section])
+}
+
+// ==========================
+// SHARED ENUM
+// ==========================
+enum TestSection {
+  LISTENING
+  READING
+  WRITING
+  SPEAKING
 }

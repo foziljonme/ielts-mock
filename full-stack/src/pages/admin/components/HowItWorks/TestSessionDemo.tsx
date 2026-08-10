@@ -46,7 +46,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
               </div>
               <ol className="space-y-3 text-sm">
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     1
                   </span>
                   <span className="text-gray-700">
@@ -55,7 +55,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     2
                   </span>
                   <span className="text-gray-700">
@@ -63,7 +63,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     3
                   </span>
                   <span className="text-gray-700">
@@ -71,7 +71,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     4
                   </span>
                   <span className="text-gray-700">
@@ -80,7 +80,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     5
                   </span>
                   <span className="text-gray-700">
@@ -88,7 +88,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     6
                   </span>
                   <span className="text-gray-700">
@@ -106,7 +106,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
               </div>
               <ol className="space-y-3 text-sm">
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     1
                   </span>
                   <span className="text-gray-700">
@@ -114,7 +114,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     2
                   </span>
                   <span className="text-gray-700">
@@ -122,7 +122,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     3
                   </span>
                   <span className="text-gray-700">
@@ -130,7 +130,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     4
                   </span>
                   <span className="text-gray-700">
@@ -139,7 +139,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     5
                   </span>
                   <span className="text-gray-700">
@@ -147,7 +147,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
                     6
                   </span>
                   <span className="text-gray-700">
