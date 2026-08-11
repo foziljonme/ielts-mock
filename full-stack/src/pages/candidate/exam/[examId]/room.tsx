@@ -21,80 +21,9 @@ export function CandidateWaitingRoom() {
   const [sessionId, setSessionId] = useState<string>('')
   const router = useRouter()
 
-  // Simulate connection to test session and connect student
   useEffect(() => {
-    // const connectToSession = async () => {
-    //   try {
-    //     // In real app, get session ID from access code lookup
-    //     const testSessionId = `session-scheduled-${Math.floor(
-    //       Date.now() / 10000,
-    //     )}`
-    //     setSessionId(testSessionId)
-
-    //     // Connect student to session
-    //     joinExamRoom(testSessionId)
-    //     // const response = await fetch(
-    //     //   `https://${projectId}.supabase.co/functions/v1/make-server-9af6c772/sessions/${testSessionId}/connect`,
-    //     //   {
-    //     //     method: "POST",
-    //     //     headers: {
-    //     //       "Content-Type": "application/json",
-    //     //       Authorization: `Bearer ${publicAnonKey}`,
-    //     //     },
-    //     //     body: JSON.stringify({
-    //     //       studentId: `student-${accessCode}`,
-    //     //       accessCode: accessCode,
-    //     //     }),
-    //     //   }
-    //     // );
-    //     setConnectionStatus('connected')
-    //     // if (response.ok) {
-    //     //   setConnectionStatus("connected");
-    //     // } else {
-    //     //   setConnectionStatus("error");
-    //     // }
-    //   } catch (error) {
-    //     console.error('Error connecting to session:', error)
-    //     setConnectionStatus('error')
-    //   }
-    // }
-
     joinExamRoom(router.query.examId as string)
-    // const timer = setTimeout(connectToSession, 1500)
-    // return () => clearTimeout(timer)
   }, [router.query.examId])
-
-  // Poll for section updates from admin
-  // useEffect(() => {
-  //   if (connectionStatus !== "connected" || !sessionId) return;
-
-  //   // const interval = setInterval(async () => {
-  //   //   try {
-  //   //     const response = await fetch(
-  //   //       `https://${projectId}.supabase.co/functions/v1/make-server-9af6c772/sessions/${sessionId}/poll`,
-  //   //       {
-  //   //         headers: {
-  //   //           Authorization: `Bearer ${publicAnonKey}`,
-  //   //         },
-  //   //       }
-  //   //     );
-
-  //   //     if (response.ok) {
-  //   //       const data = await response.json();
-
-  //   //       // If admin has started a section, notify parent component
-  //   //       if (data.currentSection && data.currentSection !== currentSection) {
-  //   //         console.log(`Admin started section: ${data.currentSection}`);
-  //   //         onSectionStart(data.currentSection);
-  //   //       }
-  //   //     }
-  //   //   } catch (error) {
-  //   //     console.error("Error polling for section updates:", error);
-  //   //   }
-  //   // }, 2000); // Poll every 2 seconds
-
-  //   // return () => clearInterval(interval);
-  // }, [connectionStatus, sessionId, currentSection, onSectionStart]);
 
   // Track waiting time
   useEffect(() => {
@@ -135,7 +64,7 @@ export function CandidateWaitingRoom() {
             </h1>
             <p className="text-gray-600">
               {connectionStatus === 'connecting'
-                ? 'Connecting to test session...'
+                ? 'Connecting to exam...'
                 : connectionStatus === 'connected'
                   ? 'Connected - Waiting for test administrator'
                   : 'Connection error - Please contact support'}
@@ -255,7 +184,7 @@ export function CandidateWaitingRoom() {
                     <span className="text-blue-600 font-bold mt-0.5">•</span>
                     <span>
                       The test will start automatically when the administrator
-                      begins the session
+                      begins the exam
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
@@ -274,8 +203,8 @@ export function CandidateWaitingRoom() {
           {connectionStatus === 'error' && (
             <div className="text-center">
               <p className="text-gray-600 mb-4">
-                Unable to connect to the test session. Please check your access
-                code and try again.
+                Unable to connect to the exam. Please check your access code and
+                try again.
               </p>
               <Button variant="outline">Retry Connection</Button>
             </div>

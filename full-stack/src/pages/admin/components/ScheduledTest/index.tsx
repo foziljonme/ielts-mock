@@ -18,7 +18,7 @@ import {
   DialogTrigger,
 } from '@/components/dialog'
 import { Calendar, Trash2, Play } from 'lucide-react'
-import { ExamSessionStatus } from '@/../prisma/generated/enums'
+import { ExamStatus } from '@/../prisma/generated/enums'
 import { useScheduleTestStore } from '@/stores/scheduleTest.store'
 import ScheduledTestHeader from './ScheduledTestHeader'
 import { ScheduleTestFormDialog } from './ScheduleTestFormDialog'
@@ -29,8 +29,7 @@ import useExamStore from '@/stores/exam.store'
 
 export function ScheduleTestPage() {
   const { startSession } = useExamStore()
-  const { fetchAvailableTests, sessions, deleteSession } =
-    useScheduleTestStore()
+  const { fetchAvailableTests, exams, deleteSession } = useScheduleTestStore()
   const { tenant } = useTenantStore()
   const router = useRouter()
 
@@ -47,11 +46,11 @@ export function ScheduleTestPage() {
     fetchAvailableTests()
   }, [fetchAvailableTests])
 
-  if (!tenant || !sessions) {
+  if (!tenant || !exams) {
     return <Loading />
   }
 
-  console.log('sessions', sessions)
+  console.log('exams', exams)
   return (
     <div className="space-y-6">
       {/* Header with stats */}
@@ -64,19 +63,18 @@ export function ScheduleTestPage() {
           <div>
             <h2 className="text-lg font-semibold">Scheduled Mock Tests</h2>
             <p className="text-sm text-gray-600">
-              Manage upcoming test sessions and seats allocations
+              Manage upcoming exams and seats allocations
             </p>
           </div>
           <ScheduleTestFormDialog />
         </div>
 
-        {sessions.length === 0 ? (
+        {exams.length === 0 ? (
           <div className="text-center py-12">
             <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-600 mb-2">No scheduled tests yet</p>
             <p className="text-sm text-gray-500">
-              Click &quot;Schedule New Test&quot; to create your first mock test
-              session
+              Click &quot;Schedule New Test&quot; to create your first mock exam
             </p>
           </div>
         ) : (
@@ -90,16 +88,16 @@ export function ScheduleTestPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sessions.map(session => (
+              {exams.map(exam => (
                 <TableRow
-                  key={session.id}
-                  onClick={() => router.push(`/admin/${session.id}`)}
+                  key={exam.id}
+                  onClick={() => router.push(`/admin/${exam.id}`)}
                   className="cursor-pointer"
                 >
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-gray-400" />
-                      {new Date(session.examDate).toLocaleDateString('en-GB', {
+                      {new Date(exam.examDate).toLocaleDateString('en-GB', {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric',
@@ -110,8 +108,8 @@ export function ScheduleTestPage() {
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button variant="link" className="p-0 h-auto">
-                          {session.seats.length} candidate
-                          {session.seats.length !== 1 ? 's' : ''}
+                          {exam.seats.length} candidate
+                          {exam.seats.length !== 1 ? 's' : ''}
                         </Button>
                       </DialogTrigger>
                       <DialogContent>
@@ -119,7 +117,7 @@ export function ScheduleTestPage() {
                           <DialogTitle>Scheduled Candidates</DialogTitle>
                         </DialogHeader>
                         <div className="space-y-3 pt-4">
-                          {session.seats.map(seat => (
+                          {exam.seats.map(seat => (
                             <div
                               key={seat.id}
                               className="p-3 border rounded-lg"
@@ -164,15 +162,15 @@ export function ScheduleTestPage() {
                   <TableCell>
                     <Badge
                       variant={
-                        session.status === ExamSessionStatus.COMPLETED
+                        exam.status === ExamStatus.COMPLETED
                           ? 'default'
-                          : session.status === ExamSessionStatus.IN_PROGRESS ||
-                              session.status === ExamSessionStatus.OPEN
+                          : exam.status === ExamStatus.IN_PROGRESS ||
+                              exam.status === ExamStatus.OPEN
                             ? 'secondary'
                             : 'outline'
                       }
                     >
-                      {session.status}
+                      {exam.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -180,18 +178,16 @@ export function ScheduleTestPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleDeleteScheduledTest(session.id)}
-                        disabled={
-                          session.status !== ExamSessionStatus.COMPLETED
-                        }
+                        onClick={() => handleDeleteScheduledTest(exam.id)}
+                        disabled={exam.status !== ExamStatus.COMPLETED}
                       >
                         <Trash2 className="w-4 h-4 text-red-500" />
                       </Button>
-                      {session.status !== ExamSessionStatus.COMPLETED && (
+                      {exam.status !== ExamStatus.COMPLETED && (
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleStartScheduledTest(session.id)}
+                          onClick={() => handleStartScheduledTest(exam.id)}
                         >
                           <Play className="w-4 h-4 text-green-500" />
                         </Button>

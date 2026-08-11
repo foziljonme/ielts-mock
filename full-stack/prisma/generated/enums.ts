@@ -19,14 +19,23 @@ export const UserRole = {
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
-export const ExamSessionStatus = {
+export const ExamStatus = {
   SCHEDULED: 'SCHEDULED',
   OPEN: 'OPEN',
   IN_PROGRESS: 'IN_PROGRESS',
   COMPLETED: 'COMPLETED'
 } as const
 
-export type ExamSessionStatus = (typeof ExamSessionStatus)[keyof typeof ExamSessionStatus]
+export type ExamStatus = (typeof ExamStatus)[keyof typeof ExamStatus]
+
+
+export const ExamSectionStatus = {
+  NOT_STARTED: 'NOT_STARTED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type ExamSectionStatus = (typeof ExamSectionStatus)[keyof typeof ExamSectionStatus]
 
 
 export const ExamSeatStatus = {

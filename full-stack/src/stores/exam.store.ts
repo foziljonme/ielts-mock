@@ -1,7 +1,7 @@
 import { ISeat } from '@/types/seats'
 import { create } from 'zustand'
 import { TestSection } from '../../prisma/generated/enums'
-import { ISession } from '@/types/sessions'
+import { IExam } from '@/types/exams'
 import { toastError } from '@/lib/notifications/toastError'
 import httpClient from '@/lib/httpClient'
 import { useScheduleTestStore } from './scheduleTest.store'
@@ -11,9 +11,9 @@ interface IExamStore {
   examSeatInfo: ISeat | null
   activeSection: TestSection | null
   completedSections: Set<TestSection>
-  currentSession: ISession | null
+  currentExam: IExam | null
 
-  setCurrentSession: (session: ISession) => void
+  setCurrentSession: (exam: IExam) => void
   fetchCurrentSession: (sessionId: string) => Promise<void>
   setExamSeatInfo: (seat: ISeat) => void
   startSession: (sessionId: string) => Promise<void>
@@ -26,33 +26,31 @@ const useExamStore = create<IExamStore>((set, get) => ({
   examSeatInfo: null,
   activeSection: null,
   completedSections: new Set<TestSection>(),
-  currentSession: null,
+  currentExam: null,
 
-  setCurrentSession: (session: ISession) => set({ currentSession: session }),
+  setCurrentSession: (exam: IExam) => set({ currentExam: exam }),
   fetchCurrentSession: async (sessionId: string) => {
     try {
       const response = await httpClient.get(`/exams/${sessionId}`)
       get().setCurrentSession(response)
     } catch (error) {
-      toastError({ title: 'Failed to fetch current session', error })
+      toastError({ title: 'Failed to fetch current exam', error })
     }
   },
   setExamSeatInfo: (seat: ISeat) => set({ examSeatInfo: seat }),
   startSession: async (sessionId: string) => {
     set({ isLoading: true })
     try {
-      const sessionUpdated: any = await httpClient.post(
+      const examUpdated: any = await httpClient.post(
         `/exams/${sessionId}/start`,
         {},
       )
 
-      set({ currentSession: sessionUpdated })
+      set({ currentExam: examUpdated })
 
-      useScheduleTestStore
-        .getState()
-        .updateLocalSession(sessionId, sessionUpdated)
+      useScheduleTestStore.getState().updateLocalSession(sessionId, examUpdated)
     } catch (error) {
-      toastError({ title: 'Failed to start exam session', error })
+      toastError({ title: 'Failed to start exam exam', error })
     } finally {
       set({ isLoading: false })
     }
@@ -64,9 +62,9 @@ const useExamStore = create<IExamStore>((set, get) => ({
         `exams/${sessionId}/sections/${sectionId}/start`,
         {},
       )
-      console.log('section started response', sectionStarted)
+      console.log('Exam started response', sectionStarted)
     } catch (error) {
-      toastError({ title: 'Failed to start exam section', error })
+      toastError({ title: 'Failed to start section', error })
     } finally {
       set({ isLoading: false })
     }

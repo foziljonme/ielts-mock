@@ -27,7 +27,7 @@ export type AggregateExamSeat = {
 export type ExamSeatMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
-  sessionId: string | null
+  examId: string | null
   label: string | null
   accessCode: string | null
   candidateName: string | null
@@ -43,7 +43,7 @@ export type ExamSeatMinAggregateOutputType = {
 export type ExamSeatMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
-  sessionId: string | null
+  examId: string | null
   label: string | null
   accessCode: string | null
   candidateName: string | null
@@ -59,7 +59,7 @@ export type ExamSeatMaxAggregateOutputType = {
 export type ExamSeatCountAggregateOutputType = {
   id: number
   tenantId: number
-  sessionId: number
+  examId: number
   label: number
   accessCode: number
   candidateName: number
@@ -77,7 +77,7 @@ export type ExamSeatCountAggregateOutputType = {
 export type ExamSeatMinAggregateInputType = {
   id?: true
   tenantId?: true
-  sessionId?: true
+  examId?: true
   label?: true
   accessCode?: true
   candidateName?: true
@@ -93,7 +93,7 @@ export type ExamSeatMinAggregateInputType = {
 export type ExamSeatMaxAggregateInputType = {
   id?: true
   tenantId?: true
-  sessionId?: true
+  examId?: true
   label?: true
   accessCode?: true
   candidateName?: true
@@ -109,7 +109,7 @@ export type ExamSeatMaxAggregateInputType = {
 export type ExamSeatCountAggregateInputType = {
   id?: true
   tenantId?: true
-  sessionId?: true
+  examId?: true
   label?: true
   accessCode?: true
   candidateName?: true
@@ -198,7 +198,7 @@ export type ExamSeatGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type ExamSeatGroupByOutputType = {
   id: string
   tenantId: string
-  sessionId: string
+  examId: string
   label: string | null
   accessCode: string
   candidateName: string
@@ -235,7 +235,7 @@ export type ExamSeatWhereInput = {
   NOT?: Prisma.ExamSeatWhereInput | Prisma.ExamSeatWhereInput[]
   id?: Prisma.StringFilter<"ExamSeat"> | string
   tenantId?: Prisma.StringFilter<"ExamSeat"> | string
-  sessionId?: Prisma.StringFilter<"ExamSeat"> | string
+  examId?: Prisma.StringFilter<"ExamSeat"> | string
   label?: Prisma.StringNullableFilter<"ExamSeat"> | string | null
   accessCode?: Prisma.StringFilter<"ExamSeat"> | string
   candidateName?: Prisma.StringFilter<"ExamSeat"> | string
@@ -246,14 +246,14 @@ export type ExamSeatWhereInput = {
   submittedAt?: Prisma.DateTimeNullableFilter<"ExamSeat"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ExamSeat"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ExamSeat"> | Date | string
-  session?: Prisma.XOR<Prisma.ExamSessionScalarRelationFilter, Prisma.ExamSessionWhereInput>
+  exam?: Prisma.XOR<Prisma.ExamScalarRelationFilter, Prisma.ExamWhereInput>
   sections?: Prisma.SectionProgressListRelationFilter
 }
 
 export type ExamSeatOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  sessionId?: Prisma.SortOrder
+  examId?: Prisma.SortOrder
   label?: Prisma.SortOrderInput | Prisma.SortOrder
   accessCode?: Prisma.SortOrder
   candidateName?: Prisma.SortOrder
@@ -264,7 +264,7 @@ export type ExamSeatOrderByWithRelationInput = {
   submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  session?: Prisma.ExamSessionOrderByWithRelationInput
+  exam?: Prisma.ExamOrderByWithRelationInput
   sections?: Prisma.SectionProgressOrderByRelationAggregateInput
 }
 
@@ -275,7 +275,7 @@ export type ExamSeatWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ExamSeatWhereInput[]
   NOT?: Prisma.ExamSeatWhereInput | Prisma.ExamSeatWhereInput[]
   tenantId?: Prisma.StringFilter<"ExamSeat"> | string
-  sessionId?: Prisma.StringFilter<"ExamSeat"> | string
+  examId?: Prisma.StringFilter<"ExamSeat"> | string
   label?: Prisma.StringNullableFilter<"ExamSeat"> | string | null
   candidateName?: Prisma.StringFilter<"ExamSeat"> | string
   candidateId?: Prisma.StringFilter<"ExamSeat"> | string
@@ -285,14 +285,14 @@ export type ExamSeatWhereUniqueInput = Prisma.AtLeast<{
   submittedAt?: Prisma.DateTimeNullableFilter<"ExamSeat"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ExamSeat"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ExamSeat"> | Date | string
-  session?: Prisma.XOR<Prisma.ExamSessionScalarRelationFilter, Prisma.ExamSessionWhereInput>
+  exam?: Prisma.XOR<Prisma.ExamScalarRelationFilter, Prisma.ExamWhereInput>
   sections?: Prisma.SectionProgressListRelationFilter
 }, "id" | "accessCode">
 
 export type ExamSeatOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  sessionId?: Prisma.SortOrder
+  examId?: Prisma.SortOrder
   label?: Prisma.SortOrderInput | Prisma.SortOrder
   accessCode?: Prisma.SortOrder
   candidateName?: Prisma.SortOrder
@@ -314,7 +314,7 @@ export type ExamSeatScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ExamSeatScalarWhereWithAggregatesInput | Prisma.ExamSeatScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ExamSeat"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"ExamSeat"> | string
-  sessionId?: Prisma.StringWithAggregatesFilter<"ExamSeat"> | string
+  examId?: Prisma.StringWithAggregatesFilter<"ExamSeat"> | string
   label?: Prisma.StringNullableWithAggregatesFilter<"ExamSeat"> | string | null
   accessCode?: Prisma.StringWithAggregatesFilter<"ExamSeat"> | string
   candidateName?: Prisma.StringWithAggregatesFilter<"ExamSeat"> | string
@@ -340,14 +340,14 @@ export type ExamSeatCreateInput = {
   submittedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  session: Prisma.ExamSessionCreateNestedOneWithoutSeatsInput
+  exam: Prisma.ExamCreateNestedOneWithoutSeatsInput
   sections?: Prisma.SectionProgressCreateNestedManyWithoutSeatInput
 }
 
 export type ExamSeatUncheckedCreateInput = {
   id?: string
   tenantId: string
-  sessionId: string
+  examId: string
   label?: string | null
   accessCode: string
   candidateName: string
@@ -374,14 +374,14 @@ export type ExamSeatUpdateInput = {
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  session?: Prisma.ExamSessionUpdateOneRequiredWithoutSeatsNestedInput
+  exam?: Prisma.ExamUpdateOneRequiredWithoutSeatsNestedInput
   sections?: Prisma.SectionProgressUpdateManyWithoutSeatNestedInput
 }
 
 export type ExamSeatUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sessionId?: Prisma.StringFieldUpdateOperationsInput | string
+  examId?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessCode?: Prisma.StringFieldUpdateOperationsInput | string
   candidateName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -398,7 +398,7 @@ export type ExamSeatUncheckedUpdateInput = {
 export type ExamSeatCreateManyInput = {
   id?: string
   tenantId: string
-  sessionId: string
+  examId: string
   label?: string | null
   accessCode: string
   candidateName: string
@@ -429,7 +429,7 @@ export type ExamSeatUpdateManyMutationInput = {
 export type ExamSeatUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sessionId?: Prisma.StringFieldUpdateOperationsInput | string
+  examId?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessCode?: Prisma.StringFieldUpdateOperationsInput | string
   candidateName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -455,7 +455,7 @@ export type ExamSeatOrderByRelationAggregateInput = {
 export type ExamSeatCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  sessionId?: Prisma.SortOrder
+  examId?: Prisma.SortOrder
   label?: Prisma.SortOrder
   accessCode?: Prisma.SortOrder
   candidateName?: Prisma.SortOrder
@@ -471,7 +471,7 @@ export type ExamSeatCountOrderByAggregateInput = {
 export type ExamSeatMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  sessionId?: Prisma.SortOrder
+  examId?: Prisma.SortOrder
   label?: Prisma.SortOrder
   accessCode?: Prisma.SortOrder
   candidateName?: Prisma.SortOrder
@@ -487,7 +487,7 @@ export type ExamSeatMaxOrderByAggregateInput = {
 export type ExamSeatMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  sessionId?: Prisma.SortOrder
+  examId?: Prisma.SortOrder
   label?: Prisma.SortOrder
   accessCode?: Prisma.SortOrder
   candidateName?: Prisma.SortOrder
@@ -505,45 +505,45 @@ export type ExamSeatScalarRelationFilter = {
   isNot?: Prisma.ExamSeatWhereInput
 }
 
-export type ExamSeatCreateNestedManyWithoutSessionInput = {
-  create?: Prisma.XOR<Prisma.ExamSeatCreateWithoutSessionInput, Prisma.ExamSeatUncheckedCreateWithoutSessionInput> | Prisma.ExamSeatCreateWithoutSessionInput[] | Prisma.ExamSeatUncheckedCreateWithoutSessionInput[]
-  connectOrCreate?: Prisma.ExamSeatCreateOrConnectWithoutSessionInput | Prisma.ExamSeatCreateOrConnectWithoutSessionInput[]
-  createMany?: Prisma.ExamSeatCreateManySessionInputEnvelope
+export type ExamSeatCreateNestedManyWithoutExamInput = {
+  create?: Prisma.XOR<Prisma.ExamSeatCreateWithoutExamInput, Prisma.ExamSeatUncheckedCreateWithoutExamInput> | Prisma.ExamSeatCreateWithoutExamInput[] | Prisma.ExamSeatUncheckedCreateWithoutExamInput[]
+  connectOrCreate?: Prisma.ExamSeatCreateOrConnectWithoutExamInput | Prisma.ExamSeatCreateOrConnectWithoutExamInput[]
+  createMany?: Prisma.ExamSeatCreateManyExamInputEnvelope
   connect?: Prisma.ExamSeatWhereUniqueInput | Prisma.ExamSeatWhereUniqueInput[]
 }
 
-export type ExamSeatUncheckedCreateNestedManyWithoutSessionInput = {
-  create?: Prisma.XOR<Prisma.ExamSeatCreateWithoutSessionInput, Prisma.ExamSeatUncheckedCreateWithoutSessionInput> | Prisma.ExamSeatCreateWithoutSessionInput[] | Prisma.ExamSeatUncheckedCreateWithoutSessionInput[]
-  connectOrCreate?: Prisma.ExamSeatCreateOrConnectWithoutSessionInput | Prisma.ExamSeatCreateOrConnectWithoutSessionInput[]
-  createMany?: Prisma.ExamSeatCreateManySessionInputEnvelope
+export type ExamSeatUncheckedCreateNestedManyWithoutExamInput = {
+  create?: Prisma.XOR<Prisma.ExamSeatCreateWithoutExamInput, Prisma.ExamSeatUncheckedCreateWithoutExamInput> | Prisma.ExamSeatCreateWithoutExamInput[] | Prisma.ExamSeatUncheckedCreateWithoutExamInput[]
+  connectOrCreate?: Prisma.ExamSeatCreateOrConnectWithoutExamInput | Prisma.ExamSeatCreateOrConnectWithoutExamInput[]
+  createMany?: Prisma.ExamSeatCreateManyExamInputEnvelope
   connect?: Prisma.ExamSeatWhereUniqueInput | Prisma.ExamSeatWhereUniqueInput[]
 }
 
-export type ExamSeatUpdateManyWithoutSessionNestedInput = {
-  create?: Prisma.XOR<Prisma.ExamSeatCreateWithoutSessionInput, Prisma.ExamSeatUncheckedCreateWithoutSessionInput> | Prisma.ExamSeatCreateWithoutSessionInput[] | Prisma.ExamSeatUncheckedCreateWithoutSessionInput[]
-  connectOrCreate?: Prisma.ExamSeatCreateOrConnectWithoutSessionInput | Prisma.ExamSeatCreateOrConnectWithoutSessionInput[]
-  upsert?: Prisma.ExamSeatUpsertWithWhereUniqueWithoutSessionInput | Prisma.ExamSeatUpsertWithWhereUniqueWithoutSessionInput[]
-  createMany?: Prisma.ExamSeatCreateManySessionInputEnvelope
+export type ExamSeatUpdateManyWithoutExamNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamSeatCreateWithoutExamInput, Prisma.ExamSeatUncheckedCreateWithoutExamInput> | Prisma.ExamSeatCreateWithoutExamInput[] | Prisma.ExamSeatUncheckedCreateWithoutExamInput[]
+  connectOrCreate?: Prisma.ExamSeatCreateOrConnectWithoutExamInput | Prisma.ExamSeatCreateOrConnectWithoutExamInput[]
+  upsert?: Prisma.ExamSeatUpsertWithWhereUniqueWithoutExamInput | Prisma.ExamSeatUpsertWithWhereUniqueWithoutExamInput[]
+  createMany?: Prisma.ExamSeatCreateManyExamInputEnvelope
   set?: Prisma.ExamSeatWhereUniqueInput | Prisma.ExamSeatWhereUniqueInput[]
   disconnect?: Prisma.ExamSeatWhereUniqueInput | Prisma.ExamSeatWhereUniqueInput[]
   delete?: Prisma.ExamSeatWhereUniqueInput | Prisma.ExamSeatWhereUniqueInput[]
   connect?: Prisma.ExamSeatWhereUniqueInput | Prisma.ExamSeatWhereUniqueInput[]
-  update?: Prisma.ExamSeatUpdateWithWhereUniqueWithoutSessionInput | Prisma.ExamSeatUpdateWithWhereUniqueWithoutSessionInput[]
-  updateMany?: Prisma.ExamSeatUpdateManyWithWhereWithoutSessionInput | Prisma.ExamSeatUpdateManyWithWhereWithoutSessionInput[]
+  update?: Prisma.ExamSeatUpdateWithWhereUniqueWithoutExamInput | Prisma.ExamSeatUpdateWithWhereUniqueWithoutExamInput[]
+  updateMany?: Prisma.ExamSeatUpdateManyWithWhereWithoutExamInput | Prisma.ExamSeatUpdateManyWithWhereWithoutExamInput[]
   deleteMany?: Prisma.ExamSeatScalarWhereInput | Prisma.ExamSeatScalarWhereInput[]
 }
 
-export type ExamSeatUncheckedUpdateManyWithoutSessionNestedInput = {
-  create?: Prisma.XOR<Prisma.ExamSeatCreateWithoutSessionInput, Prisma.ExamSeatUncheckedCreateWithoutSessionInput> | Prisma.ExamSeatCreateWithoutSessionInput[] | Prisma.ExamSeatUncheckedCreateWithoutSessionInput[]
-  connectOrCreate?: Prisma.ExamSeatCreateOrConnectWithoutSessionInput | Prisma.ExamSeatCreateOrConnectWithoutSessionInput[]
-  upsert?: Prisma.ExamSeatUpsertWithWhereUniqueWithoutSessionInput | Prisma.ExamSeatUpsertWithWhereUniqueWithoutSessionInput[]
-  createMany?: Prisma.ExamSeatCreateManySessionInputEnvelope
+export type ExamSeatUncheckedUpdateManyWithoutExamNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamSeatCreateWithoutExamInput, Prisma.ExamSeatUncheckedCreateWithoutExamInput> | Prisma.ExamSeatCreateWithoutExamInput[] | Prisma.ExamSeatUncheckedCreateWithoutExamInput[]
+  connectOrCreate?: Prisma.ExamSeatCreateOrConnectWithoutExamInput | Prisma.ExamSeatCreateOrConnectWithoutExamInput[]
+  upsert?: Prisma.ExamSeatUpsertWithWhereUniqueWithoutExamInput | Prisma.ExamSeatUpsertWithWhereUniqueWithoutExamInput[]
+  createMany?: Prisma.ExamSeatCreateManyExamInputEnvelope
   set?: Prisma.ExamSeatWhereUniqueInput | Prisma.ExamSeatWhereUniqueInput[]
   disconnect?: Prisma.ExamSeatWhereUniqueInput | Prisma.ExamSeatWhereUniqueInput[]
   delete?: Prisma.ExamSeatWhereUniqueInput | Prisma.ExamSeatWhereUniqueInput[]
   connect?: Prisma.ExamSeatWhereUniqueInput | Prisma.ExamSeatWhereUniqueInput[]
-  update?: Prisma.ExamSeatUpdateWithWhereUniqueWithoutSessionInput | Prisma.ExamSeatUpdateWithWhereUniqueWithoutSessionInput[]
-  updateMany?: Prisma.ExamSeatUpdateManyWithWhereWithoutSessionInput | Prisma.ExamSeatUpdateManyWithWhereWithoutSessionInput[]
+  update?: Prisma.ExamSeatUpdateWithWhereUniqueWithoutExamInput | Prisma.ExamSeatUpdateWithWhereUniqueWithoutExamInput[]
+  updateMany?: Prisma.ExamSeatUpdateManyWithWhereWithoutExamInput | Prisma.ExamSeatUpdateManyWithWhereWithoutExamInput[]
   deleteMany?: Prisma.ExamSeatScalarWhereInput | Prisma.ExamSeatScalarWhereInput[]
 }
 
@@ -565,7 +565,7 @@ export type ExamSeatUpdateOneRequiredWithoutSectionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ExamSeatUpdateToOneWithWhereWithoutSectionsInput, Prisma.ExamSeatUpdateWithoutSectionsInput>, Prisma.ExamSeatUncheckedUpdateWithoutSectionsInput>
 }
 
-export type ExamSeatCreateWithoutSessionInput = {
+export type ExamSeatCreateWithoutExamInput = {
   id?: string
   tenantId: string
   label?: string | null
@@ -581,7 +581,7 @@ export type ExamSeatCreateWithoutSessionInput = {
   sections?: Prisma.SectionProgressCreateNestedManyWithoutSeatInput
 }
 
-export type ExamSeatUncheckedCreateWithoutSessionInput = {
+export type ExamSeatUncheckedCreateWithoutExamInput = {
   id?: string
   tenantId: string
   label?: string | null
@@ -597,30 +597,30 @@ export type ExamSeatUncheckedCreateWithoutSessionInput = {
   sections?: Prisma.SectionProgressUncheckedCreateNestedManyWithoutSeatInput
 }
 
-export type ExamSeatCreateOrConnectWithoutSessionInput = {
+export type ExamSeatCreateOrConnectWithoutExamInput = {
   where: Prisma.ExamSeatWhereUniqueInput
-  create: Prisma.XOR<Prisma.ExamSeatCreateWithoutSessionInput, Prisma.ExamSeatUncheckedCreateWithoutSessionInput>
+  create: Prisma.XOR<Prisma.ExamSeatCreateWithoutExamInput, Prisma.ExamSeatUncheckedCreateWithoutExamInput>
 }
 
-export type ExamSeatCreateManySessionInputEnvelope = {
-  data: Prisma.ExamSeatCreateManySessionInput | Prisma.ExamSeatCreateManySessionInput[]
+export type ExamSeatCreateManyExamInputEnvelope = {
+  data: Prisma.ExamSeatCreateManyExamInput | Prisma.ExamSeatCreateManyExamInput[]
   skipDuplicates?: boolean
 }
 
-export type ExamSeatUpsertWithWhereUniqueWithoutSessionInput = {
+export type ExamSeatUpsertWithWhereUniqueWithoutExamInput = {
   where: Prisma.ExamSeatWhereUniqueInput
-  update: Prisma.XOR<Prisma.ExamSeatUpdateWithoutSessionInput, Prisma.ExamSeatUncheckedUpdateWithoutSessionInput>
-  create: Prisma.XOR<Prisma.ExamSeatCreateWithoutSessionInput, Prisma.ExamSeatUncheckedCreateWithoutSessionInput>
+  update: Prisma.XOR<Prisma.ExamSeatUpdateWithoutExamInput, Prisma.ExamSeatUncheckedUpdateWithoutExamInput>
+  create: Prisma.XOR<Prisma.ExamSeatCreateWithoutExamInput, Prisma.ExamSeatUncheckedCreateWithoutExamInput>
 }
 
-export type ExamSeatUpdateWithWhereUniqueWithoutSessionInput = {
+export type ExamSeatUpdateWithWhereUniqueWithoutExamInput = {
   where: Prisma.ExamSeatWhereUniqueInput
-  data: Prisma.XOR<Prisma.ExamSeatUpdateWithoutSessionInput, Prisma.ExamSeatUncheckedUpdateWithoutSessionInput>
+  data: Prisma.XOR<Prisma.ExamSeatUpdateWithoutExamInput, Prisma.ExamSeatUncheckedUpdateWithoutExamInput>
 }
 
-export type ExamSeatUpdateManyWithWhereWithoutSessionInput = {
+export type ExamSeatUpdateManyWithWhereWithoutExamInput = {
   where: Prisma.ExamSeatScalarWhereInput
-  data: Prisma.XOR<Prisma.ExamSeatUpdateManyMutationInput, Prisma.ExamSeatUncheckedUpdateManyWithoutSessionInput>
+  data: Prisma.XOR<Prisma.ExamSeatUpdateManyMutationInput, Prisma.ExamSeatUncheckedUpdateManyWithoutExamInput>
 }
 
 export type ExamSeatScalarWhereInput = {
@@ -629,7 +629,7 @@ export type ExamSeatScalarWhereInput = {
   NOT?: Prisma.ExamSeatScalarWhereInput | Prisma.ExamSeatScalarWhereInput[]
   id?: Prisma.StringFilter<"ExamSeat"> | string
   tenantId?: Prisma.StringFilter<"ExamSeat"> | string
-  sessionId?: Prisma.StringFilter<"ExamSeat"> | string
+  examId?: Prisma.StringFilter<"ExamSeat"> | string
   label?: Prisma.StringNullableFilter<"ExamSeat"> | string | null
   accessCode?: Prisma.StringFilter<"ExamSeat"> | string
   candidateName?: Prisma.StringFilter<"ExamSeat"> | string
@@ -655,13 +655,13 @@ export type ExamSeatCreateWithoutSectionsInput = {
   submittedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  session: Prisma.ExamSessionCreateNestedOneWithoutSeatsInput
+  exam: Prisma.ExamCreateNestedOneWithoutSeatsInput
 }
 
 export type ExamSeatUncheckedCreateWithoutSectionsInput = {
   id?: string
   tenantId: string
-  sessionId: string
+  examId: string
   label?: string | null
   accessCode: string
   candidateName: string
@@ -703,13 +703,13 @@ export type ExamSeatUpdateWithoutSectionsInput = {
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  session?: Prisma.ExamSessionUpdateOneRequiredWithoutSeatsNestedInput
+  exam?: Prisma.ExamUpdateOneRequiredWithoutSeatsNestedInput
 }
 
 export type ExamSeatUncheckedUpdateWithoutSectionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sessionId?: Prisma.StringFieldUpdateOperationsInput | string
+  examId?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessCode?: Prisma.StringFieldUpdateOperationsInput | string
   candidateName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -722,7 +722,7 @@ export type ExamSeatUncheckedUpdateWithoutSectionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ExamSeatCreateManySessionInput = {
+export type ExamSeatCreateManyExamInput = {
   id?: string
   tenantId: string
   label?: string | null
@@ -737,7 +737,7 @@ export type ExamSeatCreateManySessionInput = {
   updatedAt?: Date | string
 }
 
-export type ExamSeatUpdateWithoutSessionInput = {
+export type ExamSeatUpdateWithoutExamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -753,7 +753,7 @@ export type ExamSeatUpdateWithoutSessionInput = {
   sections?: Prisma.SectionProgressUpdateManyWithoutSeatNestedInput
 }
 
-export type ExamSeatUncheckedUpdateWithoutSessionInput = {
+export type ExamSeatUncheckedUpdateWithoutExamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -769,7 +769,7 @@ export type ExamSeatUncheckedUpdateWithoutSessionInput = {
   sections?: Prisma.SectionProgressUncheckedUpdateManyWithoutSeatNestedInput
 }
 
-export type ExamSeatUncheckedUpdateManyWithoutSessionInput = {
+export type ExamSeatUncheckedUpdateManyWithoutExamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -818,7 +818,7 @@ export type ExamSeatCountOutputTypeCountSectionsArgs<ExtArgs extends runtime.Typ
 export type ExamSeatSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tenantId?: boolean
-  sessionId?: boolean
+  examId?: boolean
   label?: boolean
   accessCode?: boolean
   candidateName?: boolean
@@ -829,7 +829,7 @@ export type ExamSeatSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   submittedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  session?: boolean | Prisma.ExamSessionDefaultArgs<ExtArgs>
+  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
   sections?: boolean | Prisma.ExamSeat$sectionsArgs<ExtArgs>
   _count?: boolean | Prisma.ExamSeatCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["examSeat"]>
@@ -837,7 +837,7 @@ export type ExamSeatSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type ExamSeatSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tenantId?: boolean
-  sessionId?: boolean
+  examId?: boolean
   label?: boolean
   accessCode?: boolean
   candidateName?: boolean
@@ -848,13 +848,13 @@ export type ExamSeatSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   submittedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  session?: boolean | Prisma.ExamSessionDefaultArgs<ExtArgs>
+  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["examSeat"]>
 
 export type ExamSeatSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tenantId?: boolean
-  sessionId?: boolean
+  examId?: boolean
   label?: boolean
   accessCode?: boolean
   candidateName?: boolean
@@ -865,13 +865,13 @@ export type ExamSeatSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   submittedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  session?: boolean | Prisma.ExamSessionDefaultArgs<ExtArgs>
+  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["examSeat"]>
 
 export type ExamSeatSelectScalar = {
   id?: boolean
   tenantId?: boolean
-  sessionId?: boolean
+  examId?: boolean
   label?: boolean
   accessCode?: boolean
   candidateName?: boolean
@@ -884,29 +884,29 @@ export type ExamSeatSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ExamSeatOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "sessionId" | "label" | "accessCode" | "candidateName" | "candidateId" | "candidateContact" | "status" | "startedAt" | "submittedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["examSeat"]>
+export type ExamSeatOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "examId" | "label" | "accessCode" | "candidateName" | "candidateId" | "candidateContact" | "status" | "startedAt" | "submittedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["examSeat"]>
 export type ExamSeatInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  session?: boolean | Prisma.ExamSessionDefaultArgs<ExtArgs>
+  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
   sections?: boolean | Prisma.ExamSeat$sectionsArgs<ExtArgs>
   _count?: boolean | Prisma.ExamSeatCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ExamSeatIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  session?: boolean | Prisma.ExamSessionDefaultArgs<ExtArgs>
+  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
 }
 export type ExamSeatIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  session?: boolean | Prisma.ExamSessionDefaultArgs<ExtArgs>
+  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
 }
 
 export type $ExamSeatPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ExamSeat"
   objects: {
-    session: Prisma.$ExamSessionPayload<ExtArgs>
+    exam: Prisma.$ExamPayload<ExtArgs>
     sections: Prisma.$SectionProgressPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenantId: string
-    sessionId: string
+    examId: string
     label: string | null
     accessCode: string
     candidateName: string
@@ -1311,7 +1311,7 @@ readonly fields: ExamSeatFieldRefs;
  */
 export interface Prisma__ExamSeatClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  session<T extends Prisma.ExamSessionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ExamSessionDefaultArgs<ExtArgs>>): Prisma.Prisma__ExamSessionClient<runtime.Types.Result.GetResult<Prisma.$ExamSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  exam<T extends Prisma.ExamDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ExamDefaultArgs<ExtArgs>>): Prisma.Prisma__ExamClient<runtime.Types.Result.GetResult<Prisma.$ExamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   sections<T extends Prisma.ExamSeat$sectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ExamSeat$sectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SectionProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1344,7 +1344,7 @@ export interface Prisma__ExamSeatClient<T, Null = never, ExtArgs extends runtime
 export interface ExamSeatFieldRefs {
   readonly id: Prisma.FieldRef<"ExamSeat", 'String'>
   readonly tenantId: Prisma.FieldRef<"ExamSeat", 'String'>
-  readonly sessionId: Prisma.FieldRef<"ExamSeat", 'String'>
+  readonly examId: Prisma.FieldRef<"ExamSeat", 'String'>
   readonly label: Prisma.FieldRef<"ExamSeat", 'String'>
   readonly accessCode: Prisma.FieldRef<"ExamSeat", 'String'>
   readonly candidateName: Prisma.FieldRef<"ExamSeat", 'String'>

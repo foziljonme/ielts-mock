@@ -25,7 +25,7 @@ import {
 } from 'lucide-react'
 // import { ScheduleTestPage } from '@/admin/components/ScheduledTest'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
-import { ISession } from '@/types/sessions'
+import { IExam } from '@/types/exams'
 import { useScheduleTestStore } from '@/stores/scheduleTest.store'
 import { useAuthStore } from '@/stores/auth.store'
 import { AdminTestControl } from '../components/AdminTestControl'
@@ -44,9 +44,7 @@ export function ExamDashboard() {
   const { tenant } = useTenantStore()
   const { fetchCurrentSession } = useExamStore()
   const [searchTerm, setSearchTerm] = useState('')
-  const [activeTestControl, setActiveTestControl] = useState<ISession | null>(
-    null,
-  )
+  const [activeTestControl, setActiveTestControl] = useState<IExam | null>(null)
   const router = useRouter()
 
   // const students = []
@@ -65,7 +63,7 @@ export function ExamDashboard() {
   //   testAttempts: tenant.testAttempts,
   // }
 
-  const handleStartTest = (test: ISession) => {
+  const handleStartTest = (test: IExam) => {
     setActiveTestControl(test)
   }
 

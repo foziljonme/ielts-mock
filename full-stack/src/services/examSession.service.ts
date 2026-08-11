@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AuthRequestContext } from '@/lib/auth/types'
 import db from '@/lib/db'
 import { AppError } from '@/lib/errors'

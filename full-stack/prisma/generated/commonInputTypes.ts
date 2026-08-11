@@ -150,11 +150,11 @@ export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedStringNullableFilter<$PrismaModel>
 }
 
-export type EnumExamSessionStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.ExamSessionStatus | Prisma.EnumExamSessionStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.ExamSessionStatus[] | Prisma.ListEnumExamSessionStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ExamSessionStatus[] | Prisma.ListEnumExamSessionStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumExamSessionStatusFilter<$PrismaModel> | $Enums.ExamSessionStatus
+export type EnumExamStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamStatus | Prisma.EnumExamStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamStatus[] | Prisma.ListEnumExamStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamStatus[] | Prisma.ListEnumExamStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamStatusFilter<$PrismaModel> | $Enums.ExamStatus
 }
 
 export type EnumTestSectionNullableFilter<$PrismaModel = never> = {
@@ -175,14 +175,14 @@ export type DateTimeNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
 }
 
-export type EnumExamSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ExamSessionStatus | Prisma.EnumExamSessionStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.ExamSessionStatus[] | Prisma.ListEnumExamSessionStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ExamSessionStatus[] | Prisma.ListEnumExamSessionStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumExamSessionStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExamSessionStatus
+export type EnumExamStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamStatus | Prisma.EnumExamStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamStatus[] | Prisma.ListEnumExamStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamStatus[] | Prisma.ListEnumExamStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExamStatus
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumExamSessionStatusFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumExamSessionStatusFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExamStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExamStatusFilter<$PrismaModel>
 }
 
 export type EnumTestSectionNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -209,6 +209,40 @@ export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
 }
 
+export type EnumTestSectionFilter<$PrismaModel = never> = {
+  equals?: $Enums.TestSection | Prisma.EnumTestSectionFieldRefInput<$PrismaModel>
+  in?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTestSectionFilter<$PrismaModel> | $Enums.TestSection
+}
+
+export type EnumExamSectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamSectionStatus | Prisma.EnumExamSectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamSectionStatus[] | Prisma.ListEnumExamSectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamSectionStatus[] | Prisma.ListEnumExamSectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamSectionStatusFilter<$PrismaModel> | $Enums.ExamSectionStatus
+}
+
+export type EnumTestSectionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TestSection | Prisma.EnumTestSectionFieldRefInput<$PrismaModel>
+  in?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTestSectionWithAggregatesFilter<$PrismaModel> | $Enums.TestSection
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTestSectionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTestSectionFilter<$PrismaModel>
+}
+
+export type EnumExamSectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamSectionStatus | Prisma.EnumExamSectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamSectionStatus[] | Prisma.ListEnumExamSectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamSectionStatus[] | Prisma.ListEnumExamSectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamSectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExamSectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExamSectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExamSectionStatusFilter<$PrismaModel>
+}
+
 export type EnumExamSeatStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.ExamSeatStatus | Prisma.EnumExamSeatStatusFieldRefInput<$PrismaModel>
   in?: $Enums.ExamSeatStatus[] | Prisma.ListEnumExamSeatStatusFieldRefInput<$PrismaModel>
@@ -226,13 +260,6 @@ export type EnumExamSeatStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumExamSeatStatusFilter<$PrismaModel>
 }
 
-export type EnumTestSectionFilter<$PrismaModel = never> = {
-  equals?: $Enums.TestSection | Prisma.EnumTestSectionFieldRefInput<$PrismaModel>
-  in?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
-  notIn?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTestSectionFilter<$PrismaModel> | $Enums.TestSection
-}
-
 export type IntNullableFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
@@ -242,16 +269,6 @@ export type IntNullableFilter<$PrismaModel = never> = {
   gt?: number | Prisma.IntFieldRefInput<$PrismaModel>
   gte?: number | Prisma.IntFieldRefInput<$PrismaModel>
   not?: Prisma.NestedIntNullableFilter<$PrismaModel> | number | null
-}
-
-export type EnumTestSectionWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.TestSection | Prisma.EnumTestSectionFieldRefInput<$PrismaModel>
-  in?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
-  notIn?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTestSectionWithAggregatesFilter<$PrismaModel> | $Enums.TestSection
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumTestSectionFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumTestSectionFilter<$PrismaModel>
 }
 
 export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -419,11 +436,11 @@ export type NestedIntNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedIntNullableFilter<$PrismaModel> | number | null
 }
 
-export type NestedEnumExamSessionStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.ExamSessionStatus | Prisma.EnumExamSessionStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.ExamSessionStatus[] | Prisma.ListEnumExamSessionStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ExamSessionStatus[] | Prisma.ListEnumExamSessionStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumExamSessionStatusFilter<$PrismaModel> | $Enums.ExamSessionStatus
+export type NestedEnumExamStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamStatus | Prisma.EnumExamStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamStatus[] | Prisma.ListEnumExamStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamStatus[] | Prisma.ListEnumExamStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamStatusFilter<$PrismaModel> | $Enums.ExamStatus
 }
 
 export type NestedEnumTestSectionNullableFilter<$PrismaModel = never> = {
@@ -444,14 +461,14 @@ export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
 }
 
-export type NestedEnumExamSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ExamSessionStatus | Prisma.EnumExamSessionStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.ExamSessionStatus[] | Prisma.ListEnumExamSessionStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ExamSessionStatus[] | Prisma.ListEnumExamSessionStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumExamSessionStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExamSessionStatus
+export type NestedEnumExamStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamStatus | Prisma.EnumExamStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamStatus[] | Prisma.ListEnumExamStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamStatus[] | Prisma.ListEnumExamStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExamStatus
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumExamSessionStatusFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumExamSessionStatusFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExamStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExamStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumTestSectionNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -478,6 +495,40 @@ export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
 }
 
+export type NestedEnumTestSectionFilter<$PrismaModel = never> = {
+  equals?: $Enums.TestSection | Prisma.EnumTestSectionFieldRefInput<$PrismaModel>
+  in?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTestSectionFilter<$PrismaModel> | $Enums.TestSection
+}
+
+export type NestedEnumExamSectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamSectionStatus | Prisma.EnumExamSectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamSectionStatus[] | Prisma.ListEnumExamSectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamSectionStatus[] | Prisma.ListEnumExamSectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamSectionStatusFilter<$PrismaModel> | $Enums.ExamSectionStatus
+}
+
+export type NestedEnumTestSectionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TestSection | Prisma.EnumTestSectionFieldRefInput<$PrismaModel>
+  in?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTestSectionWithAggregatesFilter<$PrismaModel> | $Enums.TestSection
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTestSectionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTestSectionFilter<$PrismaModel>
+}
+
+export type NestedEnumExamSectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamSectionStatus | Prisma.EnumExamSectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamSectionStatus[] | Prisma.ListEnumExamSectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamSectionStatus[] | Prisma.ListEnumExamSectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamSectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExamSectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExamSectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExamSectionStatusFilter<$PrismaModel>
+}
+
 export type NestedEnumExamSeatStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.ExamSeatStatus | Prisma.EnumExamSeatStatusFieldRefInput<$PrismaModel>
   in?: $Enums.ExamSeatStatus[] | Prisma.ListEnumExamSeatStatusFieldRefInput<$PrismaModel>
@@ -493,23 +544,6 @@ export type NestedEnumExamSeatStatusWithAggregatesFilter<$PrismaModel = never> =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumExamSeatStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumExamSeatStatusFilter<$PrismaModel>
-}
-
-export type NestedEnumTestSectionFilter<$PrismaModel = never> = {
-  equals?: $Enums.TestSection | Prisma.EnumTestSectionFieldRefInput<$PrismaModel>
-  in?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
-  notIn?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTestSectionFilter<$PrismaModel> | $Enums.TestSection
-}
-
-export type NestedEnumTestSectionWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.TestSection | Prisma.EnumTestSectionFieldRefInput<$PrismaModel>
-  in?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
-  notIn?: $Enums.TestSection[] | Prisma.ListEnumTestSectionFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTestSectionWithAggregatesFilter<$PrismaModel> | $Enums.TestSection
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumTestSectionFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumTestSectionFilter<$PrismaModel>
 }
 
 export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {

@@ -443,10 +443,6 @@ export type SectionProgressUncheckedUpdateManyWithoutSeatNestedInput = {
   deleteMany?: Prisma.SectionProgressScalarWhereInput | Prisma.SectionProgressScalarWhereInput[]
 }
 
-export type EnumTestSectionFieldUpdateOperationsInput = {
-  set?: $Enums.TestSection
-}
-
 export type NullableIntFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number

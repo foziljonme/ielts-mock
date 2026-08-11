@@ -26,7 +26,7 @@ import {
 import { ScheduleTestPage } from './components/ScheduledTest'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { useTenantStore } from '@/stores/tenant.store'
-import { ISession } from '@/types/sessions'
+import { IExam } from '@/types/exams'
 import { useScheduleTestStore } from '@/stores/scheduleTest.store'
 import { useAuthStore } from '@/stores/auth.store'
 // import { mockStudents, mockTestResults, mockTenants } from '../data/mockData'
@@ -40,9 +40,7 @@ export function AdminDashboard() {
   const { isLoading, tenant } = useTenantStore()
   const { fetchSessions } = useScheduleTestStore()
   const [searchTerm, setSearchTerm] = useState('')
-  const [activeTestControl, setActiveTestControl] = useState<ISession | null>(
-    null,
-  )
+  const [activeTestControl, setActiveTestControl] = useState<IExam | null>(null)
 
   // const students = []
   // const results = []
@@ -60,7 +58,7 @@ export function AdminDashboard() {
   //   testAttempts: tenant.testAttempts,
   // }
 
-  const handleStartTest = (test: ISession) => {
+  const handleStartTest = (test: IExam) => {
     setActiveTestControl(test)
   }
 

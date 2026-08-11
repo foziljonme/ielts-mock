@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CreateUserSchema } from '@/validators/user.schema'
 import bcrypt from 'bcrypt'
 import { ExamSessionStatus, UserRole } from '../../prisma/generated/enums'

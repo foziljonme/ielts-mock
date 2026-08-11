@@ -9,9 +9,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Info className="w-8 h-8" />
-              <h2 className="text-2xl font-bold">
-                Lab-Based Test Session Flow
-              </h2>
+              <h2 className="text-2xl font-bold">Lab-Based Test Flow</h2>
             </div>
             <Button
               variant="ghost"
@@ -50,8 +48,7 @@ export function TestSessionDemo({ onClose }: { onClose: () => void }) {
                     1
                   </span>
                   <span className="text-gray-700">
-                    Schedule a test session and assign students with access
-                    codes
+                    Schedule a test and assign students with access codes
                   </span>
                 </li>
                 <li className="flex items-start gap-2">

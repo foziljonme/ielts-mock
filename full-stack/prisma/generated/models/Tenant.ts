@@ -233,7 +233,7 @@ export type TenantWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   seatQuota?: Prisma.IntFilter<"Tenant"> | number
   users?: Prisma.UserListRelationFilter
-  sessions?: Prisma.ExamSessionListRelationFilter
+  exams?: Prisma.ExamListRelationFilter
   tenantSeatUsage?: Prisma.XOR<Prisma.TenantSeatUsageNullableScalarRelationFilter, Prisma.TenantSeatUsageWhereInput> | null
 }
 
@@ -246,7 +246,7 @@ export type TenantOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   seatQuota?: Prisma.SortOrder
   users?: Prisma.UserOrderByRelationAggregateInput
-  sessions?: Prisma.ExamSessionOrderByRelationAggregateInput
+  exams?: Prisma.ExamOrderByRelationAggregateInput
   tenantSeatUsage?: Prisma.TenantSeatUsageOrderByWithRelationInput
 }
 
@@ -262,7 +262,7 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   seatQuota?: Prisma.IntFilter<"Tenant"> | number
   users?: Prisma.UserListRelationFilter
-  sessions?: Prisma.ExamSessionListRelationFilter
+  exams?: Prisma.ExamListRelationFilter
   tenantSeatUsage?: Prisma.XOR<Prisma.TenantSeatUsageNullableScalarRelationFilter, Prisma.TenantSeatUsageWhereInput> | null
 }, "id" | "subdomain">
 
@@ -303,7 +303,7 @@ export type TenantCreateInput = {
   updatedAt?: Date | string
   seatQuota?: number
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.ExamSessionCreateNestedManyWithoutTenantInput
+  exams?: Prisma.ExamCreateNestedManyWithoutTenantInput
   tenantSeatUsage?: Prisma.TenantSeatUsageCreateNestedOneWithoutTenantInput
 }
 
@@ -316,7 +316,7 @@ export type TenantUncheckedCreateInput = {
   updatedAt?: Date | string
   seatQuota?: number
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.ExamSessionUncheckedCreateNestedManyWithoutTenantInput
+  exams?: Prisma.ExamUncheckedCreateNestedManyWithoutTenantInput
   tenantSeatUsage?: Prisma.TenantSeatUsageUncheckedCreateNestedOneWithoutTenantInput
 }
 
@@ -329,7 +329,7 @@ export type TenantUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   seatQuota?: Prisma.IntFieldUpdateOperationsInput | number
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.ExamSessionUpdateManyWithoutTenantNestedInput
+  exams?: Prisma.ExamUpdateManyWithoutTenantNestedInput
   tenantSeatUsage?: Prisma.TenantSeatUsageUpdateOneWithoutTenantNestedInput
 }
 
@@ -342,7 +342,7 @@ export type TenantUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   seatQuota?: Prisma.IntFieldUpdateOperationsInput | number
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.ExamSessionUncheckedUpdateManyWithoutTenantNestedInput
+  exams?: Prisma.ExamUncheckedUpdateManyWithoutTenantNestedInput
   tenantSeatUsage?: Prisma.TenantSeatUsageUncheckedUpdateOneWithoutTenantNestedInput
 }
 
@@ -474,18 +474,18 @@ export type TenantUpdateOneWithoutUsersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutUsersInput, Prisma.TenantUpdateWithoutUsersInput>, Prisma.TenantUncheckedUpdateWithoutUsersInput>
 }
 
-export type TenantCreateNestedOneWithoutSessionsInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutSessionsInput, Prisma.TenantUncheckedCreateWithoutSessionsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutSessionsInput
+export type TenantCreateNestedOneWithoutExamsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutExamsInput, Prisma.TenantUncheckedCreateWithoutExamsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutExamsInput
   connect?: Prisma.TenantWhereUniqueInput
 }
 
-export type TenantUpdateOneRequiredWithoutSessionsNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutSessionsInput, Prisma.TenantUncheckedCreateWithoutSessionsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutSessionsInput
-  upsert?: Prisma.TenantUpsertWithoutSessionsInput
+export type TenantUpdateOneRequiredWithoutExamsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutExamsInput, Prisma.TenantUncheckedCreateWithoutExamsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutExamsInput
+  upsert?: Prisma.TenantUpsertWithoutExamsInput
   connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutSessionsInput, Prisma.TenantUpdateWithoutSessionsInput>, Prisma.TenantUncheckedUpdateWithoutSessionsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutExamsInput, Prisma.TenantUpdateWithoutExamsInput>, Prisma.TenantUncheckedUpdateWithoutExamsInput>
 }
 
 export type TenantCreateWithoutTenantSeatUsageInput = {
@@ -497,7 +497,7 @@ export type TenantCreateWithoutTenantSeatUsageInput = {
   updatedAt?: Date | string
   seatQuota?: number
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.ExamSessionCreateNestedManyWithoutTenantInput
+  exams?: Prisma.ExamCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTenantSeatUsageInput = {
@@ -509,7 +509,7 @@ export type TenantUncheckedCreateWithoutTenantSeatUsageInput = {
   updatedAt?: Date | string
   seatQuota?: number
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.ExamSessionUncheckedCreateNestedManyWithoutTenantInput
+  exams?: Prisma.ExamUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTenantSeatUsageInput = {
@@ -537,7 +537,7 @@ export type TenantUpdateWithoutTenantSeatUsageInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   seatQuota?: Prisma.IntFieldUpdateOperationsInput | number
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.ExamSessionUpdateManyWithoutTenantNestedInput
+  exams?: Prisma.ExamUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTenantSeatUsageInput = {
@@ -549,7 +549,7 @@ export type TenantUncheckedUpdateWithoutTenantSeatUsageInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   seatQuota?: Prisma.IntFieldUpdateOperationsInput | number
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.ExamSessionUncheckedUpdateManyWithoutTenantNestedInput
+  exams?: Prisma.ExamUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutUsersInput = {
@@ -560,7 +560,7 @@ export type TenantCreateWithoutUsersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   seatQuota?: number
-  sessions?: Prisma.ExamSessionCreateNestedManyWithoutTenantInput
+  exams?: Prisma.ExamCreateNestedManyWithoutTenantInput
   tenantSeatUsage?: Prisma.TenantSeatUsageCreateNestedOneWithoutTenantInput
 }
 
@@ -572,7 +572,7 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   seatQuota?: number
-  sessions?: Prisma.ExamSessionUncheckedCreateNestedManyWithoutTenantInput
+  exams?: Prisma.ExamUncheckedCreateNestedManyWithoutTenantInput
   tenantSeatUsage?: Prisma.TenantSeatUsageUncheckedCreateNestedOneWithoutTenantInput
 }
 
@@ -600,7 +600,7 @@ export type TenantUpdateWithoutUsersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   seatQuota?: Prisma.IntFieldUpdateOperationsInput | number
-  sessions?: Prisma.ExamSessionUpdateManyWithoutTenantNestedInput
+  exams?: Prisma.ExamUpdateManyWithoutTenantNestedInput
   tenantSeatUsage?: Prisma.TenantSeatUsageUpdateOneWithoutTenantNestedInput
 }
 
@@ -612,11 +612,11 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   seatQuota?: Prisma.IntFieldUpdateOperationsInput | number
-  sessions?: Prisma.ExamSessionUncheckedUpdateManyWithoutTenantNestedInput
+  exams?: Prisma.ExamUncheckedUpdateManyWithoutTenantNestedInput
   tenantSeatUsage?: Prisma.TenantSeatUsageUncheckedUpdateOneWithoutTenantNestedInput
 }
 
-export type TenantCreateWithoutSessionsInput = {
+export type TenantCreateWithoutExamsInput = {
   id?: string
   name: string
   subdomain: string
@@ -628,7 +628,7 @@ export type TenantCreateWithoutSessionsInput = {
   tenantSeatUsage?: Prisma.TenantSeatUsageCreateNestedOneWithoutTenantInput
 }
 
-export type TenantUncheckedCreateWithoutSessionsInput = {
+export type TenantUncheckedCreateWithoutExamsInput = {
   id?: string
   name: string
   subdomain: string
@@ -640,23 +640,23 @@ export type TenantUncheckedCreateWithoutSessionsInput = {
   tenantSeatUsage?: Prisma.TenantSeatUsageUncheckedCreateNestedOneWithoutTenantInput
 }
 
-export type TenantCreateOrConnectWithoutSessionsInput = {
+export type TenantCreateOrConnectWithoutExamsInput = {
   where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutSessionsInput, Prisma.TenantUncheckedCreateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutExamsInput, Prisma.TenantUncheckedCreateWithoutExamsInput>
 }
 
-export type TenantUpsertWithoutSessionsInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutSessionsInput, Prisma.TenantUncheckedUpdateWithoutSessionsInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutSessionsInput, Prisma.TenantUncheckedCreateWithoutSessionsInput>
+export type TenantUpsertWithoutExamsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutExamsInput, Prisma.TenantUncheckedUpdateWithoutExamsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutExamsInput, Prisma.TenantUncheckedCreateWithoutExamsInput>
   where?: Prisma.TenantWhereInput
 }
 
-export type TenantUpdateToOneWithWhereWithoutSessionsInput = {
+export type TenantUpdateToOneWithWhereWithoutExamsInput = {
   where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutSessionsInput, Prisma.TenantUncheckedUpdateWithoutSessionsInput>
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutExamsInput, Prisma.TenantUncheckedUpdateWithoutExamsInput>
 }
 
-export type TenantUpdateWithoutSessionsInput = {
+export type TenantUpdateWithoutExamsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   subdomain?: Prisma.StringFieldUpdateOperationsInput | string
@@ -668,7 +668,7 @@ export type TenantUpdateWithoutSessionsInput = {
   tenantSeatUsage?: Prisma.TenantSeatUsageUpdateOneWithoutTenantNestedInput
 }
 
-export type TenantUncheckedUpdateWithoutSessionsInput = {
+export type TenantUncheckedUpdateWithoutExamsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   subdomain?: Prisma.StringFieldUpdateOperationsInput | string
@@ -687,12 +687,12 @@ export type TenantUncheckedUpdateWithoutSessionsInput = {
 
 export type TenantCountOutputType = {
   users: number
-  sessions: number
+  exams: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | TenantCountOutputTypeCountUsersArgs
-  sessions?: boolean | TenantCountOutputTypeCountSessionsArgs
+  exams?: boolean | TenantCountOutputTypeCountExamsArgs
 }
 
 /**
@@ -715,8 +715,8 @@ export type TenantCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Ex
 /**
  * TenantCountOutputType without action
  */
-export type TenantCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ExamSessionWhereInput
+export type TenantCountOutputTypeCountExamsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ExamWhereInput
 }
 
 
@@ -729,7 +729,7 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   updatedAt?: boolean
   seatQuota?: boolean
   users?: boolean | Prisma.Tenant$usersArgs<ExtArgs>
-  sessions?: boolean | Prisma.Tenant$sessionsArgs<ExtArgs>
+  exams?: boolean | Prisma.Tenant$examsArgs<ExtArgs>
   tenantSeatUsage?: boolean | Prisma.Tenant$tenantSeatUsageArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
@@ -767,7 +767,7 @@ export type TenantSelectScalar = {
 export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "subdomain" | "isActive" | "createdAt" | "updatedAt" | "seatQuota", ExtArgs["result"]["tenant"]>
 export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | Prisma.Tenant$usersArgs<ExtArgs>
-  sessions?: boolean | Prisma.Tenant$sessionsArgs<ExtArgs>
+  exams?: boolean | Prisma.Tenant$examsArgs<ExtArgs>
   tenantSeatUsage?: boolean | Prisma.Tenant$tenantSeatUsageArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -778,7 +778,7 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "Tenant"
   objects: {
     users: Prisma.$UserPayload<ExtArgs>[]
-    sessions: Prisma.$ExamSessionPayload<ExtArgs>[]
+    exams: Prisma.$ExamPayload<ExtArgs>[]
     tenantSeatUsage: Prisma.$TenantSeatUsagePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1184,7 +1184,7 @@ readonly fields: TenantFieldRefs;
 export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   users<T extends Prisma.Tenant$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  sessions<T extends Prisma.Tenant$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  exams<T extends Prisma.Tenant$examsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$examsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tenantSeatUsage<T extends Prisma.Tenant$tenantSeatUsageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$tenantSeatUsageArgs<ExtArgs>>): Prisma.Prisma__TenantSeatUsageClient<runtime.Types.Result.GetResult<Prisma.$TenantSeatUsagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1634,27 +1634,27 @@ export type Tenant$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 }
 
 /**
- * Tenant.sessions
+ * Tenant.exams
  */
-export type Tenant$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Tenant$examsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ExamSession
+   * Select specific fields to fetch from the Exam
    */
-  select?: Prisma.ExamSessionSelect<ExtArgs> | null
+  select?: Prisma.ExamSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ExamSession
+   * Omit specific fields from the Exam
    */
-  omit?: Prisma.ExamSessionOmit<ExtArgs> | null
+  omit?: Prisma.ExamOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ExamSessionInclude<ExtArgs> | null
-  where?: Prisma.ExamSessionWhereInput
-  orderBy?: Prisma.ExamSessionOrderByWithRelationInput | Prisma.ExamSessionOrderByWithRelationInput[]
-  cursor?: Prisma.ExamSessionWhereUniqueInput
+  include?: Prisma.ExamInclude<ExtArgs> | null
+  where?: Prisma.ExamWhereInput
+  orderBy?: Prisma.ExamOrderByWithRelationInput | Prisma.ExamOrderByWithRelationInput[]
+  cursor?: Prisma.ExamWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ExamSessionScalarFieldEnum | Prisma.ExamSessionScalarFieldEnum[]
+  distinct?: Prisma.ExamScalarFieldEnum | Prisma.ExamScalarFieldEnum[]
 }
 
 /**

@@ -13,7 +13,7 @@ import {
 import { Alert, AlertDescription } from '@/components/alert'
 import { Plus, AlertCircle, Minus } from 'lucide-react'
 import { useFieldArray, useForm } from 'react-hook-form'
-import { ISessionInput } from '@/types/sessions'
+import { IExamInput } from '@/types/exams'
 import { useScheduleTestStore } from '@/stores/scheduleTest.store'
 import {
   Select,
@@ -79,7 +79,7 @@ export function ScheduleTestFormDialog() {
 
   const handleScheduleTest = async () => {
     return await handleSubmit(async data => {
-      const newTest: ISessionInput = {
+      const newTest: IExamInput = {
         testId: data.test,
         examDate: data.examDate,
         seats: data.candidates,

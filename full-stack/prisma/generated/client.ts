@@ -53,10 +53,15 @@ export type TenantSeatUsage = Prisma.TenantSeatUsageModel
  */
 export type User = Prisma.UserModel
 /**
- * Model ExamSession
+ * Model Exam
  * 
  */
-export type ExamSession = Prisma.ExamSessionModel
+export type Exam = Prisma.ExamModel
+/**
+ * Model ExamSection
+ * 
+ */
+export type ExamSection = Prisma.ExamSectionModel
 /**
  * Model ExamSeat
  * 

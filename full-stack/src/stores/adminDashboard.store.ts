@@ -1,5 +1,5 @@
 import { ISeat } from '@/types/seats'
-import { ISession } from '@/types/sessions'
+import { IExam } from '@/types/exams'
 import { ITenant } from '@/types/tenant'
 import { create } from 'zustand'
 

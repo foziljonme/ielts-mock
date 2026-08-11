@@ -54,7 +54,8 @@ export const ModelName = {
   Tenant: 'Tenant',
   TenantSeatUsage: 'TenantSeatUsage',
   User: 'User',
-  ExamSession: 'ExamSession',
+  Exam: 'Exam',
+  ExamSection: 'ExamSection',
   ExamSeat: 'ExamSeat',
   SectionProgress: 'SectionProgress',
   QuestionResponse: 'QuestionResponse',
@@ -115,7 +116,7 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const ExamSessionScalarFieldEnum = {
+export const ExamScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   testId: 'testId',
@@ -128,13 +129,26 @@ export const ExamSessionScalarFieldEnum = {
   createdAt: 'createdAt'
 } as const
 
-export type ExamSessionScalarFieldEnum = (typeof ExamSessionScalarFieldEnum)[keyof typeof ExamSessionScalarFieldEnum]
+export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof ExamScalarFieldEnum]
+
+
+export const ExamSectionScalarFieldEnum = {
+  id: 'id',
+  examId: 'examId',
+  section: 'section',
+  status: 'status',
+  startedAt: 'startedAt',
+  endTime: 'endTime',
+  createdAt: 'createdAt'
+} as const
+
+export type ExamSectionScalarFieldEnum = (typeof ExamSectionScalarFieldEnum)[keyof typeof ExamSectionScalarFieldEnum]
 
 
 export const ExamSeatScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  sessionId: 'sessionId',
+  examId: 'examId',
   label: 'label',
   accessCode: 'accessCode',
   candidateName: 'candidateName',

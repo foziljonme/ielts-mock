@@ -1,12 +1,16 @@
-import { ExamSessionStatus, TestSection } from '../../prisma/generated/enums'
+import {
+  ExamSectionStatus,
+  ExamStatus,
+  TestSection,
+} from '../../prisma/generated/enums'
 import { ISeat, ISeatInput } from './seats'
 
-export interface ISession {
+export interface IExam {
   id: string
   tenantId: string
   testId: string
   examDate: string
-  status: ExamSessionStatus
+  status: ExamStatus
   currentSection: any
   isArchived: boolean
   startTime: string | null
@@ -20,14 +24,14 @@ export interface ISection {
   id: string
   sessionId: string
   section: TestSection
-  status: ExamSessionStatus
+  status: ExamSectionStatus
   startedAt: string | null
   endTime: string | null
   createdAt: string | null
   duration: number
 }
 
-export interface ISessionInput {
+export interface IExamInput {
   testId: string
   examDate: string
   seats: ISeatInput[]

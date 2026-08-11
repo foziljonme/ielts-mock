@@ -1,5 +1,5 @@
 import { IAvailableTest } from '@/types/seats'
-import { ISession, ISessionInput } from '@/types/sessions'
+import { IExam, IExamInput } from '@/types/exams'
 import { create } from 'zustand'
 import httpClient from '@/lib/httpClient'
 import { toastError } from '@/lib/notifications/toastError'
@@ -8,33 +8,31 @@ import { useTenantStore } from './tenant.store'
 type ScheduleTestStore = {
   isLoading: boolean
   availableTests: IAvailableTest[]
-  sessions: ISession[]
+  exams: IExam[]
   totalSessions: number
 
   fetchSessions: () => Promise<void>
   fetchAvailableTests: () => Promise<void>
-  createSession: (session: ISessionInput) => Promise<void>
+  createSession: (exam: IExamInput) => Promise<void>
   deleteSession: (sessionId: string) => Promise<void>
-  updateLocalSession: (sessionId: string, session: ISession) => void
+  updateLocalSession: (sessionId: string, exam: IExam) => void
 }
 
 export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
   isLoading: false,
   availableTests: [],
-  sessions: [],
+  exams: [],
   totalSessions: 0,
-  updateLocalSession: (sessionId: string, session: ISession) => {
+  updateLocalSession: (sessionId: string, exam: IExam) => {
     set({
-      sessions: get().sessions.map(s =>
-        s.id === sessionId ? { ...s, ...session } : s,
-      ),
+      exams: get().exams.map(s => (s.id === sessionId ? { ...s, ...exam } : s)),
     })
   },
   fetchSessions: async () => {
     try {
       const response = await httpClient.get('/exams')
       set({
-        sessions: response.results,
+        exams: response.results,
         totalSessions: response.pagination.totalItems,
       })
     } catch (error) {
@@ -52,17 +50,17 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
       set({ isLoading: false })
     }
   },
-  createSession: async (session: ISessionInput) => {
+  createSession: async (exam: IExamInput) => {
     set({ isLoading: true })
     try {
-      const response = await httpClient.post('/exams', session)
+      const response = await httpClient.post('/exams', exam)
       set(state => ({
-        sessions: [response, ...state.sessions],
+        sessions: [response, ...state.exams],
         totalSessions: state.totalSessions + 1,
       }))
       useTenantStore.getState().appendSeats(response.seats.length)
     } catch (error) {
-      toastError({ title: 'Failed to create exam session', error })
+      toastError({ title: 'Failed to create exam exam', error })
     } finally {
       set({ isLoading: false })
     }
@@ -70,16 +68,16 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
   deleteSession: async (sessionId: string) => {
     set({ isLoading: true })
     try {
-      const session = get().sessions.find(session => session.id === sessionId)
+      const exam = get().exams.find(exam => exam.id === sessionId)
       await httpClient.delete(`/exams/${sessionId}`)
 
       set(state => ({
-        sessions: state.sessions.filter(session => session.id !== sessionId),
+        sessions: state.exams.filter(exam => exam.id !== sessionId),
         totalSessions: state.totalSessions - 1,
       }))
-      useTenantStore.getState().removeSeats(session?.seats.length || 0)
+      useTenantStore.getState().removeSeats(exam?.seats.length || 0)
     } catch (error) {
-      toastError({ title: 'Failed to delete exam session', error })
+      toastError({ title: 'Failed to delete exam exam', error })
     } finally {
       set({ isLoading: false })
     }

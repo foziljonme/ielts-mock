@@ -11,11 +11,11 @@ import {
   AlertCircle,
   HelpCircle,
 } from 'lucide-react'
-import { ExamSessionStatus, TestSection } from '@/../prisma/generated/enums'
+import { ExamStatus, TestSection } from '@/../prisma/generated/enums'
 import { useScheduleTestStore } from '@/stores/scheduleTest.store'
 import Loading from '@/components/Loading'
 import { useRouter } from 'next/router'
-import { ISessionProgress } from '@/types/sessions'
+import { ISessionProgress } from '@/types/exams'
 import { TestSessionDemo } from './HowItWorks/TestSessionDemo'
 import { useWebsocket } from '@/hooks/socket/useWebsocket'
 import { Card } from '@/components/card'
@@ -43,8 +43,8 @@ import useExamStore from '@/stores/exam.store'
 export function AdminTestControl() {
   const { connectedCandidates } = useSocketStore()
   const { joinExamRoom } = useWebsocket()
-  const { currentSession, startSession, startSection } = useExamStore()
-  console.log('Current Session:', currentSession)
+  const { currentExam, startSession, startSection } = useExamStore()
+  console.log('Current Session:', currentExam)
 
   const router = useRouter()
   const { examId } = router.query as { examId: string }
@@ -53,19 +53,7 @@ export function AdminTestControl() {
     currentSection: null,
     sectionStartTime: null,
   })
-  // const [session, setSession] = useState<TestSession>({
-  //   id: `session-${scheduledTest.id}`,
-  //   scheduledTest,
-  //   currentSection: null,
-  //   sectionStartTime: null,
-  //   connectedStudents: new Set(),
-  //   completedStudents: new Map([
-  //     ['listening', new Set()],
-  //     ['reading', new Set()],
-  //     ['writing', new Set()],
-  //     ['speaking', new Set()],
-  //   ]),
-  // })
+
   const [showHelp, setShowHelp] = useState(false)
 
   const sections: { name: TestSection; label: string; duration: number }[] = [
@@ -74,34 +62,6 @@ export function AdminTestControl() {
     { name: TestSection.WRITING, label: 'Writing', duration: 60 },
     { name: TestSection.SPEAKING, label: 'Speaking', duration: 15 },
   ]
-
-  // Poll for session updates
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `https://${projectId}.supabase.co/functions/v1/make-server-9af6c772/sessions/${session.id}/poll`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${publicAnonKey}`,
-  //           },
-  //         },
-  //       )
-
-  //       if (response.ok) {
-  //         const data = await response.json()
-  //         setSession(prev => ({
-  //           ...prev,
-  //           connectedStudents: new Set(data.connectedStudents || []),
-  //         }))
-  //       }
-  //     } catch (error) {
-  //       console.error('Error polling session:', error)
-  //     }
-  //   }, 2000) // Poll every 2 seconds
-
-  //   return () => clearInterval(interval)
-  // }, [session.id])
 
   const handleStopSection = async () => {
     // if (!sessionProgress.currentSection) return
@@ -140,7 +100,7 @@ export function AdminTestControl() {
     return false
     // return (
     //   sessionProgress.completedCandidates.get(sectionName)?.size ===
-    //   currentSession?.seats.length
+    //   currentExam?.seats.length
     // )
   }
 
@@ -158,15 +118,15 @@ export function AdminTestControl() {
     joinExamRoom(examId)
   }, [examId])
 
-  if (!currentSession) {
+  if (!currentExam) {
     return <Loading />
   }
 
   // Determine status color and actions
   let statusColor = 'bg-yellow-200 text-yellow-800'
-  if (currentSession.status === ExamSessionStatus.OPEN)
+  if (currentExam.status === ExamStatus.OPEN)
     statusColor = 'bg-green-200 text-green-800'
-  if (currentSession.status === ExamSessionStatus.COMPLETED)
+  if (currentExam.status === ExamStatus.COMPLETED)
     statusColor = 'bg-gray-200 text-gray-800'
 
   return (
@@ -184,7 +144,7 @@ export function AdminTestControl() {
               </h1>
               <p className="text-gray-600">
                 Test Date:{' '}
-                {new Date(currentSession?.examDate).toLocaleDateString()}
+                {new Date(currentExam?.examDate).toLocaleDateString()}
               </p>
             </div>
             <div className="flex gap-2">
@@ -201,9 +161,9 @@ export function AdminTestControl() {
           <div className="mb-6">
             <div
               className={`p-4 rounded-lg flex items-center justify-between ${
-                currentSession.status === ExamSessionStatus.SCHEDULED
+                currentExam.status === ExamStatus.SCHEDULED
                   ? 'bg-yellow-100'
-                  : currentSession.status === ExamSessionStatus.OPEN
+                  : currentExam.status === ExamStatus.OPEN
                     ? 'bg-green-100'
                     : 'bg-gray-100'
               }`}
@@ -211,30 +171,30 @@ export function AdminTestControl() {
               <div className="flex items-center gap-2">
                 <Badge
                   className={`text-lg ${
-                    currentSession.status === ExamSessionStatus.SCHEDULED
+                    currentExam.status === ExamStatus.SCHEDULED
                       ? 'bg-yellow-200 text-yellow-800'
-                      : currentSession.status === ExamSessionStatus.OPEN
+                      : currentExam.status === ExamStatus.OPEN
                         ? 'bg-green-200 text-green-800'
                         : 'bg-gray-200 text-gray-800'
                   }`}
                 >
-                  {currentSession.status}
+                  {currentExam.status}
                 </Badge>
                 <p className="text-sm text-gray-600">
-                  {currentSession.status === ExamSessionStatus.SCHEDULED
+                  {currentExam.status === ExamStatus.SCHEDULED
                     ? 'Exam is scheduled, open it to start accepting candidates'
-                    : currentSession.status === ExamSessionStatus.OPEN
+                    : currentExam.status === ExamStatus.OPEN
                       ? 'Exam is open, candidates can join'
                       : 'Exam is completed, no more changes allowed'}
                 </p>
               </div>
               <div>
-                {currentSession.status === ExamSessionStatus.SCHEDULED && (
-                  <Button onClick={() => startSession(currentSession.id)}>
+                {currentExam.status === ExamStatus.SCHEDULED && (
+                  <Button onClick={() => startSession(currentExam.id)}>
                     Start Exam
                   </Button>
                 )}
-                {currentSession.status === ExamSessionStatus.OPEN && (
+                {currentExam.status === ExamStatus.OPEN && (
                   <Button
                     variant="destructive"
                     onClick={() => console.log('Complete Exam')}
@@ -242,7 +202,7 @@ export function AdminTestControl() {
                     Complete Exam
                   </Button>
                 )}
-                {currentSession.status === ExamSessionStatus.COMPLETED && (
+                {currentExam.status === ExamStatus.COMPLETED && (
                   <Button disabled>Exam Locked</Button>
                 )}
               </div>
@@ -258,7 +218,7 @@ export function AdminTestControl() {
                     Connected Candidates
                   </p>
                   <p className="text-2xl font-bold text-blue-900 mt-1">
-                    {connectedCandidates.size} / {currentSession?.seats.length}
+                    {connectedCandidates.size} / {currentExam?.seats.length}
                   </p>
                 </div>
                 <Users className="w-8 h-8 text-blue-500" />
@@ -286,7 +246,7 @@ export function AdminTestControl() {
                     Total Attempts
                   </p>
                   <p className="text-2xl font-bold text-purple-900 mt-1">
-                    {currentSession?.attemptsAllocated}
+                    {currentExam?.attemptsAllocated}
                   </p>
                 </div>
                 <CheckCircle className="w-8 h-8 text-purple-500" />
@@ -302,7 +262,7 @@ export function AdminTestControl() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {currentSession?.sections.map(section => {
+            {currentExam?.sections.map(section => {
               // const status = getSectionStatus(section.section)
               const isActive =
                 sessionProgress.currentSection === section.section
@@ -313,7 +273,7 @@ export function AdminTestControl() {
                   className={`border-2 rounded-lg p-6 transition-all ${
                     isActive
                       ? 'border-green-500 bg-green-50'
-                      : currentSession.status === ExamSessionStatus.COMPLETED
+                      : currentExam.status === ExamStatus.COMPLETED
                         ? 'border-blue-500 bg-blue-50'
                         : 'border-gray-200 bg-white'
                   }`}
@@ -327,7 +287,7 @@ export function AdminTestControl() {
                         Duration: {section.duration} minutes
                       </p>
                     </div>
-                    {currentSession.status === ExamSessionStatus.COMPLETED && (
+                    {currentExam.status === ExamStatus.COMPLETED && (
                       <CheckCircle className="w-6 h-6 text-blue-600" />
                     )}
                     {isActive && (
@@ -351,9 +311,7 @@ export function AdminTestControl() {
                       </Button>
                     ) : (
                       <Button
-                        onClick={() =>
-                          startSection(currentSession.id, section.id)
-                        }
+                        onClick={() => startSection(currentExam.id, section.id)}
                         disabled={
                           sessionProgress.currentSection !== null ||
                           isSectionCompleted(section.section)
@@ -374,7 +332,7 @@ export function AdminTestControl() {
                         {sessionProgress.completedCandidates.get(
                           section.section,
                         )?.length || 0}{' '}
-                        / {currentSession.seats.length}
+                        / {currentExam.seats.length}
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
@@ -385,7 +343,7 @@ export function AdminTestControl() {
                             ((sessionProgress.completedCandidates.get(
                               section.section,
                             )?.length || 0) /
-                              currentSession.seats.length) *
+                              currentExam.seats.length) *
                             100
                           }%`,
                         }}
@@ -405,7 +363,7 @@ export function AdminTestControl() {
                   className={`border-2 rounded-lg p-6 transition-all ${
                     isActive
                       ? 'border-green-500 bg-green-50'
-                      : currentSession.status === ExamSessionStatus.COMPLETED
+                      : currentExam.status === ExamSessionStatus.COMPLETED
                         ? 'border-blue-500 bg-blue-50'
                         : 'border-gray-200 bg-white'
                   }`}
@@ -419,7 +377,7 @@ export function AdminTestControl() {
                         Duration: {section.duration} minutes
                       </p>
                     </div>
-                    {currentSession.status === ExamSessionStatus.COMPLETED && (
+                    {currentExam.status === ExamSessionStatus.COMPLETED && (
                       <CheckCircle className="w-6 h-6 text-blue-600" />
                     )}
                     {isActive && (
@@ -463,7 +421,7 @@ export function AdminTestControl() {
                       <span>
                         {sessionProgress.completedCandidates.get(section.name)
                           ?.length || 0}{' '}
-                        / {currentSession.seats.length}
+                        / {currentExam.seats.length}
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
@@ -474,7 +432,7 @@ export function AdminTestControl() {
                             ((sessionProgress.completedCandidates.get(
                               section.name,
                             )?.length || 0) /
-                              currentSession.seats.length) *
+                              currentExam.seats.length) *
                             100
                           }%`,
                         }}
@@ -494,7 +452,7 @@ export function AdminTestControl() {
               Student Status
             </h2>
             <p className="text-gray-600">
-              {connectedCandidates.size}/{currentSession.seats.length}
+              {connectedCandidates.size}/{currentExam.seats.length}
             </p>
           </div>
 
@@ -523,7 +481,7 @@ export function AdminTestControl() {
                 </tr>
               </thead>
               <tbody>
-                {currentSession.seats.map(candidate => {
+                {currentExam.seats.map(candidate => {
                   const isConnected = connectedCandidates.has(candidate.id)
                   const completedSections = Array.from(
                     sessionProgress.completedCandidates.entries(),
