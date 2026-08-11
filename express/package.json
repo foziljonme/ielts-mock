@@ -4,13 +4,14 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "tsx watch src/app.ts --inspect",
+    "dev": "tsx watch src/server.ts --inspect",
     "studio": "npx prisma studio",
     "generate": "npx prisma generate",
     "migrate": "npx prisma migrate",
     "db:start": "npx prisma dev",
     "db:reset": "npx prisma migrate reset --force",
-    "db:push": "npx prisma db push"
+    "db:push": "npx prisma db push",
+    "db:push:force": "npx prisma db push --force-reset"
   },
   "dependencies": {
     "@faker-js/faker": "^10.2.0",

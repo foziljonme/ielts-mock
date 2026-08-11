@@ -1,17 +1,24 @@
 import { Server, Socket } from "socket.io";
 
+function isCandidate(socket: Socket) {
+  const user = socket.data.user;
+  const roles = user.roles || [];
+
+  return roles.includes("CANDIDATE");
+}
+
 export function registerExamSockets(io: Server) {
   io.on("connection", (socket: Socket) => {
     console.log("Connected socket", socket.id);
 
     socket.on("exam:join", async ({ examId }) => {
+      console.log("joined", socket.data.user);
       socket.join(examId);
       socket.data.examId = examId;
 
       const user = socket.data.user;
-      const roles = user.roles || [];
 
-      if (roles.includes("CANDIDATE")) {
+      if (isCandidate(socket)) {
         socket.to(examId).emit("exam:candidate:joined", {
           candidateId: user.sub,
         });
@@ -32,6 +39,20 @@ export function registerExamSockets(io: Server) {
           });
 
         socket.emit("exam:candidates", candidates);
+      }
+    });
+
+    socket.on("exam:leave", async ({ examId }) => {
+      const user = socket.data.user;
+      console.log("left", user);
+      if (isCandidate(socket)) {
+        io.to(examId).emit("exam:candidate:left", {
+          candidateId: user.sub,
+        });
+      } else {
+        io.to(examId).emit("exam:admin:left", {
+          adminId: user.sub,
+        });
       }
     });
 

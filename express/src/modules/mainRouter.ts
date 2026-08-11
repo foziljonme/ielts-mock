@@ -1,6 +1,6 @@
 import { Router } from "express";
 import authRouter from "./auth/routes";
-import sessionsRouter from "./sessions/sessions.routes";
+import examsRouter from "./exams/exams.routes";
 import { getReadyTests } from "@/modules/contents/contents.controller";
 import { bootstrap } from "@/modules/dev/dev-helper.controller";
 import tenantsRouter from "./tenants/tenants.routes";
@@ -15,7 +15,7 @@ router.get("/available-tests", getReadyTests);
 router.post("/bootstrap", bootstrap);
 
 router.use("/auth", authRouter);
-router.use("/sessions", sessionsRouter);
+router.use("/exams", examsRouter);
 router.use("/tenants", tenantsRouter);
 router.use("/users", usersRouter);
 

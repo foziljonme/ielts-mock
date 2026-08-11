@@ -1,7 +1,7 @@
 export type JwtBasePayload = {
   sub: string;
   tenantId: string;
-  sessionId?: string;
+  examId?: string;
   roles: string[];
 };
 

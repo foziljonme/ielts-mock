@@ -17,7 +17,7 @@ interface IExamStore {
   fetchCurrentSession: (sessionId: string) => Promise<void>
   setExamSeatInfo: (seat: ISeat) => void
   startSession: (sessionId: string) => Promise<void>
-  startSection: (section: TestSection) => void
+  startSection: (seesionId: string, sectionId: string) => Promise<void>
   completeSection: (section: TestSection) => void
 }
 
@@ -31,7 +31,7 @@ const useExamStore = create<IExamStore>((set, get) => ({
   setCurrentSession: (session: ISession) => set({ currentSession: session }),
   fetchCurrentSession: async (sessionId: string) => {
     try {
-      const response = await httpClient.get(`/sessions/${sessionId}`)
+      const response = await httpClient.get(`/exams/${sessionId}`)
       get().setCurrentSession(response)
     } catch (error) {
       toastError({ title: 'Failed to fetch current session', error })
@@ -42,7 +42,7 @@ const useExamStore = create<IExamStore>((set, get) => ({
     set({ isLoading: true })
     try {
       const sessionUpdated: any = await httpClient.post(
-        `/sessions/${sessionId}/start`,
+        `/exams/${sessionId}/start`,
         {},
       )
 
@@ -57,7 +57,20 @@ const useExamStore = create<IExamStore>((set, get) => ({
       set({ isLoading: false })
     }
   },
-  startSection: (section: TestSection) => set({ activeSection: section }),
+  startSection: async (sessionId: string, sectionId: string) => {
+    try {
+      set({ isLoading: true })
+      const sectionStarted = await httpClient.post(
+        `exams/${sessionId}/sections/${sectionId}/start`,
+        {},
+      )
+      console.log('section started response', sectionStarted)
+    } catch (error) {
+      toastError({ title: 'Failed to start exam section', error })
+    } finally {
+      set({ isLoading: false })
+    }
+  },
   completeSection: (section: TestSection) =>
     set(state => ({
       completedSections: new Set([...state.completedSections, section]),

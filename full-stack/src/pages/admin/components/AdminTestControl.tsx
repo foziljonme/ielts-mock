@@ -43,10 +43,11 @@ import useExamStore from '@/stores/exam.store'
 export function AdminTestControl() {
   const { connectedCandidates } = useSocketStore()
   const { joinExamRoom } = useWebsocket()
-  const { currentSession, startSession } = useExamStore()
+  const { currentSession, startSession, startSection } = useExamStore()
   console.log('Current Session:', currentSession)
 
   const router = useRouter()
+  const { examId } = router.query as { examId: string }
   const [sessionProgress, setSessionProgress] = useState<ISessionProgress>({
     completedCandidates: new Map(),
     currentSection: null,
@@ -102,20 +103,6 @@ export function AdminTestControl() {
   //   return () => clearInterval(interval)
   // }, [session.id])
 
-  const handleStartSection = async (sectionName: TestSection) => {
-    const now = new Date().getTime()
-    try {
-      // setSession(prev => ({
-      //   ...prev,
-      //   currentSection: sectionName,
-      //   sectionStartTime: now,
-      // }))
-    } catch (error) {
-      console.error('Error starting section:', error)
-      alert('Failed to start section. Please try again.')
-    }
-  }
-
   const handleStopSection = async () => {
     // if (!sessionProgress.currentSection) return
     // try {
@@ -168,8 +155,8 @@ export function AdminTestControl() {
   }
 
   useEffect(() => {
-    joinExamRoom(router.query.examId as string)
-  }, [router.query.examId])
+    joinExamRoom(examId)
+  }, [examId])
 
   if (!currentSession) {
     return <Loading />
@@ -315,7 +302,100 @@ export function AdminTestControl() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {sections.map(section => {
+            {currentSession?.sections.map(section => {
+              // const status = getSectionStatus(section.section)
+              const isActive =
+                sessionProgress.currentSection === section.section
+
+              return (
+                <div
+                  key={section.section}
+                  className={`border-2 rounded-lg p-6 transition-all ${
+                    isActive
+                      ? 'border-green-500 bg-green-50'
+                      : currentSession.status === ExamSessionStatus.COMPLETED
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200 bg-white'
+                  }`}
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 capitalize">
+                        {section.section}
+                      </h3>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Duration: {section.duration} minutes
+                      </p>
+                    </div>
+                    {currentSession.status === ExamSessionStatus.COMPLETED && (
+                      <CheckCircle className="w-6 h-6 text-blue-600" />
+                    )}
+                    {isActive && (
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                        <span className="text-sm font-medium text-green-700">
+                          Active
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex gap-2">
+                    {isActive ? (
+                      <Button
+                        onClick={handleStopSection}
+                        className="w-full bg-red-600 hover:bg-red-700"
+                      >
+                        <Square className="w-4 h-4 mr-2" />
+                        Stop Section
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() =>
+                          startSection(currentSession.id, section.id)
+                        }
+                        disabled={
+                          sessionProgress.currentSection !== null ||
+                          isSectionCompleted(section.section)
+                        }
+                        className="w-full"
+                      >
+                        <Play className="w-4 h-4 mr-2" />
+                        Start Section
+                      </Button>
+                    )}
+                  </div>
+
+                  {/* Progress indicator */}
+                  <div className="mt-4">
+                    <div className="flex justify-between text-sm text-gray-600 mb-1">
+                      <span>Student Progress</span>
+                      <span>
+                        {sessionProgress.completedCandidates.get(
+                          section.section,
+                        )?.length || 0}{' '}
+                        / {currentSession.seats.length}
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-blue-600 h-2 rounded-full transition-all"
+                        style={{
+                          width: `${
+                            ((sessionProgress.completedCandidates.get(
+                              section.section,
+                            )?.length || 0) /
+                              currentSession.seats.length) *
+                            100
+                          }%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+            {/* {sections.map(section => {
               const status = getSectionStatus(section.name)
               const isActive = sessionProgress.currentSection === section.name
 
@@ -376,7 +456,7 @@ export function AdminTestControl() {
                     )}
                   </div>
 
-                  {/* Progress indicator */}
+                  Progress indicator
                   <div className="mt-4">
                     <div className="flex justify-between text-sm text-gray-600 mb-1">
                       <span>Student Progress</span>
@@ -403,7 +483,7 @@ export function AdminTestControl() {
                   </div>
                 </div>
               )
-            })}
+            })} */}
           </div>
         </div>
 

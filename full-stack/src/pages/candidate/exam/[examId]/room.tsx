@@ -16,11 +16,7 @@ export function CandidateWaitingRoom() {
   const { connectionStatus } = useSocketStore()
   const { seat } = useAuthStore()
   const { examSeatInfo, activeSection, completedSections } = useExamStore()
-  // const { activeSection, completedSections } = useExamStore();
-  // const { examSeatInfo } = useExamStore();
-  // const [connectionStatus, setConnectionStatus] = useState<
-  //   'connecting' | 'connected' | 'error'
-  // >('connecting')
+
   const [waitingTime, setWaitingTime] = useState(0)
   const [sessionId, setSessionId] = useState<string>('')
   const router = useRouter()
@@ -116,7 +112,7 @@ export function CandidateWaitingRoom() {
     const secs = seconds % 60
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
-
+  console.log('connectionStatusconnectionStatus', connectionStatus)
   return (
     <div className="min-h-screen bg-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-6">
       <div className="max-w-2xl w-full">

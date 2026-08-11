@@ -28,7 +28,7 @@ class ExamSeatsService {
 
   async createSeat(
     ctx: AuthRequestContext,
-    examSessionId: string,
+    examId: string,
     data: CreateExamSeatSchema,
   ) {
     const accessCode = this.generateAccessCode();
@@ -40,7 +40,7 @@ class ExamSeatsService {
             ...data,
             accessCode,
             candidateId,
-            sessionId: examSessionId,
+            examId: examId,
             tenantId: ctx.user.tenantId,
           },
         }),
@@ -57,7 +57,7 @@ class ExamSeatsService {
   async createSeats(
     ctx: AuthRequestContext,
     tx: Prisma.TransactionClient,
-    examSessionId: string,
+    examId: string,
     data: CreateExamSeatSchema[],
   ) {
     const seats = await tx.examSeat.createManyAndReturn({
@@ -65,7 +65,7 @@ class ExamSeatsService {
         ...seat,
         accessCode: this.generateAccessCode(),
         candidateId: this.generateCandidateId(),
-        sessionId: examSessionId,
+        examId: examId,
         tenantId: ctx.user.tenantId,
       })),
     });
@@ -80,7 +80,7 @@ class ExamSeatsService {
 
   async getSeats(
     ctx: AuthRequestContext,
-    examSessionId: string,
+    examId: string,
     page: number,
     pageSize: number,
   ) {
@@ -88,11 +88,11 @@ class ExamSeatsService {
       db.examSeat.findMany({
         skip: (page - 1) * pageSize,
         take: pageSize,
-        where: { tenantId: ctx.user.tenantId, sessionId: examSessionId },
+        where: { tenantId: ctx.user.tenantId, examId: examId },
         orderBy: { createdAt: "desc" },
       }),
       db.examSeat.count({
-        where: { tenantId: ctx.user.tenantId, sessionId: examSessionId },
+        where: { tenantId: ctx.user.tenantId, examId: examId },
       }),
     ]);
     return { items, totalItems };
@@ -101,10 +101,10 @@ class ExamSeatsService {
   async deleteAllSeats(
     tx: Prisma.TransactionClient,
     ctx: AuthRequestContext,
-    sessionId: string,
+    examId: string,
   ) {
     const seats = await tx.examSeat.deleteMany({
-      where: { tenantId: ctx.user.tenantId, sessionId },
+      where: { tenantId: ctx.user.tenantId, examId },
     });
 
     await tx.tenantSeatUsage.update({

@@ -8,7 +8,9 @@
     "source.fixAll.eslint": "never"
   },
   "search.exclude": {
-    "**/.next/**": true
+    "**/.next/**": true,
+    "frontend/**": true,
+    "backend/**": true
   },
   // Optional but recommended: Let Prettier handle formatting
   "prettier.useEditorConfig": false,

@@ -44,6 +44,7 @@ export const useSocketStore = create<SocketState>(set => ({
   },
   candidateLeft: candidateLeaveData =>
     set(s => {
+      console.log('cadidate left frontend')
       const currentConnectedCandidates = s.connectedCandidates
       currentConnectedCandidates.delete(candidateLeaveData.candidateId)
 

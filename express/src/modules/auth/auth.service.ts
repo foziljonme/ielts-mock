@@ -15,7 +15,7 @@ import {
   TOKEN_EXPIRES_IN,
 } from "@/shared/constants";
 import db from "@/config/db";
-import { ExamSessionStatus, UserRole } from "../../../prisma/generated/enums";
+import { ExamStatus, UserRole } from "../../../prisma/generated/enums";
 import { AuthRequestContext, JwtBasePayload } from "./auth.types";
 
 class AuthService {
@@ -173,7 +173,7 @@ class AuthService {
           candidateId: loginData.candidateId,
         },
         include: {
-          session: true,
+          exam: true,
         },
       });
 
@@ -186,28 +186,28 @@ class AuthService {
         );
       }
 
-      if (seat.session.status === ExamSessionStatus.COMPLETED) {
+      if (seat.exam.status === ExamStatus.COMPLETED) {
         throw new AppError(
           "Unauthorized",
           401,
           ErrorCodes.UNAUTHORIZED,
-          "Session already completed",
+          "Exam already completed",
         );
       }
 
-      if (seat.session.status === ExamSessionStatus.SCHEDULED) {
+      if (seat.exam.status === ExamStatus.SCHEDULED) {
         throw new AppError(
           "Bad Request",
           400,
           ErrorCodes.BAD_REQUEST,
-          "Session is not open for candidates, please contact administrator",
+          "Exam is not open for candidates, please contact administrator",
         );
       }
 
       const tokenPayload: JwtBasePayload = {
         sub: seat.id,
         tenantId: seat.tenantId || "",
-        sessionId: seat.sessionId,
+        examId: seat.examId,
         roles: [UserRole.CANDIDATE],
       };
 

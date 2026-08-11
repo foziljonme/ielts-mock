@@ -3,7 +3,7 @@ import { ExamSeatStatus } from '../../prisma/generated/enums'
 export interface ISeat {
   id: string
   tenantId: string
-  sessionId: string
+  examId: string
   seatNumber: number
   label: string
   accessCode: string

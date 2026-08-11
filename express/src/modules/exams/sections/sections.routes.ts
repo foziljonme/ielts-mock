@@ -3,9 +3,9 @@ import { startSectionController } from "./sections.controller";
 import { auth } from "@/middlewares/auth";
 import { UserRole } from "../../../../prisma/generated/enums";
 
-const router = Router();
+const sectionsRouter = Router();
 
-router.post(
+sectionsRouter.post(
   "/:sectionId/start",
   auth({
     roles: [UserRole.STAFF, UserRole.TENANT_ADMIN],
@@ -13,4 +13,4 @@ router.post(
   startSectionController,
 );
 
-export default router;
+export default sectionsRouter;

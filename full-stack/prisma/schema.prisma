@@ -24,7 +24,7 @@ model Tenant {
   seatQuota Int      @default(0) // Maximum number of seats this tenant is allowed to allocate overall
 
   users           User[]
-  sessions        ExamSession[]
+  exams           Exam[]
   tenantSeatUsage TenantSeatUsage?
 }
 
@@ -34,7 +34,7 @@ model Tenant {
 model TenantSeatUsage {
   id        String @id @default(cuid())
   tenantId  String @unique
-  usedSeats Int    @default(0) // Current number of allocated seats across all sessions
+  usedSeats Int    @default(0) // Current number of allocated seats across all exams
 
   tenant Tenant @relation(fields: [tenantId], references: [id])
 }
@@ -63,51 +63,49 @@ model User {
 }
 
 // ==========================
-// EXAM SESSION (IELTS Sitting)
+// EXAM (IELTS Sitting)
 // ==========================
-enum ExamSessionStatus {
+enum ExamStatus {
   SCHEDULED
   OPEN
   IN_PROGRESS
   COMPLETED
 }
 
-model ExamSession {
-  id             String                @id @default(cuid())
+model Exam {
+  id             String        @id @default(cuid())
   tenantId       String
   testId         String // External JSON test identifier
   // name       String            @db.VarChar(255)
   examDate       DateTime
-  status         ExamSessionStatus     @default(SCHEDULED)
+  status         ExamStatus    @default(SCHEDULED)
   currentSection TestSection?
-  isArchived     Boolean               @default(false)
+  isArchived     Boolean       @default(false)
   startTime      DateTime?
   endTime        DateTime?
-  createdAt      DateTime              @default(now())
-  progress       ExamSessionProgress[]
+  createdAt      DateTime      @default(now())
+  sections       ExamSection[]
 
   tenant Tenant     @relation(fields: [tenantId], references: [id])
   seats  ExamSeat[]
 }
 
-enum ExamSessionProgressStatus {
+enum ExamSectionStatus {
   NOT_STARTED
   IN_PROGRESS
   COMPLETED
 }
 
-model ExamSessionProgress {
-  id        String                    @id @default(cuid())
-  sessionId String
+model ExamSection {
+  id        String            @id @default(cuid())
+  examId    String
   section   TestSection
-  status    ExamSessionProgressStatus
+  status    ExamSectionStatus
   startedAt DateTime?
   endTime   DateTime?
-  createdAt DateTime                  @default(now())
+  createdAt DateTime          @default(now())
 
-  session ExamSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-
-  @@unique([sessionId, section])
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
 }
 
 // ==========================
@@ -123,7 +121,7 @@ enum ExamSeatStatus {
 model ExamSeat {
   id               String         @id @default(cuid())
   tenantId         String
-  sessionId        String
+  examId           String
   label            String? // "Row 3, Seat 2"
   accessCode       String         @unique // Candidate login code
   candidateName    String
@@ -135,7 +133,7 @@ model ExamSeat {
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 
-  session  ExamSession       @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  exam     Exam              @relation(fields: [examId], references: [id], onDelete: Cascade)
   sections SectionProgress[]
 }
 

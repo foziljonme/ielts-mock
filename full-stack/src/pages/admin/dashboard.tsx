@@ -358,7 +358,7 @@ export function AdminDashboard() {
                   <div className="flex justify-between">
                     <span className="text-sm">Base Price per Attempt:</span>
                     <span className="font-semibold">
-                      £{tenant.pricePerTest}
+                      {/* £{tenant.pricePerTest} */}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -368,20 +368,20 @@ export function AdminDashboard() {
                   <div className="flex justify-between">
                     <span className="text-sm">Subtotal:</span>
                     <span className="font-semibold">
-                      £{50 * tenant.pricePerTest}
+                      {/* £{50 * tenant.pricePerTest} */}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm">Volume Discount (10%):</span>
                     <span className="font-semibold text-green-600">
                       -£
-                      {(50 * tenant.pricePerTest * 0.1).toFixed(2)}
+                      {/* {(50 * tenant.pricePerTest * 0.1).toFixed(2)} */}
                     </span>
                   </div>
                   <div className="flex justify-between text-lg pt-2 border-t">
                     <span className="font-semibold">Total Amount:</span>
                     <span className="font-semibold text-green-600">
-                      £{(50 * tenant.pricePerTest * 0.9).toFixed(2)}
+                      {/* £{(50 * tenant.pricePerTest * 0.9).toFixed(2)} */}
                     </span>
                   </div>
                 </div>
@@ -392,8 +392,8 @@ export function AdminDashboard() {
             <div className="bg-gray-50 p-4 rounded-lg mt-6">
               <h4 className="font-medium mb-2">Package Details</h4>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li>• {tenant.agreement}</li>
-                <li>• {tenant.totalSeats} workstations available</li>
+                {/* <li>• {tenant.agreement}</li> */}
+                {/* <li>• {tenant.totalSeats} workstations available</li> */}
                 <li>
                   • Test attempts are managed independently of student
                   enrollment

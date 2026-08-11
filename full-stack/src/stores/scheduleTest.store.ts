@@ -32,13 +32,13 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
   },
   fetchSessions: async () => {
     try {
-      const response = await httpClient.get('/sessions')
+      const response = await httpClient.get('/exams')
       set({
         sessions: response.results,
         totalSessions: response.pagination.totalItems,
       })
     } catch (error) {
-      toastError({ title: 'Failed to fetch sessions', error })
+      toastError({ title: 'Failed to fetch exams', error })
     }
   },
   fetchAvailableTests: async () => {
@@ -55,7 +55,7 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
   createSession: async (session: ISessionInput) => {
     set({ isLoading: true })
     try {
-      const response = await httpClient.post('/sessions', session)
+      const response = await httpClient.post('/exams', session)
       set(state => ({
         sessions: [response, ...state.sessions],
         totalSessions: state.totalSessions + 1,
@@ -71,7 +71,7 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
     set({ isLoading: true })
     try {
       const session = get().sessions.find(session => session.id === sessionId)
-      await httpClient.delete(`/sessions/${sessionId}`)
+      await httpClient.delete(`/exams/${sessionId}`)
 
       set(state => ({
         sessions: state.sessions.filter(session => session.id !== sessionId),

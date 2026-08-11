@@ -1,4 +1,5 @@
 import { Button } from '@/components/button'
+import { useWebsocket } from '@/hooks/socket/useWebsocket'
 import { useAuthStore } from '@/stores/auth.store'
 import { useTenantStore } from '@/stores/tenant.store'
 import { Building2, Download, LogOut } from 'lucide-react'
@@ -7,7 +8,9 @@ import { useRouter } from 'next/router'
 export function Header() {
   const { tenant } = useTenantStore()
   const { logout, user, seat } = useAuthStore()
+  const { leaveExamRoom } = useWebsocket()
   const router = useRouter()
+  const { examId } = router.query
 
   if (!tenant) {
     return null
@@ -15,6 +18,7 @@ export function Header() {
 
   const handleLogout = async () => {
     await logout()
+    leaveExamRoom(examId as string)
     if (router.pathname.startsWith('/candidate')) {
       router.push('/candidate/login')
       return

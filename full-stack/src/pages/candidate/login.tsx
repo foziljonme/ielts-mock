@@ -29,15 +29,15 @@ export default function CandidateLoginPage() {
     }
 
     await loginCandidate(accessCode, candidateId).then(isAuthenticated => {
-      const examId = seat?.sessionId
+      const examId = seat?.examId
       if (isAuthenticated) {
         router.push(`/candidate/exam/${examId}/room`)
       }
     })
   }
 
-  if (isAuthenticated && seat?.sessionId) {
-    return router.push(`/candidate/exam/${seat?.sessionId}/room`)
+  if (isAuthenticated && seat?.examId) {
+    return router.push(`/candidate/exam/${seat?.examId}/room`)
   }
 
   return (
@@ -108,9 +108,9 @@ export default function CandidateLoginPage() {
           </p>
           <div className="flex flex-wrap gap-2 justify-center mt-2">
             {[
-              's4qsll:RoG8-RCYN-RNdg',
-              'w753ac:Ypty-oKcE-4Fwi',
-              's06nds:Tx5X-dSUo-SrpG',
+              'zicf3g:icSb-ubKx-GO9f',
+              'unit4s:0hu1-WFQr-ay6W',
+              '6sa5ts:Zr8A-FurS-iE6A',
             ].map(code => (
               <p
                 key={code}
