@@ -54,12 +54,18 @@ export const ModelName = {
   Tenant: 'Tenant',
   TenantSeatUsage: 'TenantSeatUsage',
   User: 'User',
+  Test: 'Test',
+  AnswerKey: 'AnswerKey',
+  Section: 'Section',
+  Passage: 'Passage',
+  AudioTrack: 'AudioTrack',
+  QuestionGroup: 'QuestionGroup',
+  Question: 'Question',
+  ExamSectionProgress: 'ExamSectionProgress',
   Exam: 'Exam',
-  ExamSection: 'ExamSection',
   ExamSeat: 'ExamSeat',
   SectionProgress: 'SectionProgress',
   QuestionResponse: 'QuestionResponse',
-  Answer: 'Answer',
   Highlight: 'Highlight',
   WritingDraft: 'WritingDraft'
 } as const
@@ -116,33 +122,119 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const TestScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  type: 'type',
+  version: 'version',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TestScalarFieldEnum = (typeof TestScalarFieldEnum)[keyof typeof TestScalarFieldEnum]
+
+
+export const AnswerKeyScalarFieldEnum = {
+  id: 'id',
+  testId: 'testId',
+  questionId: 'questionId',
+  answer: 'answer',
+  sectionId: 'sectionId'
+} as const
+
+export type AnswerKeyScalarFieldEnum = (typeof AnswerKeyScalarFieldEnum)[keyof typeof AnswerKeyScalarFieldEnum]
+
+
+export const SectionScalarFieldEnum = {
+  id: 'id',
+  testId: 'testId',
+  skill: 'skill',
+  order: 'order',
+  durationSec: 'durationSec',
+  instructions: 'instructions'
+} as const
+
+export type SectionScalarFieldEnum = (typeof SectionScalarFieldEnum)[keyof typeof SectionScalarFieldEnum]
+
+
+export const PassageScalarFieldEnum = {
+  id: 'id',
+  sectionId: 'sectionId',
+  order: 'order',
+  title: 'title',
+  content: 'content',
+  source: 'source'
+} as const
+
+export type PassageScalarFieldEnum = (typeof PassageScalarFieldEnum)[keyof typeof PassageScalarFieldEnum]
+
+
+export const AudioTrackScalarFieldEnum = {
+  id: 'id',
+  sectionId: 'sectionId',
+  order: 'order',
+  title: 'title',
+  audioUrl: 'audioUrl',
+  transcript: 'transcript'
+} as const
+
+export type AudioTrackScalarFieldEnum = (typeof AudioTrackScalarFieldEnum)[keyof typeof AudioTrackScalarFieldEnum]
+
+
+export const QuestionGroupScalarFieldEnum = {
+  id: 'id',
+  sectionId: 'sectionId',
+  passageId: 'passageId',
+  audioTrackId: 'audioTrackId',
+  type: 'type',
+  order: 'order',
+  title: 'title',
+  instructions: 'instructions',
+  layout: 'layout'
+} as const
+
+export type QuestionGroupScalarFieldEnum = (typeof QuestionGroupScalarFieldEnum)[keyof typeof QuestionGroupScalarFieldEnum]
+
+
+export const QuestionScalarFieldEnum = {
+  id: 'id',
+  questionGroupId: 'questionGroupId',
+  order: 'order',
+  prompt: 'prompt',
+  config: 'config',
+  correctAnswer: 'correctAnswer',
+  points: 'points'
+} as const
+
+export type QuestionScalarFieldEnum = (typeof QuestionScalarFieldEnum)[keyof typeof QuestionScalarFieldEnum]
+
+
+export const ExamSectionProgressScalarFieldEnum = {
+  id: 'id',
+  status: 'status',
+  examId: 'examId',
+  skill: 'skill',
+  startedAt: 'startedAt'
+} as const
+
+export type ExamSectionProgressScalarFieldEnum = (typeof ExamSectionProgressScalarFieldEnum)[keyof typeof ExamSectionProgressScalarFieldEnum]
+
+
 export const ExamScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   testId: 'testId',
   examDate: 'examDate',
   status: 'status',
-  currentSection: 'currentSection',
   isArchived: 'isArchived',
   startTime: 'startTime',
   endTime: 'endTime',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  currentSkill: 'currentSkill'
 } as const
 
 export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof ExamScalarFieldEnum]
-
-
-export const ExamSectionScalarFieldEnum = {
-  id: 'id',
-  examId: 'examId',
-  section: 'section',
-  status: 'status',
-  startedAt: 'startedAt',
-  endTime: 'endTime',
-  createdAt: 'createdAt'
-} as const
-
-export type ExamSectionScalarFieldEnum = (typeof ExamSectionScalarFieldEnum)[keyof typeof ExamSectionScalarFieldEnum]
 
 
 export const ExamSeatScalarFieldEnum = {
@@ -167,9 +259,9 @@ export type ExamSeatScalarFieldEnum = (typeof ExamSeatScalarFieldEnum)[keyof typ
 export const SectionProgressScalarFieldEnum = {
   id: 'id',
   seatId: 'seatId',
-  section: 'section',
   status: 'status',
   startedAt: 'startedAt',
+  submittedAt: 'submittedAt',
   remainingSec: 'remainingSec'
 } as const
 
@@ -178,30 +270,22 @@ export type SectionProgressScalarFieldEnum = (typeof SectionProgressScalarFieldE
 
 export const QuestionResponseScalarFieldEnum = {
   id: 'id',
-  sectionId: 'sectionId',
+  sectionProgressId: 'sectionProgressId',
   questionId: 'questionId',
+  value: 'value',
+  wordCount: 'wordCount',
   isFlagged: 'isFlagged',
-  visitedAt: 'visitedAt'
+  visitedAt: 'visitedAt',
+  answeredAt: 'answeredAt'
 } as const
 
 export type QuestionResponseScalarFieldEnum = (typeof QuestionResponseScalarFieldEnum)[keyof typeof QuestionResponseScalarFieldEnum]
 
 
-export const AnswerScalarFieldEnum = {
-  id: 'id',
-  questionResponseId: 'questionResponseId',
-  value: 'value',
-  wordCount: 'wordCount',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type AnswerScalarFieldEnum = (typeof AnswerScalarFieldEnum)[keyof typeof AnswerScalarFieldEnum]
-
-
 export const HighlightScalarFieldEnum = {
   id: 'id',
-  questionResponseId: 'questionResponseId',
+  sectionProgressId: 'sectionProgressId',
+  passageId: 'passageId',
   startOffset: 'startOffset',
   endOffset: 'endOffset',
   color: 'color'
@@ -229,6 +313,21 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: 'JsonNull'
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull'
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -243,4 +342,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

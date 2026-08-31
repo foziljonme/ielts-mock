@@ -30,6 +30,10 @@ generate-express:
 db-push-express:
 	docker compose exec express yarn db:push
 
+# Run Prisma db push force inside container
+db-push-express:
+	docker compose exec express yarn db:push:force
+
 # Run Prisma generate inside container
 generate:
 	docker compose exec next-js yarn prisma generate

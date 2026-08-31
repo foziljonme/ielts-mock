@@ -12,36 +12,38 @@ import { useSocketStore } from '@/stores/socket.store'
 // import { SECTIONS } from "../constants";
 
 export function CandidateWaitingRoom() {
-  const { joinExamRoom } = useWebsocket()
   const { connectionStatus } = useSocketStore()
   const { seat } = useAuthStore()
+  console.log('seat', seat)
   const { examSeatInfo, activeSection, completedSections } = useExamStore()
 
   const [waitingTime, setWaitingTime] = useState(0)
   const [sessionId, setSessionId] = useState<string>('')
   const router = useRouter()
 
-  useEffect(() => {
-    joinExamRoom(router.query.examId as string)
-  }, [router.query.examId])
-
   // Track waiting time
-  useEffect(() => {
-    if (connectionStatus === 'connected' && !activeSection) {
-      const interval = setInterval(() => {
-        setWaitingTime(prev => prev + 1)
-      }, 1000)
+  // useEffect(() => {
+  //   if (connectionStatus === 'connected' && !activeSection) {
+  //     const interval = setInterval(() => {
+  //       setWaitingTime(prev => prev + 1)
+  //     }, 1000)
 
-      return () => clearInterval(interval)
-    }
-  }, [connectionStatus, activeSection])
+  //     return () => clearInterval(interval)
+  //   }
+  // }, [connectionStatus, activeSection])
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
-  console.log('connectionStatusconnectionStatus', connectionStatus)
+
+  if (seat?.exam?.currentSkill) {
+    return router.push(
+      `/candidate/exam/${seat?.examId}/${seat?.exam.currentSkill?.toLocaleLowerCase()}`,
+    )
+  }
+
   return (
     <div className="min-h-screen bg-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-6">
       <div className="max-w-2xl w-full">
@@ -105,7 +107,8 @@ export function CandidateWaitingRoom() {
                     <div className="flex items-center gap-2 text-yellow-900">
                       <Clock className="w-4 h-4" />
                       <span className="text-sm font-medium">
-                        Waiting time: {formatTime(waitingTime)}
+                        Waiting time:
+                        {/* {formatTime(waitingTime)} */}
                       </span>
                     </div>
                   </div>
@@ -121,7 +124,7 @@ export function CandidateWaitingRoom() {
                 <div className="flex gap-3">
                   {SECTIONS.map(section => {
                     const isCompleted = completedSections.has(section.name)
-                    const isCurrent = activeSection === section.name
+                    const isCurrent = activeSection?.skill === section.name
 
                     return (
                       <div

@@ -1,0 +1,176 @@
+{
+  "group_type": "note_completion",
+  "render_hint": {
+    "layout": "structured_notes"
+  },
+  "content": [
+    {
+      "type": "heading",
+      "level": 1,
+      "children": [
+        {
+          "type": "text",
+          "value": "GYM MEMBERSHIP BOOKING"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Personal details"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "children": [
+        {
+          "type": "line",
+          "children": [
+            {
+              "type": "text",
+              "value": "Name: "
+            },
+            {
+              "type": "blank",
+              "question_id": "q1"
+            }
+          ]
+        },
+        {
+          "type": "line",
+          "children": [
+            {
+              "type": "text",
+              "value": "Address: 42 "
+            },
+            {
+              "type": "blank",
+              "question_id": "q2"
+            },
+            {
+              "type": "text",
+              "value": " Street"
+            }
+          ]
+        },
+        {
+          "type": "line",
+          "children": [
+            {
+              "type": "text",
+              "value": "Contact number: "
+            },
+            {
+              "type": "blank",
+              "question_id": "q3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Membership"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "children": [
+        {
+          "type": "line",
+          "children": [
+            {
+              "type": "text",
+              "value": "Type of membership: "
+            },
+            {
+              "type": "blank",
+              "question_id": "q4"
+            }
+          ]
+        },
+        {
+          "type": "line",
+          "children": [
+            {
+              "type": "text",
+              "value": "Preferred start date: "
+            },
+            {
+              "type": "blank",
+              "question_id": "q5"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "interaction_type": "text_input",
+      "answer_key": {
+        "type": "text",
+        "accepted": [
+          "Sarah Collins"
+        ],
+        "max_words": 2
+      }
+    },
+    {
+      "id": "q2",
+      "interaction_type": "text_input",
+      "answer_key": {
+        "type": "text",
+        "accepted": [
+          "Bridge"
+        ],
+        "max_words": 1
+      }
+    },
+    {
+      "id": "q3",
+      "interaction_type": "text_input",
+      "answer_key": {
+        "type": "text",
+        "accepted": [
+          "07812 445 219"
+        ],
+        "max_words": 1
+      }
+    },
+    {
+      "id": "q4",
+      "interaction_type": "text_input",
+      "answer_key": {
+        "type": "text",
+        "accepted": [
+          "family",
+          "family membership"
+        ],
+        "max_words": 2
+      }
+    },
+    {
+      "id": "q5",
+      "interaction_type": "text_input",
+      "answer_key": {
+        "type": "text",
+        "accepted": [
+          "15 June",
+          "June 15th"
+        ],
+        "max_words": 3
+      }
+    }
+  ]
+}

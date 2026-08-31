@@ -1,4 +1,11 @@
 import { Server, Socket } from "socket.io";
+import {
+  ADMIN_EXAM_START,
+  CANDIDATE_EXAM_LEFT,
+  EXAM_JOIN,
+  EXAM_LEAVE,
+  EXAM_STARTED,
+} from "./constants";
 
 function isCandidate(socket: Socket) {
   const user = socket.data.user;
@@ -11,7 +18,7 @@ export function registerExamSockets(io: Server) {
   io.on("connection", (socket: Socket) => {
     console.log("Connected socket", socket.id);
 
-    socket.on("exam:join", async ({ examId }) => {
+    socket.on(EXAM_JOIN, async ({ examId }) => {
       console.log("joined", socket.data.user);
       socket.join(examId);
       socket.data.examId = examId;
@@ -42,7 +49,7 @@ export function registerExamSockets(io: Server) {
       }
     });
 
-    socket.on("exam:leave", async ({ examId }) => {
+    socket.on(EXAM_LEAVE, async ({ examId }) => {
       const user = socket.data.user;
       console.log("left", user);
       if (isCandidate(socket)) {
@@ -56,9 +63,9 @@ export function registerExamSockets(io: Server) {
       }
     });
 
-    socket.on("admin:start", ({ examId }) => {
+    socket.on(ADMIN_EXAM_START, ({ examId }) => {
       if (socket.data.user.role !== "ADMIN") return;
-      io.to(examId).emit("exam:started");
+      io.to(examId).emit(EXAM_STARTED);
     });
 
     socket.on("student:progress", (payload) => {
@@ -70,8 +77,8 @@ export function registerExamSockets(io: Server) {
 
     socket.on("disconnect", () => {
       const examId = socket.data.examId;
-      if (examId && socket.data.user?.roles?.includes("CANDIDATE")) {
-        socket.to(examId).emit("exam:candidate:left", {
+      if (examId && isCandidate(socket)) {
+        socket.to(examId).emit(CANDIDATE_EXAM_LEFT, {
           candidateId: socket.data.user.sub,
         });
       }

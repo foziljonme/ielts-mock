@@ -42,7 +42,7 @@ import useExamStore from '@/stores/exam.store'
 export function ExamDashboard() {
   const { logout } = useAuthStore()
   const { tenant } = useTenantStore()
-  const { fetchCurrentSession } = useExamStore()
+  const { fetchCurrentExam } = useExamStore()
   const [searchTerm, setSearchTerm] = useState('')
   const [activeTestControl, setActiveTestControl] = useState<IExam | null>(null)
   const router = useRouter()
@@ -74,7 +74,7 @@ export function ExamDashboard() {
   useEffect(() => {
     const examId = router.query.examId as string
     if (!examId) return
-    fetchCurrentSession(examId)
+    fetchCurrentExam(examId)
   }, [router.query.examId])
 
   if (!tenant) {

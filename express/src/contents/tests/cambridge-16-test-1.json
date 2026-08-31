@@ -1,0 +1,1540 @@
+{
+  "id": "cambridge-16-test-1",
+  "title": "IELTS Mock Test 1 (fictional content, structural fixture)",
+  "sections": [
+    {
+      "section": "LISTENING",
+      "audioTracks": [
+        {
+          "id": "aud-demo-1",
+          "url": "https://cdn.example.com/audio/demo/mc.mp3",
+          "durationSec": 150
+        },
+        {
+          "id": "aud-demo-2",
+          "url": "https://cdn.example.com/audio/demo/campus.mp3",
+          "durationSec": 240
+        },
+        {
+          "id": "aud-demo-3",
+          "url": "https://cdn.example.com/audio/demo/workshops.mp3",
+          "durationSec": 200
+        }
+      ],
+      "groups": [
+        {
+          "id": "grp-d1-mc",
+          "audioTrackId": "aud-demo-1",
+          "order": 1,
+          "instructions": "Choose the correct letter, A, B or C. For Question 4, choose TWO letters.",
+          "questions": [
+            {
+              "id": "l-q1",
+              "groupId": "grp-d1-mc",
+              "type": "MULTIPLE_CHOICE_SINGLE",
+              "order": 1,
+              "prompt": "What is the main purpose of the orientation session?",
+              "config": {
+                "options": [
+                  "A. to test new students",
+                  "B. to introduce campus facilities",
+                  "C. to collect enrolment fees"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "B"
+              },
+              "displayNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "l-q2",
+              "groupId": "grp-d1-mc",
+              "type": "MULTIPLE_CHOICE_SINGLE",
+              "order": 2,
+              "prompt": "Students should register for clubs by",
+              "config": {
+                "options": [
+                  "A. the end of week one",
+                  "B. the end of week two",
+                  "C. the end of the semester"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "A"
+              },
+              "displayNumbers": [
+                2
+              ]
+            },
+            {
+              "id": "l-q3",
+              "groupId": "grp-d1-mc",
+              "type": "MULTIPLE_CHOICE_SINGLE",
+              "order": 3,
+              "prompt": "The speaker's attitude toward the new library extension is",
+              "config": {
+                "options": [
+                  "A. skeptical",
+                  "B. enthusiastic",
+                  "C. indifferent"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "B"
+              },
+              "displayNumbers": [
+                3
+              ]
+            },
+            {
+              "id": "l-q4",
+              "groupId": "grp-d1-mc",
+              "type": "MULTIPLE_CHOICE_MULTI",
+              "order": 4,
+              "prompt": "Questions 4 and 5 — Which TWO facilities does the campus tour include?",
+              "config": {
+                "options": [
+                  "A. the sports hall",
+                  "B. the science labs",
+                  "C. the student union",
+                  "D. the language centre",
+                  "E. the car park"
+                ],
+                "selectCount": 2
+              },
+              "correctAnswer": {
+                "correct": [
+                  "B",
+                  "D"
+                ]
+              },
+              "displayNumbers": [
+                4,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "grp-d2-match",
+          "audioTrackId": "aud-demo-2",
+          "order": 1,
+          "instructions": "What does the speaker say about each club? Choose your answers from the box and write the correct letter, A-F, next to Questions 5-9. You may use any letter more than once.",
+          "sharedOptions": [
+            "A. free of charge",
+            "B. requires a uniform",
+            "C. meets twice a week",
+            "D. open to beginners only",
+            "E. run by senior students",
+            "F. held outdoors"
+          ],
+          "questions": [
+            {
+              "id": "l-q5",
+              "groupId": "grp-d2-match",
+              "type": "MATCHING",
+              "order": 1,
+              "prompt": "Chess club",
+              "config": {},
+              "correctAnswer": {
+                "correct": "D"
+              },
+              "displayNumbers": [
+                6
+              ]
+            },
+            {
+              "id": "l-q6",
+              "groupId": "grp-d2-match",
+              "type": "MATCHING",
+              "order": 2,
+              "prompt": "Football club",
+              "config": {},
+              "correctAnswer": {
+                "correct": "B"
+              },
+              "displayNumbers": [
+                7
+              ]
+            },
+            {
+              "id": "l-q7",
+              "groupId": "grp-d2-match",
+              "type": "MATCHING",
+              "order": 3,
+              "prompt": "Drama club",
+              "config": {},
+              "correctAnswer": {
+                "correct": "A"
+              },
+              "displayNumbers": [
+                8
+              ]
+            },
+            {
+              "id": "l-q8",
+              "groupId": "grp-d2-match",
+              "type": "MATCHING",
+              "order": 4,
+              "prompt": "Photography club",
+              "config": {},
+              "correctAnswer": {
+                "correct": "C"
+              },
+              "displayNumbers": [
+                9
+              ]
+            },
+            {
+              "id": "l-q9",
+              "groupId": "grp-d2-match",
+              "type": "MATCHING",
+              "order": 5,
+              "prompt": "Running club",
+              "config": {},
+              "correctAnswer": {
+                "correct": "A"
+              },
+              "displayNumbers": [
+                10
+              ]
+            }
+          ]
+        },
+        {
+          "id": "grp-d3-map",
+          "audioTrackId": "aud-demo-2",
+          "order": 2,
+          "instructions": "Label the campus map below. Write the correct letter, A-H, next to Questions 10-13.",
+          "questions": [
+            {
+              "id": "l-q10",
+              "groupId": "grp-d3-map",
+              "type": "PLAN_MAP_LABELING",
+              "order": 1,
+              "prompt": "Where students collect textbooks",
+              "config": {
+                "choices": [
+                  "A. Library",
+                  "B. Cafeteria",
+                  "C. Gym",
+                  "D. Admin office",
+                  "E. Parking",
+                  "F. Bookstore",
+                  "G. Health centre",
+                  "H. Auditorium"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "F"
+              },
+              "displayNumbers": [
+                11
+              ]
+            },
+            {
+              "id": "l-q11",
+              "groupId": "grp-d3-map",
+              "type": "PLAN_MAP_LABELING",
+              "order": 2,
+              "prompt": "Where students can see a doctor",
+              "config": {
+                "choices": [
+                  "A. Library",
+                  "B. Cafeteria",
+                  "C. Gym",
+                  "D. Admin office",
+                  "E. Parking",
+                  "F. Bookstore",
+                  "G. Health centre",
+                  "H. Auditorium"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "G"
+              },
+              "displayNumbers": [
+                12
+              ]
+            },
+            {
+              "id": "l-q12",
+              "groupId": "grp-d3-map",
+              "type": "PLAN_MAP_LABELING",
+              "order": 3,
+              "prompt": "Where large events are held",
+              "config": {
+                "choices": [
+                  "A. Library",
+                  "B. Cafeteria",
+                  "C. Gym",
+                  "D. Admin office",
+                  "E. Parking",
+                  "F. Bookstore",
+                  "G. Health centre",
+                  "H. Auditorium"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "H"
+              },
+              "displayNumbers": [
+                13
+              ]
+            },
+            {
+              "id": "l-q13",
+              "groupId": "grp-d3-map",
+              "type": "PLAN_MAP_LABELING",
+              "order": 4,
+              "prompt": "Where visitors should park",
+              "config": {
+                "choices": [
+                  "A. Library",
+                  "B. Cafeteria",
+                  "C. Gym",
+                  "D. Admin office",
+                  "E. Parking",
+                  "F. Bookstore",
+                  "G. Health centre",
+                  "H. Auditorium"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "E"
+              },
+              "displayNumbers": [
+                14
+              ]
+            }
+          ]
+        },
+        {
+          "id": "grp-d3-sa",
+          "audioTrackId": "aud-demo-2",
+          "order": 3,
+          "instructions": "Answer the questions below. Write NO MORE THAN THREE WORDS AND/OR A NUMBER for each answer.",
+          "questions": [
+            {
+              "id": "l-q14",
+              "groupId": "grp-d3-sa",
+              "type": "SHORT_ANSWER",
+              "order": 1,
+              "prompt": "What time does the library close on weekdays?",
+              "config": {
+                "maxWords": 3
+              },
+              "correctAnswer": {
+                "1": [
+                  "10pm",
+                  "10 pm",
+                  "ten pm"
+                ]
+              },
+              "displayNumbers": [
+                15
+              ]
+            },
+            {
+              "id": "l-q15",
+              "groupId": "grp-d3-sa",
+              "type": "SHORT_ANSWER",
+              "order": 2,
+              "prompt": "Approximately how many volumes does the library hold?",
+              "config": {
+                "maxWords": 3
+              },
+              "correctAnswer": {
+                "1": [
+                  "200,000",
+                  "around 200,000"
+                ]
+              },
+              "displayNumbers": [
+                16
+              ]
+            },
+            {
+              "id": "l-q16",
+              "groupId": "grp-d3-sa",
+              "type": "SHORT_ANSWER",
+              "order": 3,
+              "prompt": "What must students show to enter the reading room?",
+              "config": {
+                "maxWords": 3
+              },
+              "correctAnswer": {
+                "1": [
+                  "student ID card",
+                  "ID card"
+                ]
+              },
+              "displayNumbers": [
+                17
+              ]
+            }
+          ]
+        },
+        {
+          "id": "grp-d4-table",
+          "audioTrackId": "aud-demo-3",
+          "order": 1,
+          "instructions": "Complete the table below. Write ONE WORD AND/OR A NUMBER for each answer.",
+          "layout": {
+            "kind": "table",
+            "headers": [
+              "Workshop",
+              "Day",
+              "Time",
+              "Fee"
+            ],
+            "rows": [
+              [
+                [
+                  {
+                    "text": "Pottery"
+                  }
+                ],
+                [
+                  {
+                    "blank": "l-q17"
+                  }
+                ],
+                [
+                  {
+                    "text": "6pm"
+                  }
+                ],
+                [
+                  {
+                    "text": "£"
+                  },
+                  {
+                    "blank": "l-q18"
+                  }
+                ]
+              ],
+              [
+                [
+                  {
+                    "blank": "l-q19"
+                  }
+                ],
+                [
+                  {
+                    "text": "Thursday"
+                  }
+                ],
+                [
+                  {
+                    "text": "7pm"
+                  }
+                ],
+                [
+                  {
+                    "text": "Free"
+                  }
+                ]
+              ],
+              [
+                [
+                  {
+                    "text": "Photography"
+                  }
+                ],
+                [
+                  {
+                    "text": "Saturday"
+                  }
+                ],
+                [
+                  {
+                    "blank": "l-q20"
+                  }
+                ],
+                [
+                  {
+                    "text": "£10"
+                  }
+                ]
+              ]
+            ]
+          },
+          "questions": [
+            {
+              "id": "l-q17",
+              "groupId": "grp-d4-table",
+              "type": "TABLE_COMPLETION",
+              "order": 1,
+              "prompt": "Day of the pottery workshop",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 1
+              },
+              "correctAnswer": {
+                "1": [
+                  "Tuesday"
+                ]
+              },
+              "displayNumbers": [
+                18
+              ]
+            },
+            {
+              "id": "l-q18",
+              "groupId": "grp-d4-table",
+              "type": "TABLE_COMPLETION",
+              "order": 2,
+              "prompt": "Fee for the pottery workshop",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 1
+              },
+              "correctAnswer": {
+                "1": [
+                  "12"
+                ]
+              },
+              "displayNumbers": [
+                19
+              ]
+            },
+            {
+              "id": "l-q19",
+              "groupId": "grp-d4-table",
+              "type": "TABLE_COMPLETION",
+              "order": 3,
+              "prompt": "Name of the Thursday workshop",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 1
+              },
+              "correctAnswer": {
+                "1": [
+                  "Drama"
+                ]
+              },
+              "displayNumbers": [
+                20
+              ]
+            },
+            {
+              "id": "l-q20",
+              "groupId": "grp-d4-table",
+              "type": "TABLE_COMPLETION",
+              "order": 4,
+              "prompt": "Time of the Saturday photography workshop",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 1
+              },
+              "correctAnswer": {
+                "1": [
+                  "10am",
+                  "10 am"
+                ]
+              },
+              "displayNumbers": [
+                21
+              ]
+            }
+          ]
+        },
+        {
+          "id": "grp-d5-flow",
+          "audioTrackId": "aud-demo-3",
+          "order": 2,
+          "instructions": "Complete the flow-chart below. Write NO MORE THAN TWO WORDS for each answer.",
+          "layout": {
+            "kind": "flowchart",
+            "steps": [
+              [
+                {
+                  "text": "Student submits application form"
+                }
+              ],
+              [
+                {
+                  "text": "Application reviewed by "
+                },
+                {
+                  "blank": "l-q21"
+                }
+              ],
+              [
+                {
+                  "text": "Candidate invited to "
+                },
+                {
+                  "blank": "l-q22"
+                }
+              ],
+              [
+                {
+                  "text": "Successful candidates receive "
+                },
+                {
+                  "blank": "l-q23"
+                },
+                {
+                  "text": " within {{24}} days"
+                }
+              ]
+            ]
+          },
+          "questions": [
+            {
+              "id": "l-q21",
+              "groupId": "grp-d5-flow",
+              "type": "FLOW_CHART_COMPLETION",
+              "order": 1,
+              "prompt": "Who reviews the application",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "admissions committee",
+                  "the committee"
+                ]
+              },
+              "displayNumbers": [
+                22
+              ]
+            },
+            {
+              "id": "l-q22",
+              "groupId": "grp-d5-flow",
+              "type": "FLOW_CHART_COMPLETION",
+              "order": 2,
+              "prompt": "What successful applicants are invited to",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "an interview"
+                ]
+              },
+              "displayNumbers": [
+                23
+              ]
+            },
+            {
+              "id": "l-q23",
+              "groupId": "grp-d5-flow",
+              "type": "FLOW_CHART_COMPLETION",
+              "order": 3,
+              "prompt": "What successful candidates receive",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "an offer letter",
+                  "offer letter"
+                ]
+              },
+              "displayNumbers": [
+                24
+              ]
+            },
+            {
+              "id": "l-q24",
+              "groupId": "grp-d5-flow",
+              "type": "FLOW_CHART_COMPLETION",
+              "order": 4,
+              "prompt": "Within how many days",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 1
+              },
+              "correctAnswer": {
+                "1": [
+                  "14",
+                  "fourteen"
+                ]
+              },
+              "displayNumbers": [
+                25
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section": "READING",
+      "passages": [
+        {
+          "id": "pas-1",
+          "title": "The Evolution of Public Libraries",
+          "content": "A. Long before the printing press existed, collections of clay tablets and scrolls were gathered in temples and palaces, tended by scribes who copied texts by hand. Access was usually restricted to priests, officials, or scholars connected to the ruling class.\n\nB. The invention of movable type in the fifteenth century did not immediately democratise reading. Books remained expensive, and private collections were still the preserve of wealthy individuals and religious institutions rather than the wider population.\n\nC. It was not until the eighteenth century that subscription libraries began to appear in growing numbers, allowing members who paid an annual fee to borrow volumes that none of them could have afforded individually.\n\nD. The nineteenth century saw a decisive shift with the passing of laws in several countries that permitted local authorities to fund libraries through taxation, making borrowing free at the point of use for the first time.\n\nE. Industrial philanthropists became major sponsors of this movement, funding thousands of new buildings on the condition that local governments committed to staffing and maintaining them afterwards.\n\nF. Twentieth-century libraries expanded their remit well beyond books, introducing music collections, meeting rooms, and eventually computer terminals as public expectations of what a library should offer continued to evolve.\n\nG. The arrival of the internet prompted some commentators to predict the decline of physical libraries altogether, yet visitor numbers in many regions have remained stable, suggesting the buildings serve social purposes beyond simple information access.\n\nH. Contemporary library design increasingly favours open, flexible spaces that can host events and community activities, reflecting a shift in identity from quiet reading rooms toward multi-purpose civic hubs."
+        },
+        {
+          "id": "pas-2",
+          "title": "Rethinking Urban Transport",
+          "content": "Congestion in major cities has pushed planners to reconsider how people and goods move through urban environments. One widely discussed approach involves dedicating road space exclusively to buses, allowing them to bypass queues of private vehicles entirely. Early adopters of this model reported significant reductions in average commute times, though the approach requires substantial political will, since it typically involves removing lanes previously available to car drivers.\n\nA second strategy centres on cycling infrastructure. Cities that have invested heavily in protected cycle lanes, separated physically from motor traffic rather than marked only by paint, have generally seen the steepest rises in cycling uptake. Where lanes are merely painted, many potential cyclists report feeling too unsafe to switch from cars or public transport.\n\nA third and more recent development is the micro-mobility sector, encompassing rented electric scooters and bicycles typically unlocked via a smartphone app. While uptake has been rapid in many cities, regulators have struggled to agree on rules covering speed limits, parking, and where such vehicles may legally be ridden.\n\nFinally, some cities have experimented with congestion charging, levying a fee on vehicles entering designated zones during peak hours. Revenue raised is often reinvested directly into public transport upgrades, creating a funding loop that supporters argue accelerates the shift away from private car dependency, even if the initial charge proves unpopular with drivers."
+        },
+        {
+          "id": "pas-3",
+          "title": "Storing Renewable Energy",
+          "content": "A. As renewable electricity generation has expanded, the intermittency of sources such as wind and solar has become a central engineering challenge, prompting rapid investment in storage technologies capable of smoothing supply across hours or even days.\n\nB. Lithium-ion batteries remain the dominant storage technology deployed at grid scale today, largely because manufacturing costs have fallen sharply over the past decade, driven in large part by demand from the electric vehicle industry.\n\nC. Pumped hydro storage, which moves water between two reservoirs at different elevations, still accounts for the majority of installed storage capacity worldwide, despite requiring specific geography that limits where new sites can be built.\n\nD. Compressed air storage offers an alternative for regions lacking suitable hydro sites, storing energy by pumping air into underground caverns and later releasing it to drive turbines, though round-trip efficiency remains lower than for batteries.\n\nE. Emerging flow battery designs separate energy capacity from power output by storing charge in external liquid tanks, a configuration that some engineers argue suits long overnight storage better than conventional lithium-ion systems.\n\nF. Hydrogen produced via electrolysis during periods of surplus renewable generation is increasingly discussed as a storage medium for the electricity sector, though its overall efficiency is currently undermined by losses at both the production and reconversion stages.\n\nG. Regardless of which technology ultimately dominates, most analysts agree that a mix of storage durations, from seconds-scale batteries to multi-day chemical storage, will be required to fully accommodate a grid reliant on weather-dependent generation."
+        }
+      ],
+      "groups": [
+        {
+          "id": "grp-r1-a",
+          "passageId": "pas-1",
+          "order": 1,
+          "instructions": "Do the following statements agree with the information given in the passage? Write TRUE, FALSE, or NOT GIVEN.",
+          "questions": [
+            {
+              "id": "r-q1",
+              "groupId": "grp-r1-a",
+              "type": "TRUE_FALSE_NOT_GIVEN",
+              "order": 1,
+              "displayNumber": 1,
+              "prompt": "Access to early clay-tablet collections was open to the general public.",
+              "config": {},
+              "correctAnswer": {
+                "correct": "FALSE"
+              }
+            },
+            {
+              "id": "r-q2",
+              "groupId": "grp-r1-a",
+              "type": "TRUE_FALSE_NOT_GIVEN",
+              "order": 2,
+              "displayNumber": 2,
+              "prompt": "The printing press immediately made books affordable for most people.",
+              "config": {},
+              "correctAnswer": {
+                "correct": "FALSE"
+              }
+            },
+            {
+              "id": "r-q3",
+              "groupId": "grp-r1-a",
+              "type": "TRUE_FALSE_NOT_GIVEN",
+              "order": 3,
+              "displayNumber": 3,
+              "prompt": "Subscription library members paid a fee to borrow books.",
+              "config": {},
+              "correctAnswer": {
+                "correct": "TRUE"
+              }
+            },
+            {
+              "id": "r-q4",
+              "groupId": "grp-r1-a",
+              "type": "TRUE_FALSE_NOT_GIVEN",
+              "order": 4,
+              "displayNumber": 4,
+              "prompt": "Industrial philanthropists required governments to fund staffing of new libraries.",
+              "config": {},
+              "correctAnswer": {
+                "correct": "TRUE"
+              }
+            },
+            {
+              "id": "r-q5",
+              "groupId": "grp-r1-a",
+              "type": "TRUE_FALSE_NOT_GIVEN",
+              "order": 5,
+              "displayNumber": 5,
+              "prompt": "Visitor numbers at libraries have fallen sharply since the internet became widespread.",
+              "config": {},
+              "correctAnswer": {
+                "correct": "FALSE"
+              }
+            }
+          ]
+        },
+        {
+          "id": "grp-r1-b",
+          "passageId": "pas-1",
+          "order": 2,
+          "instructions": "The passage has eight paragraphs, A-H. Which paragraph contains the following information? Choose the correct letter, A-H.",
+          "questions": [
+            {
+              "id": "r-q6",
+              "groupId": "grp-r1-b",
+              "type": "MATCHING_HEADINGS",
+              "order": 1,
+              "displayNumber": 6,
+              "prompt": "a description of libraries funded through local taxation",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G",
+                  "H"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "D"
+              }
+            },
+            {
+              "id": "r-q7",
+              "groupId": "grp-r1-b",
+              "type": "MATCHING_HEADINGS",
+              "order": 2,
+              "displayNumber": 7,
+              "prompt": "a prediction about libraries that was not borne out by later evidence",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G",
+                  "H"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "G"
+              }
+            },
+            {
+              "id": "r-q8",
+              "groupId": "grp-r1-b",
+              "type": "MATCHING_HEADINGS",
+              "order": 3,
+              "displayNumber": 8,
+              "prompt": "a change in the physical layout of modern library buildings",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G",
+                  "H"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "H"
+              }
+            },
+            {
+              "id": "r-q9",
+              "groupId": "grp-r1-b",
+              "type": "MATCHING_HEADINGS",
+              "order": 4,
+              "displayNumber": 9,
+              "prompt": "collections controlled by religious or governmental figures",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G",
+                  "H"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "A"
+              }
+            },
+            {
+              "id": "r-q10",
+              "groupId": "grp-r1-b",
+              "type": "MATCHING_HEADINGS",
+              "order": 5,
+              "displayNumber": 10,
+              "prompt": "an expansion of library services beyond printed material",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G",
+                  "H"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "F"
+              }
+            },
+            {
+              "id": "r-q11",
+              "groupId": "grp-r1-b",
+              "type": "MATCHING_HEADINGS",
+              "order": 6,
+              "displayNumber": 11,
+              "prompt": "wealthy individuals remaining the main owners of book collections",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G",
+                  "H"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "B"
+              }
+            },
+            {
+              "id": "r-q12",
+              "groupId": "grp-r1-b",
+              "type": "MATCHING_HEADINGS",
+              "order": 7,
+              "displayNumber": 12,
+              "prompt": "readers pooling money to share the cost of books",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G",
+                  "H"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "C"
+              }
+            },
+            {
+              "id": "r-q13",
+              "groupId": "grp-r1-b",
+              "type": "MATCHING_HEADINGS",
+              "order": 8,
+              "displayNumber": 13,
+              "prompt": "philanthropic funding tied to a condition placed on local government",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G",
+                  "H"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "E"
+              }
+            }
+          ]
+        },
+        {
+          "id": "grp-r2-a",
+          "passageId": "pas-2",
+          "order": 1,
+          "instructions": "Choose the correct letter, A, B, C or D.",
+          "questions": [
+            {
+              "id": "r-q14",
+              "groupId": "grp-r2-a",
+              "type": "MULTIPLE_CHOICE_SINGLE",
+              "order": 1,
+              "displayNumber": 14,
+              "prompt": "Dedicated bus lanes require significant political will mainly because they",
+              "config": {
+                "options": [
+                  "A. cost more than other transport upgrades",
+                  "B. take road space away from private cars",
+                  "C. are unpopular with bus operators",
+                  "D. slow down emergency vehicles"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "B"
+              }
+            },
+            {
+              "id": "r-q15",
+              "groupId": "grp-r2-a",
+              "type": "MULTIPLE_CHOICE_SINGLE",
+              "order": 2,
+              "displayNumber": 15,
+              "prompt": "According to the passage, cycling uptake rises most where",
+              "config": {
+                "options": [
+                  "A. helmets are made compulsory",
+                  "B. lanes are marked only with paint",
+                  "C. lanes are physically separated from traffic",
+                  "D. bicycles are provided free of charge"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "C"
+              }
+            },
+            {
+              "id": "r-q16",
+              "groupId": "grp-r2-a",
+              "type": "MULTIPLE_CHOICE_SINGLE",
+              "order": 3,
+              "displayNumber": 16,
+              "prompt": "Micro-mobility services are typically accessed through",
+              "config": {
+                "options": [
+                  "A. a subscription library",
+                  "B. a smartphone app",
+                  "C. a council office",
+                  "D. a paper permit"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "B"
+              }
+            },
+            {
+              "id": "r-q17",
+              "groupId": "grp-r2-a",
+              "type": "MULTIPLE_CHOICE_SINGLE",
+              "order": 4,
+              "displayNumber": 17,
+              "prompt": "A key difficulty regulators face with micro-mobility is",
+              "config": {
+                "options": [
+                  "A. low demand from users",
+                  "B. agreeing on rules for speed and parking",
+                  "C. high manufacturing costs",
+                  "D. a shortage of electric scooters"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "B"
+              }
+            },
+            {
+              "id": "r-q18",
+              "groupId": "grp-r2-a",
+              "type": "MULTIPLE_CHOICE_SINGLE",
+              "order": 5,
+              "displayNumber": 18,
+              "prompt": "Congestion charge revenue is often used to",
+              "config": {
+                "options": [
+                  "A. reduce local taxes",
+                  "B. fund public transport improvements",
+                  "C. subsidise private car ownership",
+                  "D. pay for road widening"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "B"
+              }
+            },
+            {
+              "id": "r-q19",
+              "groupId": "grp-r2-a",
+              "type": "MULTIPLE_CHOICE_SINGLE",
+              "order": 6,
+              "displayNumber": 19,
+              "prompt": "The passage suggests congestion charging is",
+              "config": {
+                "options": [
+                  "A. popular with all city residents",
+                  "B. unpopular with drivers despite its benefits",
+                  "C. less effective than cycling lanes",
+                  "D. no longer used in most cities"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "B"
+              }
+            }
+          ]
+        },
+        {
+          "id": "grp-r2-b",
+          "passageId": "pas-2",
+          "order": 2,
+          "instructions": "Complete the summary below. Choose NO MORE THAN TWO WORDS from the passage for each answer.",
+          "questions": [
+            {
+              "id": "r-q20",
+              "groupId": "grp-r2-b",
+              "type": "SUMMARY_COMPLETION",
+              "order": 1,
+              "displayNumber": 20,
+              "prompt": "Bus lanes allow buses to bypass {{1}} of private vehicles.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "queues"
+                ]
+              }
+            },
+            {
+              "id": "r-q21",
+              "groupId": "grp-r2-b",
+              "type": "SUMMARY_COMPLETION",
+              "order": 2,
+              "displayNumber": 21,
+              "prompt": "Painted cycle lanes leave many potential cyclists feeling {{1}}.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "unsafe"
+                ]
+              }
+            },
+            {
+              "id": "r-q22",
+              "groupId": "grp-r2-b",
+              "type": "SUMMARY_COMPLETION",
+              "order": 3,
+              "displayNumber": 22,
+              "prompt": "Rented electric scooters belong to what the passage calls the {{1}} sector.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "micro-mobility"
+                ]
+              }
+            },
+            {
+              "id": "r-q23",
+              "groupId": "grp-r2-b",
+              "type": "SUMMARY_COMPLETION",
+              "order": 4,
+              "displayNumber": 23,
+              "prompt": "Congestion charging applies to vehicles entering a zone during {{1}} hours.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "peak"
+                ]
+              }
+            },
+            {
+              "id": "r-q24",
+              "groupId": "grp-r2-b",
+              "type": "SUMMARY_COMPLETION",
+              "order": 5,
+              "displayNumber": 24,
+              "prompt": "Revenue from congestion charges is reinvested into {{1}} upgrades.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "public transport"
+                ]
+              }
+            },
+            {
+              "id": "r-q25",
+              "groupId": "grp-r2-b",
+              "type": "SUMMARY_COMPLETION",
+              "order": 6,
+              "displayNumber": 25,
+              "prompt": "Supporters argue this creates a funding {{1}} that reduces car dependency.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "loop"
+                ]
+              }
+            },
+            {
+              "id": "r-q26",
+              "groupId": "grp-r2-b",
+              "type": "SUMMARY_COMPLETION",
+              "order": 7,
+              "displayNumber": 26,
+              "prompt": "Even so, the initial charge often proves {{1}} with drivers.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "unpopular"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "grp-r3-a",
+          "passageId": "pas-3",
+          "order": 1,
+          "instructions": "The passage has seven paragraphs, A-G. Which paragraph contains the following information? Choose the correct letter, A-G.",
+          "questions": [
+            {
+              "id": "r-q27",
+              "groupId": "grp-r3-a",
+              "type": "MATCHING_INFORMATION",
+              "order": 1,
+              "displayNumber": 27,
+              "prompt": "a storage method whose location depends heavily on geography",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "C"
+              }
+            },
+            {
+              "id": "r-q28",
+              "groupId": "grp-r3-a",
+              "type": "MATCHING_INFORMATION",
+              "order": 2,
+              "displayNumber": 28,
+              "prompt": "a technology that has become cheaper due to a related industry",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "B"
+              }
+            },
+            {
+              "id": "r-q29",
+              "groupId": "grp-r3-a",
+              "type": "MATCHING_INFORMATION",
+              "order": 3,
+              "displayNumber": 29,
+              "prompt": "a general statement about why storage has become an important challenge",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "A"
+              }
+            },
+            {
+              "id": "r-q30",
+              "groupId": "grp-r3-a",
+              "type": "MATCHING_INFORMATION",
+              "order": 4,
+              "displayNumber": 30,
+              "prompt": "a technology suited to storing energy overnight",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "E"
+              }
+            },
+            {
+              "id": "r-q31",
+              "groupId": "grp-r3-a",
+              "type": "MATCHING_INFORMATION",
+              "order": 5,
+              "displayNumber": 31,
+              "prompt": "a method that loses efficiency at two separate stages",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "F"
+              }
+            },
+            {
+              "id": "r-q32",
+              "groupId": "grp-r3-a",
+              "type": "MATCHING_INFORMATION",
+              "order": 6,
+              "displayNumber": 32,
+              "prompt": "a prediction that several technologies will be needed together",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "G"
+              }
+            },
+            {
+              "id": "r-q33",
+              "groupId": "grp-r3-a",
+              "type": "MATCHING_INFORMATION",
+              "order": 7,
+              "displayNumber": 33,
+              "prompt": "an alternative for regions without suitable hydro sites",
+              "config": {
+                "choices": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G"
+                ]
+              },
+              "correctAnswer": {
+                "correct": "D"
+              }
+            }
+          ]
+        },
+        {
+          "id": "grp-r3-b",
+          "passageId": "pas-3",
+          "order": 2,
+          "instructions": "Complete the sentences below. Choose NO MORE THAN TWO WORDS from the passage for each answer.",
+          "questions": [
+            {
+              "id": "r-q34",
+              "groupId": "grp-r3-b",
+              "type": "SENTENCE_COMPLETION",
+              "order": 1,
+              "displayNumber": 34,
+              "prompt": "Wind and solar power are considered problematic mainly because of their {{1}}.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "intermittency"
+                ]
+              }
+            },
+            {
+              "id": "r-q35",
+              "groupId": "grp-r3-b",
+              "type": "SENTENCE_COMPLETION",
+              "order": 2,
+              "displayNumber": 35,
+              "prompt": "Pumped hydro moves water between two reservoirs at different {{1}}.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "elevations"
+                ]
+              }
+            },
+            {
+              "id": "r-q36",
+              "groupId": "grp-r3-b",
+              "type": "SENTENCE_COMPLETION",
+              "order": 3,
+              "displayNumber": 36,
+              "prompt": "Compressed air is stored by pumping it into underground {{1}}.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "caverns"
+                ]
+              }
+            },
+            {
+              "id": "r-q37",
+              "groupId": "grp-r3-b",
+              "type": "SENTENCE_COMPLETION",
+              "order": 4,
+              "displayNumber": 37,
+              "prompt": "Flow batteries store charge in external liquid {{1}}.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "tanks"
+                ]
+              }
+            },
+            {
+              "id": "r-q38",
+              "groupId": "grp-r3-b",
+              "type": "SENTENCE_COMPLETION",
+              "order": 5,
+              "displayNumber": 38,
+              "prompt": "Hydrogen for storage is produced through {{1}} during periods of surplus generation.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "electrolysis"
+                ]
+              }
+            },
+            {
+              "id": "r-q39",
+              "groupId": "grp-r3-b",
+              "type": "SENTENCE_COMPLETION",
+              "order": 6,
+              "displayNumber": 39,
+              "prompt": "Hydrogen's overall efficiency is undermined by losses at production and {{1}} stages.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "reconversion"
+                ]
+              }
+            },
+            {
+              "id": "r-q40",
+              "groupId": "grp-r3-b",
+              "type": "SENTENCE_COMPLETION",
+              "order": 7,
+              "displayNumber": 40,
+              "prompt": "Most analysts agree a mix of storage {{1}} will be required.",
+              "config": {
+                "blanks": 1,
+                "maxWordsPerBlank": 2
+              },
+              "correctAnswer": {
+                "1": [
+                  "durations"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section": "WRITING",
+      "groups": [
+        {
+          "id": "grp-w1",
+          "order": 1,
+          "instructions": "You should spend about 20 minutes on this task. Write at least 150 words.",
+          "questions": [
+            {
+              "id": "w-q1",
+              "groupId": "grp-w1",
+              "type": "WRITING_TASK1",
+              "order": 1,
+              "displayNumber": 1,
+              "prompt": "The chart below shows the percentage of households using three different heating methods in a fictional city between 2000 and 2020. Summarise the information by selecting and reporting the main features, and make comparisons where relevant.",
+              "config": {
+                "minWords": 150,
+                "timeMinutes": 20,
+                "chartRef": "chart-w1-heating-methods"
+              },
+              "correctAnswer": null
+            }
+          ]
+        },
+        {
+          "id": "grp-w2",
+          "order": 2,
+          "instructions": "You should spend about 40 minutes on this task. Write at least 250 words.",
+          "questions": [
+            {
+              "id": "w-q2",
+              "groupId": "grp-w2",
+              "type": "WRITING_TASK2",
+              "order": 1,
+              "displayNumber": 2,
+              "prompt": "Some people believe that university education should be free for all students, while others think students should pay for at least part of the cost. Discuss both views and give your own opinion.",
+              "config": {
+                "minWords": 250,
+                "timeMinutes": 40
+              },
+              "correctAnswer": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "status": "READY",
+  "updatedAt": "2026-08-14T00:00:00Z"
+}

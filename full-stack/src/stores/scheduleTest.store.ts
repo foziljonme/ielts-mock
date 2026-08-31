@@ -9,11 +9,11 @@ type ScheduleTestStore = {
   isLoading: boolean
   availableTests: IAvailableTest[]
   exams: IExam[]
-  totalSessions: number
+  totalExams: number
 
   fetchSessions: () => Promise<void>
   fetchAvailableTests: () => Promise<void>
-  createSession: (exam: IExamInput) => Promise<void>
+  scheduleExam: (exam: IExamInput) => Promise<void>
   deleteSession: (sessionId: string) => Promise<void>
   updateLocalSession: (sessionId: string, exam: IExam) => void
 }
@@ -22,7 +22,7 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
   isLoading: false,
   availableTests: [],
   exams: [],
-  totalSessions: 0,
+  totalExams: 0,
   updateLocalSession: (sessionId: string, exam: IExam) => {
     set({
       exams: get().exams.map(s => (s.id === sessionId ? { ...s, ...exam } : s)),
@@ -33,7 +33,7 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
       const response = await httpClient.get('/exams')
       set({
         exams: response.results,
-        totalSessions: response.pagination.totalItems,
+        totalExams: response.pagination.totalItems,
       })
     } catch (error) {
       toastError({ title: 'Failed to fetch exams', error })
@@ -50,13 +50,13 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
       set({ isLoading: false })
     }
   },
-  createSession: async (exam: IExamInput) => {
+  scheduleExam: async (exam: IExamInput) => {
     set({ isLoading: true })
     try {
       const response = await httpClient.post('/exams', exam)
       set(state => ({
-        sessions: [response, ...state.exams],
-        totalSessions: state.totalSessions + 1,
+        exams: [response, ...state.exams],
+        totalExams: state.totalExams + 1,
       }))
       useTenantStore.getState().appendSeats(response.seats.length)
     } catch (error) {
@@ -72,8 +72,8 @@ export const useScheduleTestStore = create<ScheduleTestStore>()((set, get) => ({
       await httpClient.delete(`/exams/${sessionId}`)
 
       set(state => ({
-        sessions: state.exams.filter(exam => exam.id !== sessionId),
-        totalSessions: state.totalSessions - 1,
+        exams: state.exams.filter(exam => exam.id !== sessionId),
+        totalExams: state.totalExams - 1,
       }))
       useTenantStore.getState().removeSeats(exam?.seats.length || 0)
     } catch (error) {

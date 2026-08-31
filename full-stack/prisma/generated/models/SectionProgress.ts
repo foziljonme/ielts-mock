@@ -37,27 +37,27 @@ export type SectionProgressSumAggregateOutputType = {
 export type SectionProgressMinAggregateOutputType = {
   id: string | null
   seatId: string | null
-  section: $Enums.TestSection | null
-  status: $Enums.ExamSeatStatus | null
+  status: $Enums.ProgressStatus | null
   startedAt: Date | null
+  submittedAt: Date | null
   remainingSec: number | null
 }
 
 export type SectionProgressMaxAggregateOutputType = {
   id: string | null
   seatId: string | null
-  section: $Enums.TestSection | null
-  status: $Enums.ExamSeatStatus | null
+  status: $Enums.ProgressStatus | null
   startedAt: Date | null
+  submittedAt: Date | null
   remainingSec: number | null
 }
 
 export type SectionProgressCountAggregateOutputType = {
   id: number
   seatId: number
-  section: number
   status: number
   startedAt: number
+  submittedAt: number
   remainingSec: number
   _all: number
 }
@@ -74,27 +74,27 @@ export type SectionProgressSumAggregateInputType = {
 export type SectionProgressMinAggregateInputType = {
   id?: true
   seatId?: true
-  section?: true
   status?: true
   startedAt?: true
+  submittedAt?: true
   remainingSec?: true
 }
 
 export type SectionProgressMaxAggregateInputType = {
   id?: true
   seatId?: true
-  section?: true
   status?: true
   startedAt?: true
+  submittedAt?: true
   remainingSec?: true
 }
 
 export type SectionProgressCountAggregateInputType = {
   id?: true
   seatId?: true
-  section?: true
   status?: true
   startedAt?: true
+  submittedAt?: true
   remainingSec?: true
   _all?: true
 }
@@ -188,9 +188,9 @@ export type SectionProgressGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 export type SectionProgressGroupByOutputType = {
   id: string
   seatId: string
-  section: $Enums.TestSection
-  status: $Enums.ExamSeatStatus
+  status: $Enums.ProgressStatus
   startedAt: Date | null
+  submittedAt: Date | null
   remainingSec: number | null
   _count: SectionProgressCountAggregateOutputType | null
   _avg: SectionProgressAvgAggregateOutputType | null
@@ -220,46 +220,48 @@ export type SectionProgressWhereInput = {
   NOT?: Prisma.SectionProgressWhereInput | Prisma.SectionProgressWhereInput[]
   id?: Prisma.StringFilter<"SectionProgress"> | string
   seatId?: Prisma.StringFilter<"SectionProgress"> | string
-  section?: Prisma.EnumTestSectionFilter<"SectionProgress"> | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFilter<"SectionProgress"> | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFilter<"SectionProgress"> | $Enums.ProgressStatus
   startedAt?: Prisma.DateTimeNullableFilter<"SectionProgress"> | Date | string | null
+  submittedAt?: Prisma.DateTimeNullableFilter<"SectionProgress"> | Date | string | null
   remainingSec?: Prisma.IntNullableFilter<"SectionProgress"> | number | null
   seat?: Prisma.XOR<Prisma.ExamSeatScalarRelationFilter, Prisma.ExamSeatWhereInput>
-  questions?: Prisma.QuestionResponseListRelationFilter
+  responses?: Prisma.QuestionResponseListRelationFilter
+  highlights?: Prisma.HighlightListRelationFilter
 }
 
 export type SectionProgressOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   seatId?: Prisma.SortOrder
-  section?: Prisma.SortOrder
   status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   remainingSec?: Prisma.SortOrderInput | Prisma.SortOrder
   seat?: Prisma.ExamSeatOrderByWithRelationInput
-  questions?: Prisma.QuestionResponseOrderByRelationAggregateInput
+  responses?: Prisma.QuestionResponseOrderByRelationAggregateInput
+  highlights?: Prisma.HighlightOrderByRelationAggregateInput
 }
 
 export type SectionProgressWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  seatId_section?: Prisma.SectionProgressSeatIdSectionCompoundUniqueInput
   AND?: Prisma.SectionProgressWhereInput | Prisma.SectionProgressWhereInput[]
   OR?: Prisma.SectionProgressWhereInput[]
   NOT?: Prisma.SectionProgressWhereInput | Prisma.SectionProgressWhereInput[]
   seatId?: Prisma.StringFilter<"SectionProgress"> | string
-  section?: Prisma.EnumTestSectionFilter<"SectionProgress"> | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFilter<"SectionProgress"> | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFilter<"SectionProgress"> | $Enums.ProgressStatus
   startedAt?: Prisma.DateTimeNullableFilter<"SectionProgress"> | Date | string | null
+  submittedAt?: Prisma.DateTimeNullableFilter<"SectionProgress"> | Date | string | null
   remainingSec?: Prisma.IntNullableFilter<"SectionProgress"> | number | null
   seat?: Prisma.XOR<Prisma.ExamSeatScalarRelationFilter, Prisma.ExamSeatWhereInput>
-  questions?: Prisma.QuestionResponseListRelationFilter
-}, "id" | "seatId_section">
+  responses?: Prisma.QuestionResponseListRelationFilter
+  highlights?: Prisma.HighlightListRelationFilter
+}, "id">
 
 export type SectionProgressOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   seatId?: Prisma.SortOrder
-  section?: Prisma.SortOrder
   status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   remainingSec?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SectionProgressCountOrderByAggregateInput
   _avg?: Prisma.SectionProgressAvgOrderByAggregateInput
@@ -274,75 +276,79 @@ export type SectionProgressScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SectionProgressScalarWhereWithAggregatesInput | Prisma.SectionProgressScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"SectionProgress"> | string
   seatId?: Prisma.StringWithAggregatesFilter<"SectionProgress"> | string
-  section?: Prisma.EnumTestSectionWithAggregatesFilter<"SectionProgress"> | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusWithAggregatesFilter<"SectionProgress"> | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusWithAggregatesFilter<"SectionProgress"> | $Enums.ProgressStatus
   startedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SectionProgress"> | Date | string | null
+  submittedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SectionProgress"> | Date | string | null
   remainingSec?: Prisma.IntNullableWithAggregatesFilter<"SectionProgress"> | number | null
 }
 
 export type SectionProgressCreateInput = {
   id?: string
-  section: $Enums.TestSection
-  status?: $Enums.ExamSeatStatus
+  status?: $Enums.ProgressStatus
   startedAt?: Date | string | null
+  submittedAt?: Date | string | null
   remainingSec?: number | null
   seat: Prisma.ExamSeatCreateNestedOneWithoutSectionsInput
-  questions?: Prisma.QuestionResponseCreateNestedManyWithoutSectionInput
+  responses?: Prisma.QuestionResponseCreateNestedManyWithoutSectionProgressInput
+  highlights?: Prisma.HighlightCreateNestedManyWithoutSectionProgressInput
 }
 
 export type SectionProgressUncheckedCreateInput = {
   id?: string
   seatId: string
-  section: $Enums.TestSection
-  status?: $Enums.ExamSeatStatus
+  status?: $Enums.ProgressStatus
   startedAt?: Date | string | null
+  submittedAt?: Date | string | null
   remainingSec?: number | null
-  questions?: Prisma.QuestionResponseUncheckedCreateNestedManyWithoutSectionInput
+  responses?: Prisma.QuestionResponseUncheckedCreateNestedManyWithoutSectionProgressInput
+  highlights?: Prisma.HighlightUncheckedCreateNestedManyWithoutSectionProgressInput
 }
 
 export type SectionProgressUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.EnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFieldUpdateOperationsInput | $Enums.ProgressStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seat?: Prisma.ExamSeatUpdateOneRequiredWithoutSectionsNestedInput
-  questions?: Prisma.QuestionResponseUpdateManyWithoutSectionNestedInput
+  responses?: Prisma.QuestionResponseUpdateManyWithoutSectionProgressNestedInput
+  highlights?: Prisma.HighlightUpdateManyWithoutSectionProgressNestedInput
 }
 
 export type SectionProgressUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   seatId?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.EnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFieldUpdateOperationsInput | $Enums.ProgressStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  questions?: Prisma.QuestionResponseUncheckedUpdateManyWithoutSectionNestedInput
+  responses?: Prisma.QuestionResponseUncheckedUpdateManyWithoutSectionProgressNestedInput
+  highlights?: Prisma.HighlightUncheckedUpdateManyWithoutSectionProgressNestedInput
 }
 
 export type SectionProgressCreateManyInput = {
   id?: string
   seatId: string
-  section: $Enums.TestSection
-  status?: $Enums.ExamSeatStatus
+  status?: $Enums.ProgressStatus
   startedAt?: Date | string | null
+  submittedAt?: Date | string | null
   remainingSec?: number | null
 }
 
 export type SectionProgressUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.EnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFieldUpdateOperationsInput | $Enums.ProgressStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type SectionProgressUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   seatId?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.EnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFieldUpdateOperationsInput | $Enums.ProgressStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -356,17 +362,12 @@ export type SectionProgressOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type SectionProgressSeatIdSectionCompoundUniqueInput = {
-  seatId: string
-  section: $Enums.TestSection
-}
-
 export type SectionProgressCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   seatId?: Prisma.SortOrder
-  section?: Prisma.SortOrder
   status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
+  submittedAt?: Prisma.SortOrder
   remainingSec?: Prisma.SortOrder
 }
 
@@ -377,18 +378,18 @@ export type SectionProgressAvgOrderByAggregateInput = {
 export type SectionProgressMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   seatId?: Prisma.SortOrder
-  section?: Prisma.SortOrder
   status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
+  submittedAt?: Prisma.SortOrder
   remainingSec?: Prisma.SortOrder
 }
 
 export type SectionProgressMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   seatId?: Prisma.SortOrder
-  section?: Prisma.SortOrder
   status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
+  submittedAt?: Prisma.SortOrder
   remainingSec?: Prisma.SortOrder
 }
 
@@ -443,6 +444,10 @@ export type SectionProgressUncheckedUpdateManyWithoutSeatNestedInput = {
   deleteMany?: Prisma.SectionProgressScalarWhereInput | Prisma.SectionProgressScalarWhereInput[]
 }
 
+export type EnumProgressStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ProgressStatus
+}
+
 export type NullableIntFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
@@ -451,36 +456,52 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type SectionProgressCreateNestedOneWithoutQuestionsInput = {
-  create?: Prisma.XOR<Prisma.SectionProgressCreateWithoutQuestionsInput, Prisma.SectionProgressUncheckedCreateWithoutQuestionsInput>
-  connectOrCreate?: Prisma.SectionProgressCreateOrConnectWithoutQuestionsInput
+export type SectionProgressCreateNestedOneWithoutResponsesInput = {
+  create?: Prisma.XOR<Prisma.SectionProgressCreateWithoutResponsesInput, Prisma.SectionProgressUncheckedCreateWithoutResponsesInput>
+  connectOrCreate?: Prisma.SectionProgressCreateOrConnectWithoutResponsesInput
   connect?: Prisma.SectionProgressWhereUniqueInput
 }
 
-export type SectionProgressUpdateOneRequiredWithoutQuestionsNestedInput = {
-  create?: Prisma.XOR<Prisma.SectionProgressCreateWithoutQuestionsInput, Prisma.SectionProgressUncheckedCreateWithoutQuestionsInput>
-  connectOrCreate?: Prisma.SectionProgressCreateOrConnectWithoutQuestionsInput
-  upsert?: Prisma.SectionProgressUpsertWithoutQuestionsInput
+export type SectionProgressUpdateOneRequiredWithoutResponsesNestedInput = {
+  create?: Prisma.XOR<Prisma.SectionProgressCreateWithoutResponsesInput, Prisma.SectionProgressUncheckedCreateWithoutResponsesInput>
+  connectOrCreate?: Prisma.SectionProgressCreateOrConnectWithoutResponsesInput
+  upsert?: Prisma.SectionProgressUpsertWithoutResponsesInput
   connect?: Prisma.SectionProgressWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SectionProgressUpdateToOneWithWhereWithoutQuestionsInput, Prisma.SectionProgressUpdateWithoutQuestionsInput>, Prisma.SectionProgressUncheckedUpdateWithoutQuestionsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SectionProgressUpdateToOneWithWhereWithoutResponsesInput, Prisma.SectionProgressUpdateWithoutResponsesInput>, Prisma.SectionProgressUncheckedUpdateWithoutResponsesInput>
+}
+
+export type SectionProgressCreateNestedOneWithoutHighlightsInput = {
+  create?: Prisma.XOR<Prisma.SectionProgressCreateWithoutHighlightsInput, Prisma.SectionProgressUncheckedCreateWithoutHighlightsInput>
+  connectOrCreate?: Prisma.SectionProgressCreateOrConnectWithoutHighlightsInput
+  connect?: Prisma.SectionProgressWhereUniqueInput
+}
+
+export type SectionProgressUpdateOneRequiredWithoutHighlightsNestedInput = {
+  create?: Prisma.XOR<Prisma.SectionProgressCreateWithoutHighlightsInput, Prisma.SectionProgressUncheckedCreateWithoutHighlightsInput>
+  connectOrCreate?: Prisma.SectionProgressCreateOrConnectWithoutHighlightsInput
+  upsert?: Prisma.SectionProgressUpsertWithoutHighlightsInput
+  connect?: Prisma.SectionProgressWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SectionProgressUpdateToOneWithWhereWithoutHighlightsInput, Prisma.SectionProgressUpdateWithoutHighlightsInput>, Prisma.SectionProgressUncheckedUpdateWithoutHighlightsInput>
 }
 
 export type SectionProgressCreateWithoutSeatInput = {
   id?: string
-  section: $Enums.TestSection
-  status?: $Enums.ExamSeatStatus
+  status?: $Enums.ProgressStatus
   startedAt?: Date | string | null
+  submittedAt?: Date | string | null
   remainingSec?: number | null
-  questions?: Prisma.QuestionResponseCreateNestedManyWithoutSectionInput
+  responses?: Prisma.QuestionResponseCreateNestedManyWithoutSectionProgressInput
+  highlights?: Prisma.HighlightCreateNestedManyWithoutSectionProgressInput
 }
 
 export type SectionProgressUncheckedCreateWithoutSeatInput = {
   id?: string
-  section: $Enums.TestSection
-  status?: $Enums.ExamSeatStatus
+  status?: $Enums.ProgressStatus
   startedAt?: Date | string | null
+  submittedAt?: Date | string | null
   remainingSec?: number | null
-  questions?: Prisma.QuestionResponseUncheckedCreateNestedManyWithoutSectionInput
+  responses?: Prisma.QuestionResponseUncheckedCreateNestedManyWithoutSectionProgressInput
+  highlights?: Prisma.HighlightUncheckedCreateNestedManyWithoutSectionProgressInput
 }
 
 export type SectionProgressCreateOrConnectWithoutSeatInput = {
@@ -515,95 +536,157 @@ export type SectionProgressScalarWhereInput = {
   NOT?: Prisma.SectionProgressScalarWhereInput | Prisma.SectionProgressScalarWhereInput[]
   id?: Prisma.StringFilter<"SectionProgress"> | string
   seatId?: Prisma.StringFilter<"SectionProgress"> | string
-  section?: Prisma.EnumTestSectionFilter<"SectionProgress"> | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFilter<"SectionProgress"> | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFilter<"SectionProgress"> | $Enums.ProgressStatus
   startedAt?: Prisma.DateTimeNullableFilter<"SectionProgress"> | Date | string | null
+  submittedAt?: Prisma.DateTimeNullableFilter<"SectionProgress"> | Date | string | null
   remainingSec?: Prisma.IntNullableFilter<"SectionProgress"> | number | null
 }
 
-export type SectionProgressCreateWithoutQuestionsInput = {
+export type SectionProgressCreateWithoutResponsesInput = {
   id?: string
-  section: $Enums.TestSection
-  status?: $Enums.ExamSeatStatus
+  status?: $Enums.ProgressStatus
   startedAt?: Date | string | null
+  submittedAt?: Date | string | null
   remainingSec?: number | null
   seat: Prisma.ExamSeatCreateNestedOneWithoutSectionsInput
+  highlights?: Prisma.HighlightCreateNestedManyWithoutSectionProgressInput
 }
 
-export type SectionProgressUncheckedCreateWithoutQuestionsInput = {
+export type SectionProgressUncheckedCreateWithoutResponsesInput = {
   id?: string
   seatId: string
-  section: $Enums.TestSection
-  status?: $Enums.ExamSeatStatus
+  status?: $Enums.ProgressStatus
   startedAt?: Date | string | null
+  submittedAt?: Date | string | null
   remainingSec?: number | null
+  highlights?: Prisma.HighlightUncheckedCreateNestedManyWithoutSectionProgressInput
 }
 
-export type SectionProgressCreateOrConnectWithoutQuestionsInput = {
+export type SectionProgressCreateOrConnectWithoutResponsesInput = {
   where: Prisma.SectionProgressWhereUniqueInput
-  create: Prisma.XOR<Prisma.SectionProgressCreateWithoutQuestionsInput, Prisma.SectionProgressUncheckedCreateWithoutQuestionsInput>
+  create: Prisma.XOR<Prisma.SectionProgressCreateWithoutResponsesInput, Prisma.SectionProgressUncheckedCreateWithoutResponsesInput>
 }
 
-export type SectionProgressUpsertWithoutQuestionsInput = {
-  update: Prisma.XOR<Prisma.SectionProgressUpdateWithoutQuestionsInput, Prisma.SectionProgressUncheckedUpdateWithoutQuestionsInput>
-  create: Prisma.XOR<Prisma.SectionProgressCreateWithoutQuestionsInput, Prisma.SectionProgressUncheckedCreateWithoutQuestionsInput>
+export type SectionProgressUpsertWithoutResponsesInput = {
+  update: Prisma.XOR<Prisma.SectionProgressUpdateWithoutResponsesInput, Prisma.SectionProgressUncheckedUpdateWithoutResponsesInput>
+  create: Prisma.XOR<Prisma.SectionProgressCreateWithoutResponsesInput, Prisma.SectionProgressUncheckedCreateWithoutResponsesInput>
   where?: Prisma.SectionProgressWhereInput
 }
 
-export type SectionProgressUpdateToOneWithWhereWithoutQuestionsInput = {
+export type SectionProgressUpdateToOneWithWhereWithoutResponsesInput = {
   where?: Prisma.SectionProgressWhereInput
-  data: Prisma.XOR<Prisma.SectionProgressUpdateWithoutQuestionsInput, Prisma.SectionProgressUncheckedUpdateWithoutQuestionsInput>
+  data: Prisma.XOR<Prisma.SectionProgressUpdateWithoutResponsesInput, Prisma.SectionProgressUncheckedUpdateWithoutResponsesInput>
 }
 
-export type SectionProgressUpdateWithoutQuestionsInput = {
+export type SectionProgressUpdateWithoutResponsesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.EnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFieldUpdateOperationsInput | $Enums.ProgressStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   seat?: Prisma.ExamSeatUpdateOneRequiredWithoutSectionsNestedInput
+  highlights?: Prisma.HighlightUpdateManyWithoutSectionProgressNestedInput
 }
 
-export type SectionProgressUncheckedUpdateWithoutQuestionsInput = {
+export type SectionProgressUncheckedUpdateWithoutResponsesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   seatId?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.EnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFieldUpdateOperationsInput | $Enums.ProgressStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  highlights?: Prisma.HighlightUncheckedUpdateManyWithoutSectionProgressNestedInput
+}
+
+export type SectionProgressCreateWithoutHighlightsInput = {
+  id?: string
+  status?: $Enums.ProgressStatus
+  startedAt?: Date | string | null
+  submittedAt?: Date | string | null
+  remainingSec?: number | null
+  seat: Prisma.ExamSeatCreateNestedOneWithoutSectionsInput
+  responses?: Prisma.QuestionResponseCreateNestedManyWithoutSectionProgressInput
+}
+
+export type SectionProgressUncheckedCreateWithoutHighlightsInput = {
+  id?: string
+  seatId: string
+  status?: $Enums.ProgressStatus
+  startedAt?: Date | string | null
+  submittedAt?: Date | string | null
+  remainingSec?: number | null
+  responses?: Prisma.QuestionResponseUncheckedCreateNestedManyWithoutSectionProgressInput
+}
+
+export type SectionProgressCreateOrConnectWithoutHighlightsInput = {
+  where: Prisma.SectionProgressWhereUniqueInput
+  create: Prisma.XOR<Prisma.SectionProgressCreateWithoutHighlightsInput, Prisma.SectionProgressUncheckedCreateWithoutHighlightsInput>
+}
+
+export type SectionProgressUpsertWithoutHighlightsInput = {
+  update: Prisma.XOR<Prisma.SectionProgressUpdateWithoutHighlightsInput, Prisma.SectionProgressUncheckedUpdateWithoutHighlightsInput>
+  create: Prisma.XOR<Prisma.SectionProgressCreateWithoutHighlightsInput, Prisma.SectionProgressUncheckedCreateWithoutHighlightsInput>
+  where?: Prisma.SectionProgressWhereInput
+}
+
+export type SectionProgressUpdateToOneWithWhereWithoutHighlightsInput = {
+  where?: Prisma.SectionProgressWhereInput
+  data: Prisma.XOR<Prisma.SectionProgressUpdateWithoutHighlightsInput, Prisma.SectionProgressUncheckedUpdateWithoutHighlightsInput>
+}
+
+export type SectionProgressUpdateWithoutHighlightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumProgressStatusFieldUpdateOperationsInput | $Enums.ProgressStatus
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  remainingSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seat?: Prisma.ExamSeatUpdateOneRequiredWithoutSectionsNestedInput
+  responses?: Prisma.QuestionResponseUpdateManyWithoutSectionProgressNestedInput
+}
+
+export type SectionProgressUncheckedUpdateWithoutHighlightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  seatId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumProgressStatusFieldUpdateOperationsInput | $Enums.ProgressStatus
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  remainingSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  responses?: Prisma.QuestionResponseUncheckedUpdateManyWithoutSectionProgressNestedInput
 }
 
 export type SectionProgressCreateManySeatInput = {
   id?: string
-  section: $Enums.TestSection
-  status?: $Enums.ExamSeatStatus
+  status?: $Enums.ProgressStatus
   startedAt?: Date | string | null
+  submittedAt?: Date | string | null
   remainingSec?: number | null
 }
 
 export type SectionProgressUpdateWithoutSeatInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.EnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFieldUpdateOperationsInput | $Enums.ProgressStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  questions?: Prisma.QuestionResponseUpdateManyWithoutSectionNestedInput
+  responses?: Prisma.QuestionResponseUpdateManyWithoutSectionProgressNestedInput
+  highlights?: Prisma.HighlightUpdateManyWithoutSectionProgressNestedInput
 }
 
 export type SectionProgressUncheckedUpdateWithoutSeatInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.EnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFieldUpdateOperationsInput | $Enums.ProgressStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  questions?: Prisma.QuestionResponseUncheckedUpdateManyWithoutSectionNestedInput
+  responses?: Prisma.QuestionResponseUncheckedUpdateManyWithoutSectionProgressNestedInput
+  highlights?: Prisma.HighlightUncheckedUpdateManyWithoutSectionProgressNestedInput
 }
 
 export type SectionProgressUncheckedUpdateManyWithoutSeatInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.EnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection
-  status?: Prisma.EnumExamSeatStatusFieldUpdateOperationsInput | $Enums.ExamSeatStatus
+  status?: Prisma.EnumProgressStatusFieldUpdateOperationsInput | $Enums.ProgressStatus
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -613,11 +696,13 @@ export type SectionProgressUncheckedUpdateManyWithoutSeatInput = {
  */
 
 export type SectionProgressCountOutputType = {
-  questions: number
+  responses: number
+  highlights: number
 }
 
 export type SectionProgressCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  questions?: boolean | SectionProgressCountOutputTypeCountQuestionsArgs
+  responses?: boolean | SectionProgressCountOutputTypeCountResponsesArgs
+  highlights?: boolean | SectionProgressCountOutputTypeCountHighlightsArgs
 }
 
 /**
@@ -633,29 +718,37 @@ export type SectionProgressCountOutputTypeDefaultArgs<ExtArgs extends runtime.Ty
 /**
  * SectionProgressCountOutputType without action
  */
-export type SectionProgressCountOutputTypeCountQuestionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type SectionProgressCountOutputTypeCountResponsesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.QuestionResponseWhereInput
+}
+
+/**
+ * SectionProgressCountOutputType without action
+ */
+export type SectionProgressCountOutputTypeCountHighlightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HighlightWhereInput
 }
 
 
 export type SectionProgressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   seatId?: boolean
-  section?: boolean
   status?: boolean
   startedAt?: boolean
+  submittedAt?: boolean
   remainingSec?: boolean
   seat?: boolean | Prisma.ExamSeatDefaultArgs<ExtArgs>
-  questions?: boolean | Prisma.SectionProgress$questionsArgs<ExtArgs>
+  responses?: boolean | Prisma.SectionProgress$responsesArgs<ExtArgs>
+  highlights?: boolean | Prisma.SectionProgress$highlightsArgs<ExtArgs>
   _count?: boolean | Prisma.SectionProgressCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sectionProgress"]>
 
 export type SectionProgressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   seatId?: boolean
-  section?: boolean
   status?: boolean
   startedAt?: boolean
+  submittedAt?: boolean
   remainingSec?: boolean
   seat?: boolean | Prisma.ExamSeatDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sectionProgress"]>
@@ -663,9 +756,9 @@ export type SectionProgressSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
 export type SectionProgressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   seatId?: boolean
-  section?: boolean
   status?: boolean
   startedAt?: boolean
+  submittedAt?: boolean
   remainingSec?: boolean
   seat?: boolean | Prisma.ExamSeatDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sectionProgress"]>
@@ -673,16 +766,17 @@ export type SectionProgressSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
 export type SectionProgressSelectScalar = {
   id?: boolean
   seatId?: boolean
-  section?: boolean
   status?: boolean
   startedAt?: boolean
+  submittedAt?: boolean
   remainingSec?: boolean
 }
 
-export type SectionProgressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "seatId" | "section" | "status" | "startedAt" | "remainingSec", ExtArgs["result"]["sectionProgress"]>
+export type SectionProgressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "seatId" | "status" | "startedAt" | "submittedAt" | "remainingSec", ExtArgs["result"]["sectionProgress"]>
 export type SectionProgressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   seat?: boolean | Prisma.ExamSeatDefaultArgs<ExtArgs>
-  questions?: boolean | Prisma.SectionProgress$questionsArgs<ExtArgs>
+  responses?: boolean | Prisma.SectionProgress$responsesArgs<ExtArgs>
+  highlights?: boolean | Prisma.SectionProgress$highlightsArgs<ExtArgs>
   _count?: boolean | Prisma.SectionProgressCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SectionProgressIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -696,14 +790,15 @@ export type $SectionProgressPayload<ExtArgs extends runtime.Types.Extensions.Int
   name: "SectionProgress"
   objects: {
     seat: Prisma.$ExamSeatPayload<ExtArgs>
-    questions: Prisma.$QuestionResponsePayload<ExtArgs>[]
+    responses: Prisma.$QuestionResponsePayload<ExtArgs>[]
+    highlights: Prisma.$HighlightPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     seatId: string
-    section: $Enums.TestSection
-    status: $Enums.ExamSeatStatus
+    status: $Enums.ProgressStatus
     startedAt: Date | null
+    submittedAt: Date | null
     remainingSec: number | null
   }, ExtArgs["result"]["sectionProgress"]>
   composites: {}
@@ -1100,7 +1195,8 @@ readonly fields: SectionProgressFieldRefs;
 export interface Prisma__SectionProgressClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   seat<T extends Prisma.ExamSeatDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ExamSeatDefaultArgs<ExtArgs>>): Prisma.Prisma__ExamSeatClient<runtime.Types.Result.GetResult<Prisma.$ExamSeatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  questions<T extends Prisma.SectionProgress$questionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SectionProgress$questionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionResponsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  responses<T extends Prisma.SectionProgress$responsesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SectionProgress$responsesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionResponsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  highlights<T extends Prisma.SectionProgress$highlightsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SectionProgress$highlightsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HighlightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1132,9 +1228,9 @@ export interface Prisma__SectionProgressClient<T, Null = never, ExtArgs extends 
 export interface SectionProgressFieldRefs {
   readonly id: Prisma.FieldRef<"SectionProgress", 'String'>
   readonly seatId: Prisma.FieldRef<"SectionProgress", 'String'>
-  readonly section: Prisma.FieldRef<"SectionProgress", 'TestSection'>
-  readonly status: Prisma.FieldRef<"SectionProgress", 'ExamSeatStatus'>
+  readonly status: Prisma.FieldRef<"SectionProgress", 'ProgressStatus'>
   readonly startedAt: Prisma.FieldRef<"SectionProgress", 'DateTime'>
+  readonly submittedAt: Prisma.FieldRef<"SectionProgress", 'DateTime'>
   readonly remainingSec: Prisma.FieldRef<"SectionProgress", 'Int'>
 }
     
@@ -1532,9 +1628,9 @@ export type SectionProgressDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 /**
- * SectionProgress.questions
+ * SectionProgress.responses
  */
-export type SectionProgress$questionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type SectionProgress$responsesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the QuestionResponse
    */
@@ -1553,6 +1649,30 @@ export type SectionProgress$questionsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.QuestionResponseScalarFieldEnum | Prisma.QuestionResponseScalarFieldEnum[]
+}
+
+/**
+ * SectionProgress.highlights
+ */
+export type SectionProgress$highlightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Highlight
+   */
+  select?: Prisma.HighlightSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Highlight
+   */
+  omit?: Prisma.HighlightOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HighlightInclude<ExtArgs> | null
+  where?: Prisma.HighlightWhereInput
+  orderBy?: Prisma.HighlightOrderByWithRelationInput | Prisma.HighlightOrderByWithRelationInput[]
+  cursor?: Prisma.HighlightWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HighlightScalarFieldEnum | Prisma.HighlightScalarFieldEnum[]
 }
 
 /**

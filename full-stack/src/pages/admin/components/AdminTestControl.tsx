@@ -11,7 +11,7 @@ import {
   AlertCircle,
   HelpCircle,
 } from 'lucide-react'
-import { ExamStatus, TestSection } from '@/../prisma/generated/enums'
+import { ExamStatus, TestSkill } from '@/../prisma/generated/enums'
 import { useScheduleTestStore } from '@/stores/scheduleTest.store'
 import Loading from '@/components/Loading'
 import { useRouter } from 'next/router'
@@ -29,10 +29,10 @@ import useExamStore from '@/stores/exam.store'
 // interface TestSession {
 //   id: string
 //   scheduledTest: ScheduledTest
-//   currentSection: TestSection | null
+//   currentSection: TestSkill | null
 //   sectionStartTime: number | null
 //   connectedStudents: Set<string>
-//   completedStudents: Map<TestSection, Set<string>>
+//   completedStudents: Map<TestSkill, Set<string>>
 // }
 
 // interface AdminTestControlProps {
@@ -43,24 +43,24 @@ import useExamStore from '@/stores/exam.store'
 export function AdminTestControl() {
   const { connectedCandidates } = useSocketStore()
   const { joinExamRoom } = useWebsocket()
-  const { currentExam, startSession, startSection } = useExamStore()
-  console.log('Current Session:', currentExam)
+  const { currentExam, startExam, startSection } = useExamStore()
+  console.log('Current exam:', currentExam)
 
   const router = useRouter()
   const { examId } = router.query as { examId: string }
   const [sessionProgress, setSessionProgress] = useState<ISessionProgress>({
     completedCandidates: new Map(),
-    currentSection: null,
+    currentSkill: null,
     sectionStartTime: null,
   })
 
   const [showHelp, setShowHelp] = useState(false)
 
-  const sections: { name: TestSection; label: string; duration: number }[] = [
-    { name: TestSection.LISTENING, label: 'Listening', duration: 30 },
-    { name: TestSection.READING, label: 'Reading', duration: 60 },
-    { name: TestSection.WRITING, label: 'Writing', duration: 60 },
-    { name: TestSection.SPEAKING, label: 'Speaking', duration: 15 },
+  const sections: { name: TestSkill; label: string; duration: number }[] = [
+    { name: TestSkill.LISTENING, label: 'Listening', duration: 30 },
+    { name: TestSkill.READING, label: 'Reading', duration: 60 },
+    { name: TestSkill.WRITING, label: 'Writing', duration: 60 },
+    { name: TestSkill.SPEAKING, label: 'Speaking', duration: 15 },
   ]
 
   const handleStopSection = async () => {
@@ -96,7 +96,7 @@ export function AdminTestControl() {
     // }
   }
 
-  const isSectionCompleted = (sectionName: TestSection) => {
+  const isSectionCompleted = (testSkill: TestSkill) => {
     return false
     // return (
     //   sessionProgress.completedCandidates.get(sectionName)?.size ===
@@ -104,9 +104,9 @@ export function AdminTestControl() {
     // )
   }
 
-  const getSectionStatus = (sectionName: TestSection) => {
-    if (sessionProgress.currentSection === sectionName) return 'in-progress'
-    if (isSectionCompleted(sectionName)) return 'completed'
+  const getSectionStatus = (testSkill: TestSkill) => {
+    if (sessionProgress.currentSkill === testSkill) return 'in-progress'
+    if (isSectionCompleted(testSkill)) return 'completed'
     return 'pending'
   }
 
@@ -175,7 +175,9 @@ export function AdminTestControl() {
                       ? 'bg-yellow-200 text-yellow-800'
                       : currentExam.status === ExamStatus.OPEN
                         ? 'bg-green-200 text-green-800'
-                        : 'bg-gray-200 text-gray-800'
+                        : currentExam.status === ExamStatus.IN_PROGRESS
+                          ? 'bg-blue-200 text-blue-800'
+                          : 'bg-gray-200 text-gray-800'
                   }`}
                 >
                   {currentExam.status}
@@ -185,16 +187,26 @@ export function AdminTestControl() {
                     ? 'Exam is scheduled, open it to start accepting candidates'
                     : currentExam.status === ExamStatus.OPEN
                       ? 'Exam is open, candidates can join'
-                      : 'Exam is completed, no more changes allowed'}
+                      : currentExam.status === ExamStatus.IN_PROGRESS
+                        ? 'Exam is in progress'
+                        : 'Exam is completed, no more changes allowed'}
                 </p>
               </div>
               <div>
                 {currentExam.status === ExamStatus.SCHEDULED && (
-                  <Button onClick={() => startSession(currentExam.id)}>
+                  <Button onClick={() => startExam(currentExam.id)}>
                     Start Exam
                   </Button>
                 )}
-                {currentExam.status === ExamStatus.OPEN && (
+                {/* {currentExam.status === ExamStatus.OPEN && (
+                  <Button
+                    variant="outline"
+                    onClick={() => console.log('Start exam')}
+                  >
+                    Start Exam
+                  </Button>
+                )} */}
+                {currentExam.status === ExamStatus.IN_PROGRESS && (
                   <Button
                     variant="destructive"
                     onClick={() => console.log('Complete Exam')}
@@ -232,7 +244,7 @@ export function AdminTestControl() {
                     Current Section
                   </p>
                   <p className="text-2xl font-bold text-green-900 mt-1 capitalize">
-                    {sessionProgress.currentSection || 'None'}
+                    {sessionProgress.currentSkill || 'None'}
                   </p>
                 </div>
                 <Clock className="w-8 h-8 text-green-500" />
@@ -262,97 +274,102 @@ export function AdminTestControl() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {currentExam?.sections.map(section => {
-              // const status = getSectionStatus(section.section)
-              const isActive =
-                sessionProgress.currentSection === section.section
+            {currentExam?.test.sections
+              .sort((a, b) => a.order - b.order)
+              .map(section => {
+                // const status = getSectionStatus(section.section)
+                const isActive = sessionProgress.currentSkill === section.skill
 
-              return (
-                <div
-                  key={section.section}
-                  className={`border-2 rounded-lg p-6 transition-all ${
-                    isActive
-                      ? 'border-green-500 bg-green-50'
-                      : currentExam.status === ExamStatus.COMPLETED
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 bg-white'
-                  }`}
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 capitalize">
-                        {section.section}
-                      </h3>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Duration: {section.duration} minutes
-                      </p>
+                return (
+                  <div
+                    key={section.skill}
+                    className={`border-2 rounded-lg p-6 transition-all ${
+                      isActive
+                        ? 'border-green-500 bg-green-50'
+                        : currentExam.status === ExamStatus.COMPLETED
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-200 bg-white'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 capitalize">
+                          {section.skill}
+                        </h3>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Duration:
+                          {/* {section.duration}  */}
+                          minutes
+                        </p>
+                      </div>
+                      {currentExam.status === ExamStatus.COMPLETED && (
+                        <CheckCircle className="w-6 h-6 text-blue-600" />
+                      )}
+                      {isActive && (
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                          <span className="text-sm font-medium text-green-700">
+                            Active
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    {currentExam.status === ExamStatus.COMPLETED && (
-                      <CheckCircle className="w-6 h-6 text-blue-600" />
-                    )}
-                    {isActive && (
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                        <span className="text-sm font-medium text-green-700">
-                          Active
+
+                    <div className="flex gap-2">
+                      {isActive ? (
+                        <Button
+                          onClick={handleStopSection}
+                          className="w-full bg-red-600 hover:bg-red-700"
+                        >
+                          <Square className="w-4 h-4 mr-2" />
+                          Stop Section
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() =>
+                            startSection(currentExam.id, section.skill)
+                          }
+                          disabled={
+                            sessionProgress.currentSkill !== null ||
+                            isSectionCompleted(section.skill)
+                          }
+                          className="w-full"
+                        >
+                          <Play className="w-4 h-4 mr-2" />
+                          Start Section
+                        </Button>
+                      )}
+                    </div>
+
+                    {/* Progress indicator */}
+                    <div className="mt-4">
+                      <div className="flex justify-between text-sm text-gray-600 mb-1">
+                        <span>Student Progress</span>
+                        <span>
+                          {sessionProgress.completedCandidates.get(
+                            section.skill,
+                          )?.length || 0}{' '}
+                          / {currentExam.seats.length}
                         </span>
                       </div>
-                    )}
-                  </div>
-
-                  <div className="flex gap-2">
-                    {isActive ? (
-                      <Button
-                        onClick={handleStopSection}
-                        className="w-full bg-red-600 hover:bg-red-700"
-                      >
-                        <Square className="w-4 h-4 mr-2" />
-                        Stop Section
-                      </Button>
-                    ) : (
-                      <Button
-                        onClick={() => startSection(currentExam.id, section.id)}
-                        disabled={
-                          sessionProgress.currentSection !== null ||
-                          isSectionCompleted(section.section)
-                        }
-                        className="w-full"
-                      >
-                        <Play className="w-4 h-4 mr-2" />
-                        Start Section
-                      </Button>
-                    )}
-                  </div>
-
-                  {/* Progress indicator */}
-                  <div className="mt-4">
-                    <div className="flex justify-between text-sm text-gray-600 mb-1">
-                      <span>Student Progress</span>
-                      <span>
-                        {sessionProgress.completedCandidates.get(
-                          section.section,
-                        )?.length || 0}{' '}
-                        / {currentExam.seats.length}
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-blue-600 h-2 rounded-full transition-all"
-                        style={{
-                          width: `${
-                            ((sessionProgress.completedCandidates.get(
-                              section.section,
-                            )?.length || 0) /
-                              currentExam.seats.length) *
-                            100
-                          }%`,
-                        }}
-                      />
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-blue-600 h-2 rounded-full transition-all"
+                          style={{
+                            width: `${
+                              ((sessionProgress.completedCandidates.get(
+                                section.skill,
+                              )?.length || 0) /
+                                currentExam.seats.length) *
+                              100
+                            }%`,
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
             {/* {sections.map(section => {
               const status = getSectionStatus(section.name)
               const isActive = sessionProgress.currentSection === section.name
@@ -551,7 +568,7 @@ export function AdminTestControl() {
         </div>
 
         {/* Instructions Panel */}
-        {sessionProgress.currentSection === null && (
+        {sessionProgress.currentSkill === null && (
           <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
             <div className="flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />

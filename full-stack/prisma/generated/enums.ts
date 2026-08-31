@@ -19,6 +19,48 @@ export const UserRole = {
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
+export const TestType = {
+  ACADEMIC: 'ACADEMIC',
+  GENERAL_TRAINING: 'GENERAL_TRAINING'
+} as const
+
+export type TestType = (typeof TestType)[keyof typeof TestType]
+
+
+export const TestSkill = {
+  LISTENING: 'LISTENING',
+  READING: 'READING',
+  WRITING: 'WRITING',
+  SPEAKING: 'SPEAKING'
+} as const
+
+export type TestSkill = (typeof TestSkill)[keyof typeof TestSkill]
+
+
+export const QuestionType = {
+  MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
+  MULTIPLE_CHOICE_MULTI_ANSWER: 'MULTIPLE_CHOICE_MULTI_ANSWER',
+  TRUE_FALSE_NOT_GIVEN: 'TRUE_FALSE_NOT_GIVEN',
+  YES_NO_NOT_GIVEN: 'YES_NO_NOT_GIVEN',
+  MATCHING_HEADING: 'MATCHING_HEADING',
+  MATCHING_INFORMATION: 'MATCHING_INFORMATION',
+  MATCHING_FEATURES: 'MATCHING_FEATURES',
+  MATCHING_SENTENCE_ENDINGS: 'MATCHING_SENTENCE_ENDINGS',
+  SENTENCE_COMPLETION: 'SENTENCE_COMPLETION',
+  SUMMARY_COMPLETION: 'SUMMARY_COMPLETION',
+  NOTE_COMPLETION: 'NOTE_COMPLETION',
+  TABLE_COMPLETION: 'TABLE_COMPLETION',
+  FORM_COMPLETION: 'FORM_COMPLETION',
+  FLOW_CHART_COMPLETION: 'FLOW_CHART_COMPLETION',
+  DIAGRAM_LABELLING: 'DIAGRAM_LABELLING',
+  SHORT_ANSWER: 'SHORT_ANSWER',
+  WRITING_TASK: 'WRITING_TASK',
+  SPEAKING_PROMPT: 'SPEAKING_PROMPT'
+} as const
+
+export type QuestionType = (typeof QuestionType)[keyof typeof QuestionType]
+
+
 export const ExamStatus = {
   SCHEDULED: 'SCHEDULED',
   OPEN: 'OPEN',
@@ -27,15 +69,6 @@ export const ExamStatus = {
 } as const
 
 export type ExamStatus = (typeof ExamStatus)[keyof typeof ExamStatus]
-
-
-export const ExamSectionStatus = {
-  NOT_STARTED: 'NOT_STARTED',
-  IN_PROGRESS: 'IN_PROGRESS',
-  COMPLETED: 'COMPLETED'
-} as const
-
-export type ExamSectionStatus = (typeof ExamSectionStatus)[keyof typeof ExamSectionStatus]
 
 
 export const ExamSeatStatus = {
@@ -48,11 +81,11 @@ export const ExamSeatStatus = {
 export type ExamSeatStatus = (typeof ExamSeatStatus)[keyof typeof ExamSeatStatus]
 
 
-export const TestSection = {
-  LISTENING: 'LISTENING',
-  READING: 'READING',
-  WRITING: 'WRITING',
-  SPEAKING: 'SPEAKING'
+export const ProgressStatus = {
+  NOT_STARTED: 'NOT_STARTED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  EXPIRED: 'EXPIRED'
 } as const
 
-export type TestSection = (typeof TestSection)[keyof typeof TestSection]
+export type ProgressStatus = (typeof ProgressStatus)[keyof typeof ProgressStatus]

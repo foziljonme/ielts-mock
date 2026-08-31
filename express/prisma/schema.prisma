@@ -62,9 +62,195 @@ model User {
   tenant Tenant? @relation(fields: [tenantId], references: [id])
 }
 
-// ==========================
-// EXAM (IELTS Sitting)
-// ==========================
+// ============================================================================
+// TEST CONTENT LIBRARY
+// This is the reusable "master copy" of an IELTS test — the thing that used
+// to live in JSON files. It is tenant-agnostic: many tenants can run the
+// same Test, and running it (an Exam) never mutates it.
+// ============================================================================
+
+model Test {
+  id          String   @id @default(cuid())
+  title       String // e.g. "Cambridge IELTS 18 — Test 1"
+  version     String? // internal versioning / source attribution
+  isPublished Boolean  @default(false) // draft tests shouldn't be selectable for a real Exam
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  sections   Section[]
+  exams      Exam[]
+  answerKeys AnswerKey[]
+}
+
+enum TestSkill {
+  LISTENING
+  READING
+  WRITING
+  SPEAKING
+}
+
+model AnswerKey {
+  id         String @id @default(cuid())
+  testId     String
+  questionId String
+  answer     Json // string | string[] | object — supports multiple accepted answers
+  sectionId  String
+
+  test     Test     @relation(fields: [testId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  section  Section  @relation(fields: [sectionId], references: [id])
+
+  @@unique([testId, sectionId, questionId])
+}
+
+// One Section per module of a Test (Listening / Reading / Writing / Speaking).
+// Holds the module-level timer and instructions; the actual stimulus and
+// questions live in the models below, scoped to this part.
+model Section {
+  id           String    @id @default(cuid())
+  testId       String
+  skill        TestSkill
+  order        Int // 1..4, display/sitting order within the test
+  durationSec  Int // default section timer
+  instructions String? // top-of-section general instructions
+
+  test Test @relation(fields: [testId], references: [id], onDelete: Cascade)
+
+  passages          Passage[] // populated when section = READING
+  audioTracks       AudioTrack[] // populated when section = LISTENING
+  questionGroups    QuestionGroup[] // populated for every section, including WRITING and SPEAKING
+  answerKeys        AnswerKey[]
+  sectionProgresses SectionProgress[]
+
+  @@unique([testId, skill])
+}
+
+// ----------------------------------------------------------------------
+// READING — the passage text a candidate reads. Content is an ordered
+// block array (same shape as QuestionGroup.layout below) so that a
+// passage can carry its own headings and labelled paragraphs
+// ("A", "B", "C" ...) for question types like Matching Headings /
+// Matching Information, which target a specific paragraph rather than
+// a specific question.
+// ----------------------------------------------------------------------
+model Passage {
+  id        String  @id @default(cuid())
+  sectionId String
+  order     Int
+  title     String
+  content   Json // ordered ContentBlock[] — see layout convention below
+  source    String? // attribution / citation
+
+  section        Section         @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  questionGroups QuestionGroup[]
+  // highlights     Highlight[]
+  highlights     Highlight[]
+
+  @@unique([sectionId, order])
+}
+
+// ----------------------------------------------------------------------
+// LISTENING — the audio a candidate hears. Transcript is optional and
+// only used for admin/QA review, never shown to a candidate mid-exam.
+// ----------------------------------------------------------------------
+model AudioTrack {
+  id         String  @id @default(cuid())
+  sectionId  String
+  order      Int // 1..4, one per Listening part
+  title      String?
+  audioUrl   String
+  transcript Json? // ordered ContentBlock[], admin/QA use only
+
+  section        Section         @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  questionGroups QuestionGroup[]
+
+  @@unique([sectionId, order])
+}
+
+// ----------------------------------------------------------------------
+// QUESTION GROUPS & QUESTIONS
+// A QuestionGroup is what the candidate sees as one unit: shared
+// instructions ("Questions 1-5"), an optional link to the passage or
+// audio track it belongs to, and a `layout` describing exactly how to
+// arrange its content and questions on screen. This is what lets the
+// same schema represent Form Completion, Table Completion, Matching,
+// Diagram Labelling, etc. without a bespoke table per question type.
+//
+// For WRITING and SPEAKING, sectionId is set but passageId/audioTrackId
+// are left null — the task/prompt itself lives on the single Question
+// inside the group (see Question.prompt / Question.config below).
+// ----------------------------------------------------------------------
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  MULTIPLE_CHOICE_MULTI_ANSWER
+  TRUE_FALSE_NOT_GIVEN
+  YES_NO_NOT_GIVEN
+  MATCHING_HEADING
+  MATCHING_INFORMATION
+  MATCHING_FEATURES
+  MATCHING_SENTENCE_ENDINGS
+  SENTENCE_COMPLETION
+  SUMMARY_COMPLETION
+  NOTE_COMPLETION
+  TABLE_COMPLETION
+  FORM_COMPLETION
+  FLOW_CHART_COMPLETION
+  DIAGRAM_LABELLING
+  SHORT_ANSWER
+  WRITING_TASK
+  SPEAKING_PROMPT
+}
+
+model QuestionGroup {
+  id           String       @id @default(cuid())
+  sectionId    String
+  passageId    String?
+  audioTrackId String?
+  type         QuestionType
+  order        Int
+  title        String? // "Questions 1-5"
+  instructions String // "Complete the notes below. Write NO MORE THAN TWO WORDS..."
+  layout       Json // ordered ContentBlock[] — see convention below
+
+  section    Section     @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  passage    Passage?    @relation(fields: [passageId], references: [id])
+  audioTrack AudioTrack? @relation(fields: [audioTrackId], references: [id])
+  questions  Question[]
+
+  @@unique([sectionId, order])
+}
+
+// The atomic, gradable unit. `config` and `correctAnswer` are typed
+// loosely (Json) on purpose — a multiple choice question needs an
+// options list, a diagram label needs hotspot coordinates, a matching
+// question needs a target label — but every one of them ultimately
+// resolves to "here is what a correct submitted value looks like".
+// correctAnswer is nullable because Writing/Speaking are human-graded,
+// not compared against a stored answer key.
+model Question {
+  id              String  @id @default(cuid())
+  questionGroupId String
+  order           Int // the candidate-facing number, e.g. 7 for "Question 7"
+  prompt          String? // question stem / task prompt; null for pure fill-in items driven by layout labels
+  config          Json? // type-specific rendering config: options, blank count, hotspot coords, min word count...
+  correctAnswer   Json? // string | string[] | object — supports multiple accepted answers; null for Writing/Speaking
+  points          Int     @default(1)
+
+  questionGroup QuestionGroup      @relation(fields: [questionGroupId], references: [id], onDelete: Cascade)
+  responses     QuestionResponse[]
+  answerKeys    AnswerKey[]
+
+  @@unique([questionGroupId, order])
+}
+
+// ============================================================================
+// EXAM SITTING
+// This is the runtime side: one administration of a Test to a Tenant on a
+// given date, with one SectionProgress / QuestionResponse per candidate seat. Content models above are never
+// written to once published; everything mutable lives down here.
+// ============================================================================
+
 enum ExamStatus {
   SCHEDULED
   OPEN
@@ -72,40 +258,34 @@ enum ExamStatus {
   COMPLETED
 }
 
-model Exam {
-  id             String        @id @default(cuid())
-  tenantId       String
-  testId         String // External JSON test identifier
-  // name       String            @db.VarChar(255)
-  examDate       DateTime
-  status         ExamStatus    @default(SCHEDULED)
-  currentSection TestSection?
-  isArchived     Boolean       @default(false)
-  startTime      DateTime?
-  endTime        DateTime?
-  createdAt      DateTime      @default(now())
-  sections       ExamSection[]
-
-  tenant Tenant     @relation(fields: [tenantId], references: [id])
-  seats  ExamSeat[]
-}
-
-enum ExamSectionStatus {
-  NOT_STARTED
-  IN_PROGRESS
-  COMPLETED
-}
-
-model ExamSection {
-  id        String            @id @default(cuid())
+model ExamSectionProgress {
+  id        String     @id @default(cuid())
+  status    ExamStatus
   examId    String
-  section   TestSection
-  status    ExamSectionStatus
-  startedAt DateTime?
-  endTime   DateTime?
-  createdAt DateTime          @default(now())
+  skill     TestSkill
+  startedAt DateTime   @default(now())
 
   exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+}
+
+model Exam {
+  id           String     @id @default(cuid())
+  tenantId     String
+  testId       String
+  examDate     DateTime
+  status       ExamStatus @default(SCHEDULED)
+  isArchived   Boolean    @default(false)
+  startTime    DateTime?
+  endTime      DateTime?
+  createdAt    DateTime   @default(now())
+  currentSkill TestSkill? // the skill currently in progress, if any
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  test   Test   @relation(fields: [testId], references: [id])
+
+  seats                 ExamSeat[]
+  examSectionProgresses ExamSectionProgress[]
+  sectionProgresses     SectionProgress[]
 }
 
 // ==========================
@@ -133,77 +313,88 @@ model ExamSeat {
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 
-  exam     Exam              @relation(fields: [examId], references: [id], onDelete: Cascade)
-  sections SectionProgress[]
+  exam              Exam               @relation(fields: [examId], references: [id], onDelete: Cascade)
+  sections          SectionProgress[]
+  questionResponses QuestionResponse[]
 }
 
 // ==========================
 // SECTION PROGRESS
+// A seat's progress through one section. Own status enum — a section
+// being "expired" or "completed" is a different concept from a whole
+// seat being "submitted".
 // ==========================
-enum TestSection {
-  LISTENING
-  READING
-  WRITING
-  SPEAKING
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  EXPIRED
 }
 
+// This is to track each seat progress and bind responses
 model SectionProgress {
   id           String         @id @default(cuid())
   seatId       String
-  section      TestSection
-  status       ExamSeatStatus @default(NOT_STARTED)
+  sectionId    String // this belongs to test, not to candidate or exam
+  skill        TestSkill
+  status       ProgressStatus @default(NOT_STARTED)
   startedAt    DateTime?
-  remainingSec Int? // Countdown sync
+  submittedAt  DateTime?
+  remainingSec Int? // countdown sync
+  examId       String
 
-  seat      ExamSeat           @relation(fields: [seatId], references: [id])
-  questions QuestionResponse[]
+  seat    ExamSeat @relation(fields: [seatId], references: [id])
+  section Section  @relation(fields: [sectionId], references: [id])
+  exam    Exam     @relation(fields: [examId], references: [id])
 
-  @@unique([seatId, section])
+  responses  QuestionResponse[]
+  highlights Highlight[]
+
+  @@unique([seatId, sectionId])
 }
 
 // ==========================
 // QUESTION RESPONSE
+// Real relation to Question (no more "external JSON id" string). `value`
+// is Json so it can hold a single string, an array of blanks, a set of
+// matching pairs, or an audio recording reference — whatever shape the
+// Question's type requires.
 // ==========================
 model QuestionResponse {
-  id         String    @id @default(cuid())
-  sectionId  String
-  questionId String // External JSON ID (Q1, Q14, etc.)
-  isFlagged  Boolean   @default(false)
-  visitedAt  DateTime?
+  id                String    @id @default(cuid())
+  seatId            String
+  sectionProgressId String
+  questionId        String
+  value             Json? // shape depends on Question.type; null until answered
+  wordCount         Int? // writing / long-answer only
+  isFlagged         Boolean   @default(false)
+  visitedAt         DateTime?
+  answeredAt        DateTime?
 
-  section    SectionProgress @relation(fields: [sectionId], references: [id])
-  answer     Answer?
-  highlights Highlight[]
-  drafts     WritingDraft[]
+  seat            ExamSeat        @relation(fields: [seatId], references: [id])
+  sectionProgress SectionProgress @relation(fields: [sectionProgressId], references: [id])
+  question        Question        @relation(fields: [questionId], references: [id])
+  drafts          WritingDraft[]
 
-  @@unique([sectionId, questionId])
-}
-
-// ==========================
-// ANSWER
-// ==========================
-model Answer {
-  id                 String   @id @default(cuid())
-  questionResponseId String   @unique
-  value              String // Text / selected options JSON
-  wordCount          Int?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-
-  question QuestionResponse @relation(fields: [questionResponseId], references: [id])
+  @@unique([sectionProgressId, questionId])
 }
 
 // ==========================
 // HIGHLIGHT (Reading)
+// Scoped to the passage + the candidate's section attempt, not to a
+// single question — a highlight is a text selection in the passage and
+// may have nothing to do with any one question.
 // ==========================
 model Highlight {
-  id                 String @id @default(cuid())
-  questionResponseId String
-  startOffset        Int
-  endOffset          Int
-  color              String @default("yellow")
+  id                String @id @default(cuid())
+  sectionProgressId String
+  passageId         String
+  startOffset       Int
+  endOffset         Int
+  color             String @default("yellow")
 
-  question QuestionResponse @relation(fields: [questionResponseId], references: [id])
+  sectionProgress SectionProgress @relation(fields: [sectionProgressId], references: [id])
+  passage         Passage         @relation(fields: [passageId], references: [id])
 }
 
 // ==========================
@@ -216,5 +407,43 @@ model WritingDraft {
   wordCount          Int
   savedAt            DateTime @default(now())
 
-  question QuestionResponse @relation(fields: [questionResponseId], references: [id])
+  questionResponse QuestionResponse @relation(fields: [questionResponseId], references: [id])
 }
+
+// ============================================================================
+// LAYOUT / CONTENT BLOCK CONVENTION (documented here, not enforced by
+// Prisma — Passage.content, AudioTrack.transcript and QuestionGroup.layout
+// all store an ordered array of blocks in this shape). Full Zod validators
+// live in content-blocks.schema.ts; this is a quick reference.
+//
+// type InlineNode =                                     // a run within a block
+//   | { kind: "text"; text: string }
+//   | { kind: "emphasis"; text: string }
+//   | { kind: "blank"; questionId: string; label?: string }  // renders the input for Question.id
+//
+// type ContentBlock =
+//   | { kind: "heading"; text: string }
+//   | { kind: "subheading"; text: string }
+//   | { kind: "paragraph"; label?: string; content: InlineNode[] }        // label = "A"/"B" for Matching Headings/Info
+//   | { kind: "instruction"; text: string }
+//   | { kind: "image"; url: string; alt?: string; hotspots?: DiagramHotspot[] } // hotspots = Diagram Labelling
+//   | { kind: "question"; questionId: string; label?: string }           // standalone field, e.g. one form line
+//   | { kind: "table"; caption?: string; columns: string[]; rows: TableCell[][] }
+//   | { kind: "list"; ordered?: boolean; items: InlineNode[][] }         // bullet notes, or an option/heading/word bank
+//   | { kind: "flow-chart"; nodes: FlowChartNode[]; connections: FlowChartConnection[] }
+//   | { kind: "divider" }
+//
+// type TableCell =
+//   | { kind: "text"; text: string; header?: boolean; colspan?: number; rowspan?: number }
+//   | { kind: "blank"; questionId: string; colspan?: number; rowspan?: number }
+//
+// type DiagramHotspot = { questionId: string; x: number; y: number; markerLabel?: string }  // x/y = % position on image
+//
+// type FlowChartNode = { id: string; content: InlineNode[] }
+// type FlowChartConnection = { from: string; to: string }
+//
+// The frontend renders the array top to bottom. A "question" block or
+// inline "blank" node never carries the question's own data — it only
+// marks where to render the input for Question.id, keeping the Question
+// table the single source of truth for type/config/correctAnswer.
+// ============================================================================

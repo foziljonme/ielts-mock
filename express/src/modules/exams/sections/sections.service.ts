@@ -1,39 +1,102 @@
 import db from "@/config/db";
 import {
-  ExamSectionStatus,
-  TestSection,
+  ExamSeatStatus,
+  ExamStatus,
+  TestSkill,
 } from "../../../../prisma/generated/enums";
 import { NotFoundError } from "@/shared/utils/errors/NotFoundError";
 import { Prisma } from "../../../../prisma/generated/client";
 import { BadRequest } from "@/shared/utils/errors/BadRequest";
+import { ConflictError } from "@/shared/utils/errors/ConflictError";
+import examService from "../exams.service";
+import { AuthRequestContext } from "@/modules/auth/auth.types";
 
 class SectionsService {
   constructor() {}
 
-  async startSection(examId: string, sectionId: string) {
+  async createSections(tx: Prisma.TransactionClient, examId: string) {
+    const sections = [
+      TestSkill.LISTENING,
+      TestSkill.READING,
+      TestSkill.WRITING,
+      TestSkill.SPEAKING,
+    ];
+    const createData = sections.map((section, idx) => ({
+      examId,
+      section,
+      // status: .NOT_STARTED,
+      order: idx + 1,
+    }));
+    const examSections = await tx.examSection.createManyAndReturn({
+      data: createData,
+    });
+
+    return examSections;
+  }
+
+  async startSection(
+    ctx: AuthRequestContext,
+    examId: string,
+    skill: TestSkill,
+  ) {
     return await db.$transaction(async (tx) => {
-      const section = await this.getSection(tx, examId, sectionId);
+      const exam = await examService.getExamById(tx, ctx, examId, true);
 
-      if (!section) {
-        throw new NotFoundError("Exam or section not found");
+      if (!exam || exam.status == ExamStatus.SCHEDULED) {
+        throw new BadRequest(
+          "Exam is not started yet, please make sure to start the exam and log in the candidates before starting a section",
+        );
       }
 
-      if (section.status === ExamSectionStatus.IN_PROGRESS) {
-        throw new BadRequest("Section already in progress");
+      console.log("exam.examSectionProgresses", exam.examSectionProgresses);
+
+      const section = exam.examSectionProgresses.find(
+        (s) => s.skill.toUpperCase() === skill.toUpperCase(),
+      );
+
+      console.log("sectionnnn", section);
+      if (!section || section?.status === ExamStatus.IN_PROGRESS) {
+        throw new ConflictError("Section already in progress");
       }
 
-      if (section.status === ExamSectionStatus.COMPLETED) {
+      if (!section || section?.status === ExamStatus.COMPLETED) {
         throw new BadRequest("Section already completed");
       }
 
-      const updatedProgress = await tx.examSection.update({
+      const updatedProgress = await tx.examSectionProgress.update({
         where: {
-          id: sectionId,
+          id: section.id,
         },
         data: {
-          status: ExamSectionStatus.IN_PROGRESS,
+          status: ExamStatus.IN_PROGRESS,
           startedAt: new Date(),
         },
+      });
+
+      await tx.exam.update({
+        where: { id: examId },
+        data: {
+          status: ExamStatus.IN_PROGRESS,
+          currentSkill: skill,
+        },
+      });
+
+      const seats = await tx.examSeat.updateManyAndReturn({
+        where: { examId },
+        data: { status: ExamSeatStatus.IN_PROGRESS },
+      });
+
+      const testSectionId = exam.test.sections.find(
+        (s) => s.skill === skill,
+      )?.id;
+
+      await tx.sectionProgress.createMany({
+        data: seats.map((s) => ({
+          sectionId: testSectionId!,
+          seatId: s.id,
+          examId,
+          skill,
+        })),
       });
 
       return updatedProgress;
@@ -43,38 +106,22 @@ class SectionsService {
   async getSection(
     tx: Prisma.TransactionClient,
     examId: string,
-    sectionId: string,
+    skill: TestSkill,
   ) {
-    const section = await tx.examSection.findUnique({
+    const section = await tx.exam.findUnique({
       where: {
         id: sectionId,
+        examId: examId,
       },
     });
+
+    console.log("sectionn", section, examId);
 
     if (!section || section?.examId != examId) {
       throw new NotFoundError("Section with such id does not exist");
     }
 
     return section;
-  }
-
-  async createSections(tx: Prisma.TransactionClient, examId: string) {
-    const sections = [
-      TestSection.LISTENING,
-      TestSection.READING,
-      TestSection.WRITING,
-      TestSection.SPEAKING,
-    ];
-    const createData = sections.map((section) => ({
-      examId,
-      section,
-      status: ExamSectionStatus.NOT_STARTED,
-    }));
-    const examSections = await tx.examSection.createManyAndReturn({
-      data: createData,
-    });
-
-    return examSections;
   }
 }
 

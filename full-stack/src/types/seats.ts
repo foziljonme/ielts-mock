@@ -1,21 +1,14 @@
+import { Prisma } from '../../prisma/generated/client'
 import { ExamSeatStatus } from '../../prisma/generated/enums'
+import { IExam } from './exams'
 
-export interface ISeat {
-  id: string
-  tenantId: string
-  examId: string
-  seatNumber: number
-  label: string
-  accessCode: string
-  candidateName: string
-  candidateId: string
-  candidateContact: string
-  status: ExamSeatStatus
-  startedAt: string | null
-  submittedAt: string | null
-  createdAt: string
-  updatedAt: string
-}
+export type ISeat = Prisma.ExamSeatGetPayload<{}>
+
+export type ISeatWithExam = Prisma.ExamSeatGetPayload<{
+  include: {
+    exam: true
+  }
+}>
 
 export interface ISeatInput {
   label?: string
@@ -25,5 +18,9 @@ export interface ISeatInput {
 
 export interface IAvailableTest {
   id: string
-  name: string
+  title: string
+  status: string
+  updatedAt: string
+  sectionsPresent: string[]
+  totalQuestions: number
 }

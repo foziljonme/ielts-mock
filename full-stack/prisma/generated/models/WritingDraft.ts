@@ -216,7 +216,7 @@ export type WritingDraftWhereInput = {
   content?: Prisma.StringFilter<"WritingDraft"> | string
   wordCount?: Prisma.IntFilter<"WritingDraft"> | number
   savedAt?: Prisma.DateTimeFilter<"WritingDraft"> | Date | string
-  question?: Prisma.XOR<Prisma.QuestionResponseScalarRelationFilter, Prisma.QuestionResponseWhereInput>
+  questionResponse?: Prisma.XOR<Prisma.QuestionResponseScalarRelationFilter, Prisma.QuestionResponseWhereInput>
 }
 
 export type WritingDraftOrderByWithRelationInput = {
@@ -225,7 +225,7 @@ export type WritingDraftOrderByWithRelationInput = {
   content?: Prisma.SortOrder
   wordCount?: Prisma.SortOrder
   savedAt?: Prisma.SortOrder
-  question?: Prisma.QuestionResponseOrderByWithRelationInput
+  questionResponse?: Prisma.QuestionResponseOrderByWithRelationInput
 }
 
 export type WritingDraftWhereUniqueInput = Prisma.AtLeast<{
@@ -237,7 +237,7 @@ export type WritingDraftWhereUniqueInput = Prisma.AtLeast<{
   content?: Prisma.StringFilter<"WritingDraft"> | string
   wordCount?: Prisma.IntFilter<"WritingDraft"> | number
   savedAt?: Prisma.DateTimeFilter<"WritingDraft"> | Date | string
-  question?: Prisma.XOR<Prisma.QuestionResponseScalarRelationFilter, Prisma.QuestionResponseWhereInput>
+  questionResponse?: Prisma.XOR<Prisma.QuestionResponseScalarRelationFilter, Prisma.QuestionResponseWhereInput>
 }, "id">
 
 export type WritingDraftOrderByWithAggregationInput = {
@@ -269,7 +269,7 @@ export type WritingDraftCreateInput = {
   content: string
   wordCount: number
   savedAt?: Date | string
-  question: Prisma.QuestionResponseCreateNestedOneWithoutDraftsInput
+  questionResponse: Prisma.QuestionResponseCreateNestedOneWithoutDraftsInput
 }
 
 export type WritingDraftUncheckedCreateInput = {
@@ -285,7 +285,7 @@ export type WritingDraftUpdateInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   wordCount?: Prisma.IntFieldUpdateOperationsInput | number
   savedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  question?: Prisma.QuestionResponseUpdateOneRequiredWithoutDraftsNestedInput
+  questionResponse?: Prisma.QuestionResponseUpdateOneRequiredWithoutDraftsNestedInput
 }
 
 export type WritingDraftUncheckedUpdateInput = {
@@ -361,86 +361,86 @@ export type WritingDraftSumOrderByAggregateInput = {
   wordCount?: Prisma.SortOrder
 }
 
-export type WritingDraftCreateNestedManyWithoutQuestionInput = {
-  create?: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionInput> | Prisma.WritingDraftCreateWithoutQuestionInput[] | Prisma.WritingDraftUncheckedCreateWithoutQuestionInput[]
-  connectOrCreate?: Prisma.WritingDraftCreateOrConnectWithoutQuestionInput | Prisma.WritingDraftCreateOrConnectWithoutQuestionInput[]
-  createMany?: Prisma.WritingDraftCreateManyQuestionInputEnvelope
+export type WritingDraftCreateNestedManyWithoutQuestionResponseInput = {
+  create?: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionResponseInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionResponseInput> | Prisma.WritingDraftCreateWithoutQuestionResponseInput[] | Prisma.WritingDraftUncheckedCreateWithoutQuestionResponseInput[]
+  connectOrCreate?: Prisma.WritingDraftCreateOrConnectWithoutQuestionResponseInput | Prisma.WritingDraftCreateOrConnectWithoutQuestionResponseInput[]
+  createMany?: Prisma.WritingDraftCreateManyQuestionResponseInputEnvelope
   connect?: Prisma.WritingDraftWhereUniqueInput | Prisma.WritingDraftWhereUniqueInput[]
 }
 
-export type WritingDraftUncheckedCreateNestedManyWithoutQuestionInput = {
-  create?: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionInput> | Prisma.WritingDraftCreateWithoutQuestionInput[] | Prisma.WritingDraftUncheckedCreateWithoutQuestionInput[]
-  connectOrCreate?: Prisma.WritingDraftCreateOrConnectWithoutQuestionInput | Prisma.WritingDraftCreateOrConnectWithoutQuestionInput[]
-  createMany?: Prisma.WritingDraftCreateManyQuestionInputEnvelope
+export type WritingDraftUncheckedCreateNestedManyWithoutQuestionResponseInput = {
+  create?: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionResponseInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionResponseInput> | Prisma.WritingDraftCreateWithoutQuestionResponseInput[] | Prisma.WritingDraftUncheckedCreateWithoutQuestionResponseInput[]
+  connectOrCreate?: Prisma.WritingDraftCreateOrConnectWithoutQuestionResponseInput | Prisma.WritingDraftCreateOrConnectWithoutQuestionResponseInput[]
+  createMany?: Prisma.WritingDraftCreateManyQuestionResponseInputEnvelope
   connect?: Prisma.WritingDraftWhereUniqueInput | Prisma.WritingDraftWhereUniqueInput[]
 }
 
-export type WritingDraftUpdateManyWithoutQuestionNestedInput = {
-  create?: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionInput> | Prisma.WritingDraftCreateWithoutQuestionInput[] | Prisma.WritingDraftUncheckedCreateWithoutQuestionInput[]
-  connectOrCreate?: Prisma.WritingDraftCreateOrConnectWithoutQuestionInput | Prisma.WritingDraftCreateOrConnectWithoutQuestionInput[]
-  upsert?: Prisma.WritingDraftUpsertWithWhereUniqueWithoutQuestionInput | Prisma.WritingDraftUpsertWithWhereUniqueWithoutQuestionInput[]
-  createMany?: Prisma.WritingDraftCreateManyQuestionInputEnvelope
+export type WritingDraftUpdateManyWithoutQuestionResponseNestedInput = {
+  create?: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionResponseInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionResponseInput> | Prisma.WritingDraftCreateWithoutQuestionResponseInput[] | Prisma.WritingDraftUncheckedCreateWithoutQuestionResponseInput[]
+  connectOrCreate?: Prisma.WritingDraftCreateOrConnectWithoutQuestionResponseInput | Prisma.WritingDraftCreateOrConnectWithoutQuestionResponseInput[]
+  upsert?: Prisma.WritingDraftUpsertWithWhereUniqueWithoutQuestionResponseInput | Prisma.WritingDraftUpsertWithWhereUniqueWithoutQuestionResponseInput[]
+  createMany?: Prisma.WritingDraftCreateManyQuestionResponseInputEnvelope
   set?: Prisma.WritingDraftWhereUniqueInput | Prisma.WritingDraftWhereUniqueInput[]
   disconnect?: Prisma.WritingDraftWhereUniqueInput | Prisma.WritingDraftWhereUniqueInput[]
   delete?: Prisma.WritingDraftWhereUniqueInput | Prisma.WritingDraftWhereUniqueInput[]
   connect?: Prisma.WritingDraftWhereUniqueInput | Prisma.WritingDraftWhereUniqueInput[]
-  update?: Prisma.WritingDraftUpdateWithWhereUniqueWithoutQuestionInput | Prisma.WritingDraftUpdateWithWhereUniqueWithoutQuestionInput[]
-  updateMany?: Prisma.WritingDraftUpdateManyWithWhereWithoutQuestionInput | Prisma.WritingDraftUpdateManyWithWhereWithoutQuestionInput[]
+  update?: Prisma.WritingDraftUpdateWithWhereUniqueWithoutQuestionResponseInput | Prisma.WritingDraftUpdateWithWhereUniqueWithoutQuestionResponseInput[]
+  updateMany?: Prisma.WritingDraftUpdateManyWithWhereWithoutQuestionResponseInput | Prisma.WritingDraftUpdateManyWithWhereWithoutQuestionResponseInput[]
   deleteMany?: Prisma.WritingDraftScalarWhereInput | Prisma.WritingDraftScalarWhereInput[]
 }
 
-export type WritingDraftUncheckedUpdateManyWithoutQuestionNestedInput = {
-  create?: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionInput> | Prisma.WritingDraftCreateWithoutQuestionInput[] | Prisma.WritingDraftUncheckedCreateWithoutQuestionInput[]
-  connectOrCreate?: Prisma.WritingDraftCreateOrConnectWithoutQuestionInput | Prisma.WritingDraftCreateOrConnectWithoutQuestionInput[]
-  upsert?: Prisma.WritingDraftUpsertWithWhereUniqueWithoutQuestionInput | Prisma.WritingDraftUpsertWithWhereUniqueWithoutQuestionInput[]
-  createMany?: Prisma.WritingDraftCreateManyQuestionInputEnvelope
+export type WritingDraftUncheckedUpdateManyWithoutQuestionResponseNestedInput = {
+  create?: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionResponseInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionResponseInput> | Prisma.WritingDraftCreateWithoutQuestionResponseInput[] | Prisma.WritingDraftUncheckedCreateWithoutQuestionResponseInput[]
+  connectOrCreate?: Prisma.WritingDraftCreateOrConnectWithoutQuestionResponseInput | Prisma.WritingDraftCreateOrConnectWithoutQuestionResponseInput[]
+  upsert?: Prisma.WritingDraftUpsertWithWhereUniqueWithoutQuestionResponseInput | Prisma.WritingDraftUpsertWithWhereUniqueWithoutQuestionResponseInput[]
+  createMany?: Prisma.WritingDraftCreateManyQuestionResponseInputEnvelope
   set?: Prisma.WritingDraftWhereUniqueInput | Prisma.WritingDraftWhereUniqueInput[]
   disconnect?: Prisma.WritingDraftWhereUniqueInput | Prisma.WritingDraftWhereUniqueInput[]
   delete?: Prisma.WritingDraftWhereUniqueInput | Prisma.WritingDraftWhereUniqueInput[]
   connect?: Prisma.WritingDraftWhereUniqueInput | Prisma.WritingDraftWhereUniqueInput[]
-  update?: Prisma.WritingDraftUpdateWithWhereUniqueWithoutQuestionInput | Prisma.WritingDraftUpdateWithWhereUniqueWithoutQuestionInput[]
-  updateMany?: Prisma.WritingDraftUpdateManyWithWhereWithoutQuestionInput | Prisma.WritingDraftUpdateManyWithWhereWithoutQuestionInput[]
+  update?: Prisma.WritingDraftUpdateWithWhereUniqueWithoutQuestionResponseInput | Prisma.WritingDraftUpdateWithWhereUniqueWithoutQuestionResponseInput[]
+  updateMany?: Prisma.WritingDraftUpdateManyWithWhereWithoutQuestionResponseInput | Prisma.WritingDraftUpdateManyWithWhereWithoutQuestionResponseInput[]
   deleteMany?: Prisma.WritingDraftScalarWhereInput | Prisma.WritingDraftScalarWhereInput[]
 }
 
-export type WritingDraftCreateWithoutQuestionInput = {
+export type WritingDraftCreateWithoutQuestionResponseInput = {
   id?: string
   content: string
   wordCount: number
   savedAt?: Date | string
 }
 
-export type WritingDraftUncheckedCreateWithoutQuestionInput = {
+export type WritingDraftUncheckedCreateWithoutQuestionResponseInput = {
   id?: string
   content: string
   wordCount: number
   savedAt?: Date | string
 }
 
-export type WritingDraftCreateOrConnectWithoutQuestionInput = {
+export type WritingDraftCreateOrConnectWithoutQuestionResponseInput = {
   where: Prisma.WritingDraftWhereUniqueInput
-  create: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionInput>
+  create: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionResponseInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionResponseInput>
 }
 
-export type WritingDraftCreateManyQuestionInputEnvelope = {
-  data: Prisma.WritingDraftCreateManyQuestionInput | Prisma.WritingDraftCreateManyQuestionInput[]
+export type WritingDraftCreateManyQuestionResponseInputEnvelope = {
+  data: Prisma.WritingDraftCreateManyQuestionResponseInput | Prisma.WritingDraftCreateManyQuestionResponseInput[]
   skipDuplicates?: boolean
 }
 
-export type WritingDraftUpsertWithWhereUniqueWithoutQuestionInput = {
+export type WritingDraftUpsertWithWhereUniqueWithoutQuestionResponseInput = {
   where: Prisma.WritingDraftWhereUniqueInput
-  update: Prisma.XOR<Prisma.WritingDraftUpdateWithoutQuestionInput, Prisma.WritingDraftUncheckedUpdateWithoutQuestionInput>
-  create: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionInput>
+  update: Prisma.XOR<Prisma.WritingDraftUpdateWithoutQuestionResponseInput, Prisma.WritingDraftUncheckedUpdateWithoutQuestionResponseInput>
+  create: Prisma.XOR<Prisma.WritingDraftCreateWithoutQuestionResponseInput, Prisma.WritingDraftUncheckedCreateWithoutQuestionResponseInput>
 }
 
-export type WritingDraftUpdateWithWhereUniqueWithoutQuestionInput = {
+export type WritingDraftUpdateWithWhereUniqueWithoutQuestionResponseInput = {
   where: Prisma.WritingDraftWhereUniqueInput
-  data: Prisma.XOR<Prisma.WritingDraftUpdateWithoutQuestionInput, Prisma.WritingDraftUncheckedUpdateWithoutQuestionInput>
+  data: Prisma.XOR<Prisma.WritingDraftUpdateWithoutQuestionResponseInput, Prisma.WritingDraftUncheckedUpdateWithoutQuestionResponseInput>
 }
 
-export type WritingDraftUpdateManyWithWhereWithoutQuestionInput = {
+export type WritingDraftUpdateManyWithWhereWithoutQuestionResponseInput = {
   where: Prisma.WritingDraftScalarWhereInput
-  data: Prisma.XOR<Prisma.WritingDraftUpdateManyMutationInput, Prisma.WritingDraftUncheckedUpdateManyWithoutQuestionInput>
+  data: Prisma.XOR<Prisma.WritingDraftUpdateManyMutationInput, Prisma.WritingDraftUncheckedUpdateManyWithoutQuestionResponseInput>
 }
 
 export type WritingDraftScalarWhereInput = {
@@ -454,28 +454,28 @@ export type WritingDraftScalarWhereInput = {
   savedAt?: Prisma.DateTimeFilter<"WritingDraft"> | Date | string
 }
 
-export type WritingDraftCreateManyQuestionInput = {
+export type WritingDraftCreateManyQuestionResponseInput = {
   id?: string
   content: string
   wordCount: number
   savedAt?: Date | string
 }
 
-export type WritingDraftUpdateWithoutQuestionInput = {
+export type WritingDraftUpdateWithoutQuestionResponseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   wordCount?: Prisma.IntFieldUpdateOperationsInput | number
   savedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type WritingDraftUncheckedUpdateWithoutQuestionInput = {
+export type WritingDraftUncheckedUpdateWithoutQuestionResponseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   wordCount?: Prisma.IntFieldUpdateOperationsInput | number
   savedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type WritingDraftUncheckedUpdateManyWithoutQuestionInput = {
+export type WritingDraftUncheckedUpdateManyWithoutQuestionResponseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   wordCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -490,7 +490,7 @@ export type WritingDraftSelect<ExtArgs extends runtime.Types.Extensions.Internal
   content?: boolean
   wordCount?: boolean
   savedAt?: boolean
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  questionResponse?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["writingDraft"]>
 
 export type WritingDraftSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -499,7 +499,7 @@ export type WritingDraftSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   content?: boolean
   wordCount?: boolean
   savedAt?: boolean
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  questionResponse?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["writingDraft"]>
 
 export type WritingDraftSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -508,7 +508,7 @@ export type WritingDraftSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   content?: boolean
   wordCount?: boolean
   savedAt?: boolean
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  questionResponse?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["writingDraft"]>
 
 export type WritingDraftSelectScalar = {
@@ -521,19 +521,19 @@ export type WritingDraftSelectScalar = {
 
 export type WritingDraftOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "questionResponseId" | "content" | "wordCount" | "savedAt", ExtArgs["result"]["writingDraft"]>
 export type WritingDraftInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  questionResponse?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
 }
 export type WritingDraftIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  questionResponse?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
 }
 export type WritingDraftIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  questionResponse?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
 }
 
 export type $WritingDraftPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "WritingDraft"
   objects: {
-    question: Prisma.$QuestionResponsePayload<ExtArgs>
+    questionResponse: Prisma.$QuestionResponsePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -935,7 +935,7 @@ readonly fields: WritingDraftFieldRefs;
  */
 export interface Prisma__WritingDraftClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  question<T extends Prisma.QuestionResponseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionResponseDefaultArgs<ExtArgs>>): Prisma.Prisma__QuestionResponseClient<runtime.Types.Result.GetResult<Prisma.$QuestionResponsePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  questionResponse<T extends Prisma.QuestionResponseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionResponseDefaultArgs<ExtArgs>>): Prisma.Prisma__QuestionResponseClient<runtime.Types.Result.GetResult<Prisma.$QuestionResponsePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

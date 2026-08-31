@@ -7,7 +7,7 @@ import {
   loginCandidate,
   logout,
   register,
-} from "@/modules/auth/auth.ctonroller";
+} from "@/modules/auth/auth.controller";
 import { auth } from "@/middlewares/auth";
 
 const router = Router();

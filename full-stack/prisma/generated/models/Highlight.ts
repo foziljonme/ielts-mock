@@ -38,7 +38,8 @@ export type HighlightSumAggregateOutputType = {
 
 export type HighlightMinAggregateOutputType = {
   id: string | null
-  questionResponseId: string | null
+  sectionProgressId: string | null
+  passageId: string | null
   startOffset: number | null
   endOffset: number | null
   color: string | null
@@ -46,7 +47,8 @@ export type HighlightMinAggregateOutputType = {
 
 export type HighlightMaxAggregateOutputType = {
   id: string | null
-  questionResponseId: string | null
+  sectionProgressId: string | null
+  passageId: string | null
   startOffset: number | null
   endOffset: number | null
   color: string | null
@@ -54,7 +56,8 @@ export type HighlightMaxAggregateOutputType = {
 
 export type HighlightCountAggregateOutputType = {
   id: number
-  questionResponseId: number
+  sectionProgressId: number
+  passageId: number
   startOffset: number
   endOffset: number
   color: number
@@ -74,7 +77,8 @@ export type HighlightSumAggregateInputType = {
 
 export type HighlightMinAggregateInputType = {
   id?: true
-  questionResponseId?: true
+  sectionProgressId?: true
+  passageId?: true
   startOffset?: true
   endOffset?: true
   color?: true
@@ -82,7 +86,8 @@ export type HighlightMinAggregateInputType = {
 
 export type HighlightMaxAggregateInputType = {
   id?: true
-  questionResponseId?: true
+  sectionProgressId?: true
+  passageId?: true
   startOffset?: true
   endOffset?: true
   color?: true
@@ -90,7 +95,8 @@ export type HighlightMaxAggregateInputType = {
 
 export type HighlightCountAggregateInputType = {
   id?: true
-  questionResponseId?: true
+  sectionProgressId?: true
+  passageId?: true
   startOffset?: true
   endOffset?: true
   color?: true
@@ -185,7 +191,8 @@ export type HighlightGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type HighlightGroupByOutputType = {
   id: string
-  questionResponseId: string
+  sectionProgressId: string
+  passageId: string
   startOffset: number
   endOffset: number
   color: string
@@ -216,20 +223,24 @@ export type HighlightWhereInput = {
   OR?: Prisma.HighlightWhereInput[]
   NOT?: Prisma.HighlightWhereInput | Prisma.HighlightWhereInput[]
   id?: Prisma.StringFilter<"Highlight"> | string
-  questionResponseId?: Prisma.StringFilter<"Highlight"> | string
+  sectionProgressId?: Prisma.StringFilter<"Highlight"> | string
+  passageId?: Prisma.StringFilter<"Highlight"> | string
   startOffset?: Prisma.IntFilter<"Highlight"> | number
   endOffset?: Prisma.IntFilter<"Highlight"> | number
   color?: Prisma.StringFilter<"Highlight"> | string
-  question?: Prisma.XOR<Prisma.QuestionResponseScalarRelationFilter, Prisma.QuestionResponseWhereInput>
+  sectionProgress?: Prisma.XOR<Prisma.SectionProgressScalarRelationFilter, Prisma.SectionProgressWhereInput>
+  passage?: Prisma.XOR<Prisma.PassageScalarRelationFilter, Prisma.PassageWhereInput>
 }
 
 export type HighlightOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  questionResponseId?: Prisma.SortOrder
+  sectionProgressId?: Prisma.SortOrder
+  passageId?: Prisma.SortOrder
   startOffset?: Prisma.SortOrder
   endOffset?: Prisma.SortOrder
   color?: Prisma.SortOrder
-  question?: Prisma.QuestionResponseOrderByWithRelationInput
+  sectionProgress?: Prisma.SectionProgressOrderByWithRelationInput
+  passage?: Prisma.PassageOrderByWithRelationInput
 }
 
 export type HighlightWhereUniqueInput = Prisma.AtLeast<{
@@ -237,16 +248,19 @@ export type HighlightWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.HighlightWhereInput | Prisma.HighlightWhereInput[]
   OR?: Prisma.HighlightWhereInput[]
   NOT?: Prisma.HighlightWhereInput | Prisma.HighlightWhereInput[]
-  questionResponseId?: Prisma.StringFilter<"Highlight"> | string
+  sectionProgressId?: Prisma.StringFilter<"Highlight"> | string
+  passageId?: Prisma.StringFilter<"Highlight"> | string
   startOffset?: Prisma.IntFilter<"Highlight"> | number
   endOffset?: Prisma.IntFilter<"Highlight"> | number
   color?: Prisma.StringFilter<"Highlight"> | string
-  question?: Prisma.XOR<Prisma.QuestionResponseScalarRelationFilter, Prisma.QuestionResponseWhereInput>
+  sectionProgress?: Prisma.XOR<Prisma.SectionProgressScalarRelationFilter, Prisma.SectionProgressWhereInput>
+  passage?: Prisma.XOR<Prisma.PassageScalarRelationFilter, Prisma.PassageWhereInput>
 }, "id">
 
 export type HighlightOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  questionResponseId?: Prisma.SortOrder
+  sectionProgressId?: Prisma.SortOrder
+  passageId?: Prisma.SortOrder
   startOffset?: Prisma.SortOrder
   endOffset?: Prisma.SortOrder
   color?: Prisma.SortOrder
@@ -262,7 +276,8 @@ export type HighlightScalarWhereWithAggregatesInput = {
   OR?: Prisma.HighlightScalarWhereWithAggregatesInput[]
   NOT?: Prisma.HighlightScalarWhereWithAggregatesInput | Prisma.HighlightScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Highlight"> | string
-  questionResponseId?: Prisma.StringWithAggregatesFilter<"Highlight"> | string
+  sectionProgressId?: Prisma.StringWithAggregatesFilter<"Highlight"> | string
+  passageId?: Prisma.StringWithAggregatesFilter<"Highlight"> | string
   startOffset?: Prisma.IntWithAggregatesFilter<"Highlight"> | number
   endOffset?: Prisma.IntWithAggregatesFilter<"Highlight"> | number
   color?: Prisma.StringWithAggregatesFilter<"Highlight"> | string
@@ -273,12 +288,14 @@ export type HighlightCreateInput = {
   startOffset: number
   endOffset: number
   color?: string
-  question: Prisma.QuestionResponseCreateNestedOneWithoutHighlightsInput
+  sectionProgress: Prisma.SectionProgressCreateNestedOneWithoutHighlightsInput
+  passage: Prisma.PassageCreateNestedOneWithoutHighlightsInput
 }
 
 export type HighlightUncheckedCreateInput = {
   id?: string
-  questionResponseId: string
+  sectionProgressId: string
+  passageId: string
   startOffset: number
   endOffset: number
   color?: string
@@ -289,12 +306,14 @@ export type HighlightUpdateInput = {
   startOffset?: Prisma.IntFieldUpdateOperationsInput | number
   endOffset?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  question?: Prisma.QuestionResponseUpdateOneRequiredWithoutHighlightsNestedInput
+  sectionProgress?: Prisma.SectionProgressUpdateOneRequiredWithoutHighlightsNestedInput
+  passage?: Prisma.PassageUpdateOneRequiredWithoutHighlightsNestedInput
 }
 
 export type HighlightUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionResponseId?: Prisma.StringFieldUpdateOperationsInput | string
+  sectionProgressId?: Prisma.StringFieldUpdateOperationsInput | string
+  passageId?: Prisma.StringFieldUpdateOperationsInput | string
   startOffset?: Prisma.IntFieldUpdateOperationsInput | number
   endOffset?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.StringFieldUpdateOperationsInput | string
@@ -302,7 +321,8 @@ export type HighlightUncheckedUpdateInput = {
 
 export type HighlightCreateManyInput = {
   id?: string
-  questionResponseId: string
+  sectionProgressId: string
+  passageId: string
   startOffset: number
   endOffset: number
   color?: string
@@ -317,7 +337,8 @@ export type HighlightUpdateManyMutationInput = {
 
 export type HighlightUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionResponseId?: Prisma.StringFieldUpdateOperationsInput | string
+  sectionProgressId?: Prisma.StringFieldUpdateOperationsInput | string
+  passageId?: Prisma.StringFieldUpdateOperationsInput | string
   startOffset?: Prisma.IntFieldUpdateOperationsInput | number
   endOffset?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.StringFieldUpdateOperationsInput | string
@@ -335,7 +356,8 @@ export type HighlightOrderByRelationAggregateInput = {
 
 export type HighlightCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  questionResponseId?: Prisma.SortOrder
+  sectionProgressId?: Prisma.SortOrder
+  passageId?: Prisma.SortOrder
   startOffset?: Prisma.SortOrder
   endOffset?: Prisma.SortOrder
   color?: Prisma.SortOrder
@@ -348,7 +370,8 @@ export type HighlightAvgOrderByAggregateInput = {
 
 export type HighlightMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  questionResponseId?: Prisma.SortOrder
+  sectionProgressId?: Prisma.SortOrder
+  passageId?: Prisma.SortOrder
   startOffset?: Prisma.SortOrder
   endOffset?: Prisma.SortOrder
   color?: Prisma.SortOrder
@@ -356,7 +379,8 @@ export type HighlightMaxOrderByAggregateInput = {
 
 export type HighlightMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  questionResponseId?: Prisma.SortOrder
+  sectionProgressId?: Prisma.SortOrder
+  passageId?: Prisma.SortOrder
   startOffset?: Prisma.SortOrder
   endOffset?: Prisma.SortOrder
   color?: Prisma.SortOrder
@@ -367,86 +391,130 @@ export type HighlightSumOrderByAggregateInput = {
   endOffset?: Prisma.SortOrder
 }
 
-export type HighlightCreateNestedManyWithoutQuestionInput = {
-  create?: Prisma.XOR<Prisma.HighlightCreateWithoutQuestionInput, Prisma.HighlightUncheckedCreateWithoutQuestionInput> | Prisma.HighlightCreateWithoutQuestionInput[] | Prisma.HighlightUncheckedCreateWithoutQuestionInput[]
-  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutQuestionInput | Prisma.HighlightCreateOrConnectWithoutQuestionInput[]
-  createMany?: Prisma.HighlightCreateManyQuestionInputEnvelope
+export type HighlightCreateNestedManyWithoutPassageInput = {
+  create?: Prisma.XOR<Prisma.HighlightCreateWithoutPassageInput, Prisma.HighlightUncheckedCreateWithoutPassageInput> | Prisma.HighlightCreateWithoutPassageInput[] | Prisma.HighlightUncheckedCreateWithoutPassageInput[]
+  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutPassageInput | Prisma.HighlightCreateOrConnectWithoutPassageInput[]
+  createMany?: Prisma.HighlightCreateManyPassageInputEnvelope
   connect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
 }
 
-export type HighlightUncheckedCreateNestedManyWithoutQuestionInput = {
-  create?: Prisma.XOR<Prisma.HighlightCreateWithoutQuestionInput, Prisma.HighlightUncheckedCreateWithoutQuestionInput> | Prisma.HighlightCreateWithoutQuestionInput[] | Prisma.HighlightUncheckedCreateWithoutQuestionInput[]
-  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutQuestionInput | Prisma.HighlightCreateOrConnectWithoutQuestionInput[]
-  createMany?: Prisma.HighlightCreateManyQuestionInputEnvelope
+export type HighlightUncheckedCreateNestedManyWithoutPassageInput = {
+  create?: Prisma.XOR<Prisma.HighlightCreateWithoutPassageInput, Prisma.HighlightUncheckedCreateWithoutPassageInput> | Prisma.HighlightCreateWithoutPassageInput[] | Prisma.HighlightUncheckedCreateWithoutPassageInput[]
+  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutPassageInput | Prisma.HighlightCreateOrConnectWithoutPassageInput[]
+  createMany?: Prisma.HighlightCreateManyPassageInputEnvelope
   connect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
 }
 
-export type HighlightUpdateManyWithoutQuestionNestedInput = {
-  create?: Prisma.XOR<Prisma.HighlightCreateWithoutQuestionInput, Prisma.HighlightUncheckedCreateWithoutQuestionInput> | Prisma.HighlightCreateWithoutQuestionInput[] | Prisma.HighlightUncheckedCreateWithoutQuestionInput[]
-  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutQuestionInput | Prisma.HighlightCreateOrConnectWithoutQuestionInput[]
-  upsert?: Prisma.HighlightUpsertWithWhereUniqueWithoutQuestionInput | Prisma.HighlightUpsertWithWhereUniqueWithoutQuestionInput[]
-  createMany?: Prisma.HighlightCreateManyQuestionInputEnvelope
+export type HighlightUpdateManyWithoutPassageNestedInput = {
+  create?: Prisma.XOR<Prisma.HighlightCreateWithoutPassageInput, Prisma.HighlightUncheckedCreateWithoutPassageInput> | Prisma.HighlightCreateWithoutPassageInput[] | Prisma.HighlightUncheckedCreateWithoutPassageInput[]
+  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutPassageInput | Prisma.HighlightCreateOrConnectWithoutPassageInput[]
+  upsert?: Prisma.HighlightUpsertWithWhereUniqueWithoutPassageInput | Prisma.HighlightUpsertWithWhereUniqueWithoutPassageInput[]
+  createMany?: Prisma.HighlightCreateManyPassageInputEnvelope
   set?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
   disconnect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
   delete?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
   connect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
-  update?: Prisma.HighlightUpdateWithWhereUniqueWithoutQuestionInput | Prisma.HighlightUpdateWithWhereUniqueWithoutQuestionInput[]
-  updateMany?: Prisma.HighlightUpdateManyWithWhereWithoutQuestionInput | Prisma.HighlightUpdateManyWithWhereWithoutQuestionInput[]
+  update?: Prisma.HighlightUpdateWithWhereUniqueWithoutPassageInput | Prisma.HighlightUpdateWithWhereUniqueWithoutPassageInput[]
+  updateMany?: Prisma.HighlightUpdateManyWithWhereWithoutPassageInput | Prisma.HighlightUpdateManyWithWhereWithoutPassageInput[]
   deleteMany?: Prisma.HighlightScalarWhereInput | Prisma.HighlightScalarWhereInput[]
 }
 
-export type HighlightUncheckedUpdateManyWithoutQuestionNestedInput = {
-  create?: Prisma.XOR<Prisma.HighlightCreateWithoutQuestionInput, Prisma.HighlightUncheckedCreateWithoutQuestionInput> | Prisma.HighlightCreateWithoutQuestionInput[] | Prisma.HighlightUncheckedCreateWithoutQuestionInput[]
-  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutQuestionInput | Prisma.HighlightCreateOrConnectWithoutQuestionInput[]
-  upsert?: Prisma.HighlightUpsertWithWhereUniqueWithoutQuestionInput | Prisma.HighlightUpsertWithWhereUniqueWithoutQuestionInput[]
-  createMany?: Prisma.HighlightCreateManyQuestionInputEnvelope
+export type HighlightUncheckedUpdateManyWithoutPassageNestedInput = {
+  create?: Prisma.XOR<Prisma.HighlightCreateWithoutPassageInput, Prisma.HighlightUncheckedCreateWithoutPassageInput> | Prisma.HighlightCreateWithoutPassageInput[] | Prisma.HighlightUncheckedCreateWithoutPassageInput[]
+  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutPassageInput | Prisma.HighlightCreateOrConnectWithoutPassageInput[]
+  upsert?: Prisma.HighlightUpsertWithWhereUniqueWithoutPassageInput | Prisma.HighlightUpsertWithWhereUniqueWithoutPassageInput[]
+  createMany?: Prisma.HighlightCreateManyPassageInputEnvelope
   set?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
   disconnect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
   delete?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
   connect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
-  update?: Prisma.HighlightUpdateWithWhereUniqueWithoutQuestionInput | Prisma.HighlightUpdateWithWhereUniqueWithoutQuestionInput[]
-  updateMany?: Prisma.HighlightUpdateManyWithWhereWithoutQuestionInput | Prisma.HighlightUpdateManyWithWhereWithoutQuestionInput[]
+  update?: Prisma.HighlightUpdateWithWhereUniqueWithoutPassageInput | Prisma.HighlightUpdateWithWhereUniqueWithoutPassageInput[]
+  updateMany?: Prisma.HighlightUpdateManyWithWhereWithoutPassageInput | Prisma.HighlightUpdateManyWithWhereWithoutPassageInput[]
   deleteMany?: Prisma.HighlightScalarWhereInput | Prisma.HighlightScalarWhereInput[]
 }
 
-export type HighlightCreateWithoutQuestionInput = {
+export type HighlightCreateNestedManyWithoutSectionProgressInput = {
+  create?: Prisma.XOR<Prisma.HighlightCreateWithoutSectionProgressInput, Prisma.HighlightUncheckedCreateWithoutSectionProgressInput> | Prisma.HighlightCreateWithoutSectionProgressInput[] | Prisma.HighlightUncheckedCreateWithoutSectionProgressInput[]
+  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutSectionProgressInput | Prisma.HighlightCreateOrConnectWithoutSectionProgressInput[]
+  createMany?: Prisma.HighlightCreateManySectionProgressInputEnvelope
+  connect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
+}
+
+export type HighlightUncheckedCreateNestedManyWithoutSectionProgressInput = {
+  create?: Prisma.XOR<Prisma.HighlightCreateWithoutSectionProgressInput, Prisma.HighlightUncheckedCreateWithoutSectionProgressInput> | Prisma.HighlightCreateWithoutSectionProgressInput[] | Prisma.HighlightUncheckedCreateWithoutSectionProgressInput[]
+  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutSectionProgressInput | Prisma.HighlightCreateOrConnectWithoutSectionProgressInput[]
+  createMany?: Prisma.HighlightCreateManySectionProgressInputEnvelope
+  connect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
+}
+
+export type HighlightUpdateManyWithoutSectionProgressNestedInput = {
+  create?: Prisma.XOR<Prisma.HighlightCreateWithoutSectionProgressInput, Prisma.HighlightUncheckedCreateWithoutSectionProgressInput> | Prisma.HighlightCreateWithoutSectionProgressInput[] | Prisma.HighlightUncheckedCreateWithoutSectionProgressInput[]
+  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutSectionProgressInput | Prisma.HighlightCreateOrConnectWithoutSectionProgressInput[]
+  upsert?: Prisma.HighlightUpsertWithWhereUniqueWithoutSectionProgressInput | Prisma.HighlightUpsertWithWhereUniqueWithoutSectionProgressInput[]
+  createMany?: Prisma.HighlightCreateManySectionProgressInputEnvelope
+  set?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
+  disconnect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
+  delete?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
+  connect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
+  update?: Prisma.HighlightUpdateWithWhereUniqueWithoutSectionProgressInput | Prisma.HighlightUpdateWithWhereUniqueWithoutSectionProgressInput[]
+  updateMany?: Prisma.HighlightUpdateManyWithWhereWithoutSectionProgressInput | Prisma.HighlightUpdateManyWithWhereWithoutSectionProgressInput[]
+  deleteMany?: Prisma.HighlightScalarWhereInput | Prisma.HighlightScalarWhereInput[]
+}
+
+export type HighlightUncheckedUpdateManyWithoutSectionProgressNestedInput = {
+  create?: Prisma.XOR<Prisma.HighlightCreateWithoutSectionProgressInput, Prisma.HighlightUncheckedCreateWithoutSectionProgressInput> | Prisma.HighlightCreateWithoutSectionProgressInput[] | Prisma.HighlightUncheckedCreateWithoutSectionProgressInput[]
+  connectOrCreate?: Prisma.HighlightCreateOrConnectWithoutSectionProgressInput | Prisma.HighlightCreateOrConnectWithoutSectionProgressInput[]
+  upsert?: Prisma.HighlightUpsertWithWhereUniqueWithoutSectionProgressInput | Prisma.HighlightUpsertWithWhereUniqueWithoutSectionProgressInput[]
+  createMany?: Prisma.HighlightCreateManySectionProgressInputEnvelope
+  set?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
+  disconnect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
+  delete?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
+  connect?: Prisma.HighlightWhereUniqueInput | Prisma.HighlightWhereUniqueInput[]
+  update?: Prisma.HighlightUpdateWithWhereUniqueWithoutSectionProgressInput | Prisma.HighlightUpdateWithWhereUniqueWithoutSectionProgressInput[]
+  updateMany?: Prisma.HighlightUpdateManyWithWhereWithoutSectionProgressInput | Prisma.HighlightUpdateManyWithWhereWithoutSectionProgressInput[]
+  deleteMany?: Prisma.HighlightScalarWhereInput | Prisma.HighlightScalarWhereInput[]
+}
+
+export type HighlightCreateWithoutPassageInput = {
   id?: string
+  startOffset: number
+  endOffset: number
+  color?: string
+  sectionProgress: Prisma.SectionProgressCreateNestedOneWithoutHighlightsInput
+}
+
+export type HighlightUncheckedCreateWithoutPassageInput = {
+  id?: string
+  sectionProgressId: string
   startOffset: number
   endOffset: number
   color?: string
 }
 
-export type HighlightUncheckedCreateWithoutQuestionInput = {
-  id?: string
-  startOffset: number
-  endOffset: number
-  color?: string
-}
-
-export type HighlightCreateOrConnectWithoutQuestionInput = {
+export type HighlightCreateOrConnectWithoutPassageInput = {
   where: Prisma.HighlightWhereUniqueInput
-  create: Prisma.XOR<Prisma.HighlightCreateWithoutQuestionInput, Prisma.HighlightUncheckedCreateWithoutQuestionInput>
+  create: Prisma.XOR<Prisma.HighlightCreateWithoutPassageInput, Prisma.HighlightUncheckedCreateWithoutPassageInput>
 }
 
-export type HighlightCreateManyQuestionInputEnvelope = {
-  data: Prisma.HighlightCreateManyQuestionInput | Prisma.HighlightCreateManyQuestionInput[]
+export type HighlightCreateManyPassageInputEnvelope = {
+  data: Prisma.HighlightCreateManyPassageInput | Prisma.HighlightCreateManyPassageInput[]
   skipDuplicates?: boolean
 }
 
-export type HighlightUpsertWithWhereUniqueWithoutQuestionInput = {
+export type HighlightUpsertWithWhereUniqueWithoutPassageInput = {
   where: Prisma.HighlightWhereUniqueInput
-  update: Prisma.XOR<Prisma.HighlightUpdateWithoutQuestionInput, Prisma.HighlightUncheckedUpdateWithoutQuestionInput>
-  create: Prisma.XOR<Prisma.HighlightCreateWithoutQuestionInput, Prisma.HighlightUncheckedCreateWithoutQuestionInput>
+  update: Prisma.XOR<Prisma.HighlightUpdateWithoutPassageInput, Prisma.HighlightUncheckedUpdateWithoutPassageInput>
+  create: Prisma.XOR<Prisma.HighlightCreateWithoutPassageInput, Prisma.HighlightUncheckedCreateWithoutPassageInput>
 }
 
-export type HighlightUpdateWithWhereUniqueWithoutQuestionInput = {
+export type HighlightUpdateWithWhereUniqueWithoutPassageInput = {
   where: Prisma.HighlightWhereUniqueInput
-  data: Prisma.XOR<Prisma.HighlightUpdateWithoutQuestionInput, Prisma.HighlightUncheckedUpdateWithoutQuestionInput>
+  data: Prisma.XOR<Prisma.HighlightUpdateWithoutPassageInput, Prisma.HighlightUncheckedUpdateWithoutPassageInput>
 }
 
-export type HighlightUpdateManyWithWhereWithoutQuestionInput = {
+export type HighlightUpdateManyWithWhereWithoutPassageInput = {
   where: Prisma.HighlightScalarWhereInput
-  data: Prisma.XOR<Prisma.HighlightUpdateManyMutationInput, Prisma.HighlightUncheckedUpdateManyWithoutQuestionInput>
+  data: Prisma.XOR<Prisma.HighlightUpdateManyMutationInput, Prisma.HighlightUncheckedUpdateManyWithoutPassageInput>
 }
 
 export type HighlightScalarWhereInput = {
@@ -454,35 +522,114 @@ export type HighlightScalarWhereInput = {
   OR?: Prisma.HighlightScalarWhereInput[]
   NOT?: Prisma.HighlightScalarWhereInput | Prisma.HighlightScalarWhereInput[]
   id?: Prisma.StringFilter<"Highlight"> | string
-  questionResponseId?: Prisma.StringFilter<"Highlight"> | string
+  sectionProgressId?: Prisma.StringFilter<"Highlight"> | string
+  passageId?: Prisma.StringFilter<"Highlight"> | string
   startOffset?: Prisma.IntFilter<"Highlight"> | number
   endOffset?: Prisma.IntFilter<"Highlight"> | number
   color?: Prisma.StringFilter<"Highlight"> | string
 }
 
-export type HighlightCreateManyQuestionInput = {
+export type HighlightCreateWithoutSectionProgressInput = {
   id?: string
+  startOffset: number
+  endOffset: number
+  color?: string
+  passage: Prisma.PassageCreateNestedOneWithoutHighlightsInput
+}
+
+export type HighlightUncheckedCreateWithoutSectionProgressInput = {
+  id?: string
+  passageId: string
   startOffset: number
   endOffset: number
   color?: string
 }
 
-export type HighlightUpdateWithoutQuestionInput = {
+export type HighlightCreateOrConnectWithoutSectionProgressInput = {
+  where: Prisma.HighlightWhereUniqueInput
+  create: Prisma.XOR<Prisma.HighlightCreateWithoutSectionProgressInput, Prisma.HighlightUncheckedCreateWithoutSectionProgressInput>
+}
+
+export type HighlightCreateManySectionProgressInputEnvelope = {
+  data: Prisma.HighlightCreateManySectionProgressInput | Prisma.HighlightCreateManySectionProgressInput[]
+  skipDuplicates?: boolean
+}
+
+export type HighlightUpsertWithWhereUniqueWithoutSectionProgressInput = {
+  where: Prisma.HighlightWhereUniqueInput
+  update: Prisma.XOR<Prisma.HighlightUpdateWithoutSectionProgressInput, Prisma.HighlightUncheckedUpdateWithoutSectionProgressInput>
+  create: Prisma.XOR<Prisma.HighlightCreateWithoutSectionProgressInput, Prisma.HighlightUncheckedCreateWithoutSectionProgressInput>
+}
+
+export type HighlightUpdateWithWhereUniqueWithoutSectionProgressInput = {
+  where: Prisma.HighlightWhereUniqueInput
+  data: Prisma.XOR<Prisma.HighlightUpdateWithoutSectionProgressInput, Prisma.HighlightUncheckedUpdateWithoutSectionProgressInput>
+}
+
+export type HighlightUpdateManyWithWhereWithoutSectionProgressInput = {
+  where: Prisma.HighlightScalarWhereInput
+  data: Prisma.XOR<Prisma.HighlightUpdateManyMutationInput, Prisma.HighlightUncheckedUpdateManyWithoutSectionProgressInput>
+}
+
+export type HighlightCreateManyPassageInput = {
+  id?: string
+  sectionProgressId: string
+  startOffset: number
+  endOffset: number
+  color?: string
+}
+
+export type HighlightUpdateWithoutPassageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  startOffset?: Prisma.IntFieldUpdateOperationsInput | number
+  endOffset?: Prisma.IntFieldUpdateOperationsInput | number
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  sectionProgress?: Prisma.SectionProgressUpdateOneRequiredWithoutHighlightsNestedInput
+}
+
+export type HighlightUncheckedUpdateWithoutPassageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sectionProgressId?: Prisma.StringFieldUpdateOperationsInput | string
   startOffset?: Prisma.IntFieldUpdateOperationsInput | number
   endOffset?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-export type HighlightUncheckedUpdateWithoutQuestionInput = {
+export type HighlightUncheckedUpdateManyWithoutPassageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sectionProgressId?: Prisma.StringFieldUpdateOperationsInput | string
   startOffset?: Prisma.IntFieldUpdateOperationsInput | number
   endOffset?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-export type HighlightUncheckedUpdateManyWithoutQuestionInput = {
+export type HighlightCreateManySectionProgressInput = {
+  id?: string
+  passageId: string
+  startOffset: number
+  endOffset: number
+  color?: string
+}
+
+export type HighlightUpdateWithoutSectionProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  startOffset?: Prisma.IntFieldUpdateOperationsInput | number
+  endOffset?: Prisma.IntFieldUpdateOperationsInput | number
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  passage?: Prisma.PassageUpdateOneRequiredWithoutHighlightsNestedInput
+}
+
+export type HighlightUncheckedUpdateWithoutSectionProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  passageId?: Prisma.StringFieldUpdateOperationsInput | string
+  startOffset?: Prisma.IntFieldUpdateOperationsInput | number
+  endOffset?: Prisma.IntFieldUpdateOperationsInput | number
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type HighlightUncheckedUpdateManyWithoutSectionProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  passageId?: Prisma.StringFieldUpdateOperationsInput | string
   startOffset?: Prisma.IntFieldUpdateOperationsInput | number
   endOffset?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.StringFieldUpdateOperationsInput | string
@@ -492,58 +639,70 @@ export type HighlightUncheckedUpdateManyWithoutQuestionInput = {
 
 export type HighlightSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  questionResponseId?: boolean
+  sectionProgressId?: boolean
+  passageId?: boolean
   startOffset?: boolean
   endOffset?: boolean
   color?: boolean
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.PassageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["highlight"]>
 
 export type HighlightSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  questionResponseId?: boolean
+  sectionProgressId?: boolean
+  passageId?: boolean
   startOffset?: boolean
   endOffset?: boolean
   color?: boolean
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.PassageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["highlight"]>
 
 export type HighlightSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  questionResponseId?: boolean
+  sectionProgressId?: boolean
+  passageId?: boolean
   startOffset?: boolean
   endOffset?: boolean
   color?: boolean
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.PassageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["highlight"]>
 
 export type HighlightSelectScalar = {
   id?: boolean
-  questionResponseId?: boolean
+  sectionProgressId?: boolean
+  passageId?: boolean
   startOffset?: boolean
   endOffset?: boolean
   color?: boolean
 }
 
-export type HighlightOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "questionResponseId" | "startOffset" | "endOffset" | "color", ExtArgs["result"]["highlight"]>
+export type HighlightOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sectionProgressId" | "passageId" | "startOffset" | "endOffset" | "color", ExtArgs["result"]["highlight"]>
 export type HighlightInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.PassageDefaultArgs<ExtArgs>
 }
 export type HighlightIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.PassageDefaultArgs<ExtArgs>
 }
 export type HighlightIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  question?: boolean | Prisma.QuestionResponseDefaultArgs<ExtArgs>
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.PassageDefaultArgs<ExtArgs>
 }
 
 export type $HighlightPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Highlight"
   objects: {
-    question: Prisma.$QuestionResponsePayload<ExtArgs>
+    sectionProgress: Prisma.$SectionProgressPayload<ExtArgs>
+    passage: Prisma.$PassagePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    questionResponseId: string
+    sectionProgressId: string
+    passageId: string
     startOffset: number
     endOffset: number
     color: string
@@ -941,7 +1100,8 @@ readonly fields: HighlightFieldRefs;
  */
 export interface Prisma__HighlightClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  question<T extends Prisma.QuestionResponseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionResponseDefaultArgs<ExtArgs>>): Prisma.Prisma__QuestionResponseClient<runtime.Types.Result.GetResult<Prisma.$QuestionResponsePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  sectionProgress<T extends Prisma.SectionProgressDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SectionProgressDefaultArgs<ExtArgs>>): Prisma.Prisma__SectionProgressClient<runtime.Types.Result.GetResult<Prisma.$SectionProgressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  passage<T extends Prisma.PassageDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PassageDefaultArgs<ExtArgs>>): Prisma.Prisma__PassageClient<runtime.Types.Result.GetResult<Prisma.$PassagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -972,7 +1132,8 @@ export interface Prisma__HighlightClient<T, Null = never, ExtArgs extends runtim
  */
 export interface HighlightFieldRefs {
   readonly id: Prisma.FieldRef<"Highlight", 'String'>
-  readonly questionResponseId: Prisma.FieldRef<"Highlight", 'String'>
+  readonly sectionProgressId: Prisma.FieldRef<"Highlight", 'String'>
+  readonly passageId: Prisma.FieldRef<"Highlight", 'String'>
   readonly startOffset: Prisma.FieldRef<"Highlight", 'Int'>
   readonly endOffset: Prisma.FieldRef<"Highlight", 'Int'>
   readonly color: Prisma.FieldRef<"Highlight", 'String'>

@@ -9,7 +9,7 @@ type AsyncRequestHandler = (
 export const asyncHandler =
   (fn: AsyncRequestHandler) =>
   (req: Request, res: Response, next: NextFunction) => {
-    console.log("Async handlerrr");
+    // console.log("Async handlerrr");
     Promise.resolve(fn(req, res, next)).catch((err) => {
       console.log("errrrr", err);
       return next(err);

@@ -31,6 +31,8 @@ export default function CandidateLoginPage() {
     await loginCandidate(accessCode, candidateId).then(isAuthenticated => {
       const examId = seat?.examId
       if (isAuthenticated) {
+        // if (seat.examId)
+        console.log('seat', seat)
         router.push(`/candidate/exam/${examId}/room`)
       }
     })
@@ -108,7 +110,7 @@ export default function CandidateLoginPage() {
           </p>
           <div className="flex flex-wrap gap-2 justify-center mt-2">
             {[
-              'zicf3g:icSb-ubKx-GO9f',
+              'flj5lt:xDO1-AUgp-vF0S',
               'unit4s:0hu1-WFQr-ay6W',
               '6sa5ts:Zr8A-FurS-iE6A',
             ].map(code => (

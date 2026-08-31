@@ -12,24 +12,24 @@ import {
 import seatsRouter from "./seats/seat.routes";
 import sectionsRouter from "./sections/sections.routes";
 
-const router = Router();
+const examsRouter = Router();
 
-router.post("/", auth(), createExam);
+examsRouter.post("/", auth(), createExam);
 
-router.get("/", auth(), listExams);
+examsRouter.get("/", auth(), listExams);
 
-router.get("/:examId", auth(), getExamById);
+examsRouter.get("/:examId", auth(), getExamById);
 
-router.patch("/:examId", auth(), updateExam);
+examsRouter.patch("/:examId", auth(), updateExam);
 
-router.delete("/:examId", auth(), deleteExam);
+examsRouter.delete("/:examId", auth(), deleteExam);
 
-router.post("/:examId/archive", auth(), archiveExam);
+examsRouter.post("/:examId/archive", auth(), archiveExam);
 
-router.use("/:examId/seats", seatsRouter);
+examsRouter.use("/:examId/seats", seatsRouter);
 
-router.post("/:examId/start", auth(), startExam);
+examsRouter.post("/:examId/start", auth(), startExam);
 
-router.use("/:examId/sections", sectionsRouter);
+examsRouter.use("/:examId/sections", sectionsRouter);
 
-export default router;
+export default examsRouter;

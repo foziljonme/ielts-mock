@@ -6,7 +6,7 @@ import { persist } from 'zustand/middleware'
 import { toast } from 'sonner'
 import { toastError } from '@/lib/notifications/toastError'
 import { toastSuccess } from '@/lib/notifications/toastSuccess'
-import { ISeat } from '@/types/seats'
+import { ISeat, ISeatWithExam } from '@/types/seats'
 import { ITenant } from '@/types/tenant'
 import { useTenantStore } from './tenant.store'
 
@@ -17,7 +17,7 @@ export enum AuthType {
 
 type AuthState = {
   user: IUser | null
-  seat: ISeat | null
+  seat: ISeatWithExam | null
   isAuthenticated: boolean
   type: AuthType | null
   isLoading: boolean

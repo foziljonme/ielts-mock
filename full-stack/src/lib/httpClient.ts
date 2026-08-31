@@ -81,6 +81,10 @@ class HttpClient {
     return this.axiosInstance.put<T>(url, data).then(res => res.data)
   }
 
+  async patch<T = any>(url: string, data: any) {
+    return this.axiosInstance.patch<T>(url, data).then(res => res.data)
+  }
+
   async delete<T = any>(url: string) {
     return this.axiosInstance.delete<T>(url).then(res => res.data)
   }

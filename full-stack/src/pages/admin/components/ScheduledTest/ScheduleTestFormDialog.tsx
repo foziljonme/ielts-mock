@@ -37,7 +37,7 @@ type ExamForm = {
 }
 
 export function ScheduleTestFormDialog() {
-  const { createSession, availableTests, fetchAvailableTests, sessions } =
+  const { scheduleExam, availableTests, fetchAvailableTests, exams } =
     useScheduleTestStore()
   const { tenant } = useTenantStore()
 
@@ -84,7 +84,7 @@ export function ScheduleTestFormDialog() {
         examDate: data.examDate,
         seats: data.candidates,
       }
-      await createSession(newTest)
+      await scheduleExam(newTest)
 
       // Reset form
       reset()
@@ -96,7 +96,7 @@ export function ScheduleTestFormDialog() {
     fetchAvailableTests()
   }, [fetchAvailableTests])
 
-  if (!tenant || !sessions) {
+  if (!tenant || !exams) {
     return null
   }
 
@@ -149,7 +149,7 @@ export function ScheduleTestFormDialog() {
               <SelectContent>
                 {availableTests.map(test => (
                   <SelectItem key={test.id} value={test.id}>
-                    {test.name}
+                    {test.title}
                   </SelectItem>
                 ))}
               </SelectContent>

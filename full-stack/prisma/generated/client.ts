@@ -53,15 +53,50 @@ export type TenantSeatUsage = Prisma.TenantSeatUsageModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model Test
+ * 
+ */
+export type Test = Prisma.TestModel
+/**
+ * Model AnswerKey
+ * 
+ */
+export type AnswerKey = Prisma.AnswerKeyModel
+/**
+ * Model Section
+ * 
+ */
+export type Section = Prisma.SectionModel
+/**
+ * Model Passage
+ * 
+ */
+export type Passage = Prisma.PassageModel
+/**
+ * Model AudioTrack
+ * 
+ */
+export type AudioTrack = Prisma.AudioTrackModel
+/**
+ * Model QuestionGroup
+ * 
+ */
+export type QuestionGroup = Prisma.QuestionGroupModel
+/**
+ * Model Question
+ * 
+ */
+export type Question = Prisma.QuestionModel
+/**
+ * Model ExamSectionProgress
+ * 
+ */
+export type ExamSectionProgress = Prisma.ExamSectionProgressModel
+/**
  * Model Exam
  * 
  */
 export type Exam = Prisma.ExamModel
-/**
- * Model ExamSection
- * 
- */
-export type ExamSection = Prisma.ExamSectionModel
 /**
  * Model ExamSeat
  * 
@@ -77,11 +112,6 @@ export type SectionProgress = Prisma.SectionProgressModel
  * 
  */
 export type QuestionResponse = Prisma.QuestionResponseModel
-/**
- * Model Answer
- * 
- */
-export type Answer = Prisma.AnswerModel
 /**
  * Model Highlight
  * 

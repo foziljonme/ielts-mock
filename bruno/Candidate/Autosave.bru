@@ -1,0 +1,26 @@
+meta {
+  name: Autosave
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{BASE_URL}}/candidate/current-section/responses/:questionId
+  body: json
+  auth: inherit
+}
+
+params:path {
+  questionId: seed-lt-q1
+}
+
+body:json {
+  {
+    "value": "Jack Sparrow"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

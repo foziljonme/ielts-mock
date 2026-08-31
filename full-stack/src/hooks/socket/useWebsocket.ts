@@ -4,10 +4,24 @@ import { useEffect, useRef } from 'react'
 import type { Socket } from 'socket.io-client'
 import { getSocket } from '@/hooks/socket/getSocket'
 import { ConnectionStatus, useSocketStore } from '@/stores/socket.store'
+import useExamStore from '@/stores/exam.store'
+
+const EVENTS = {
+  connect: 'connect',
+  disconnect: 'disconnect',
+  connectError: 'connect_error',
+
+  candidateJoined: 'exam:candidate:joined',
+  examCandidates: 'exam:candidates',
+  examCandidateLeft: 'exam:candidate:left',
+
+  sectionStarted: 'section:started',
+}
 
 export function useWebsocket() {
   const socketRef = useRef<Socket | null>(null)
 
+  const { fetchCurrentSection } = useExamStore()
   const {
     setConnectionStatus,
     candidateJoined,
@@ -34,13 +48,15 @@ export function useWebsocket() {
       setConnectionStatus(ConnectionStatus.Error)
     }
 
-    socket.on('connect', onConnect)
-    socket.on('disconnect', onDisconnect)
-    socket.on('connect_error', onConnectError)
+    socket.on(EVENTS.connect, onConnect)
+    socket.on(EVENTS.disconnect, onDisconnect)
+    socket.on(EVENTS.connectError, onConnectError)
 
-    socket.on('exam:candidate:joined', candidateJoined)
-    socket.on('exam:candidates', restoreCandidates)
-    socket.on('exam:candidate:left', candidateLeft)
+    socket.on(EVENTS.candidateJoined, candidateJoined)
+    socket.on(EVENTS.examCandidates, restoreCandidates)
+    socket.on(EVENTS.examCandidateLeft, candidateLeft)
+
+    socket.on(EVENTS.sectionStarted, fetchCurrentSection)
 
     setConnectionStatus(
       socket.connected
@@ -53,13 +69,15 @@ export function useWebsocket() {
     }
 
     return () => {
-      socket.off('connect', onConnect)
-      socket.off('disconnect', onDisconnect)
-      socket.off('connect_error', onConnectError)
+      socket.off(EVENTS.connect, onConnect)
+      socket.off(EVENTS.disconnect, onDisconnect)
+      socket.off(EVENTS.connectError, onConnectError)
 
-      socket.off('exam:candidate:joined', candidateJoined)
-      socket.off('exam:candidates', restoreCandidates)
-      socket.off('exam:candidate:left', candidateLeft)
+      socket.off(EVENTS.candidateJoined, candidateJoined)
+      socket.off(EVENTS.examCandidates, restoreCandidates)
+      socket.off(EVENTS.examCandidateLeft, candidateLeft)
+
+      socket.off(EVENTS.sectionStarted, fetchCurrentSection)
     }
   }, [setConnectionStatus, candidateJoined, restoreCandidates, candidateLeft])
 

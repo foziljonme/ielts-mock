@@ -30,11 +30,11 @@ export type ExamMinAggregateOutputType = {
   testId: string | null
   examDate: Date | null
   status: $Enums.ExamStatus | null
-  currentSection: $Enums.TestSection | null
   isArchived: boolean | null
   startTime: Date | null
   endTime: Date | null
   createdAt: Date | null
+  currentSkill: $Enums.TestSkill | null
 }
 
 export type ExamMaxAggregateOutputType = {
@@ -43,11 +43,11 @@ export type ExamMaxAggregateOutputType = {
   testId: string | null
   examDate: Date | null
   status: $Enums.ExamStatus | null
-  currentSection: $Enums.TestSection | null
   isArchived: boolean | null
   startTime: Date | null
   endTime: Date | null
   createdAt: Date | null
+  currentSkill: $Enums.TestSkill | null
 }
 
 export type ExamCountAggregateOutputType = {
@@ -56,11 +56,11 @@ export type ExamCountAggregateOutputType = {
   testId: number
   examDate: number
   status: number
-  currentSection: number
   isArchived: number
   startTime: number
   endTime: number
   createdAt: number
+  currentSkill: number
   _all: number
 }
 
@@ -71,11 +71,11 @@ export type ExamMinAggregateInputType = {
   testId?: true
   examDate?: true
   status?: true
-  currentSection?: true
   isArchived?: true
   startTime?: true
   endTime?: true
   createdAt?: true
+  currentSkill?: true
 }
 
 export type ExamMaxAggregateInputType = {
@@ -84,11 +84,11 @@ export type ExamMaxAggregateInputType = {
   testId?: true
   examDate?: true
   status?: true
-  currentSection?: true
   isArchived?: true
   startTime?: true
   endTime?: true
   createdAt?: true
+  currentSkill?: true
 }
 
 export type ExamCountAggregateInputType = {
@@ -97,11 +97,11 @@ export type ExamCountAggregateInputType = {
   testId?: true
   examDate?: true
   status?: true
-  currentSection?: true
   isArchived?: true
   startTime?: true
   endTime?: true
   createdAt?: true
+  currentSkill?: true
   _all?: true
 }
 
@@ -183,11 +183,11 @@ export type ExamGroupByOutputType = {
   testId: string
   examDate: Date
   status: $Enums.ExamStatus
-  currentSection: $Enums.TestSection | null
   isArchived: boolean
   startTime: Date | null
   endTime: Date | null
   createdAt: Date
+  currentSkill: $Enums.TestSkill | null
   _count: ExamCountAggregateOutputType | null
   _min: ExamMinAggregateOutputType | null
   _max: ExamMaxAggregateOutputType | null
@@ -217,14 +217,15 @@ export type ExamWhereInput = {
   testId?: Prisma.StringFilter<"Exam"> | string
   examDate?: Prisma.DateTimeFilter<"Exam"> | Date | string
   status?: Prisma.EnumExamStatusFilter<"Exam"> | $Enums.ExamStatus
-  currentSection?: Prisma.EnumTestSectionNullableFilter<"Exam"> | $Enums.TestSection | null
   isArchived?: Prisma.BoolFilter<"Exam"> | boolean
   startTime?: Prisma.DateTimeNullableFilter<"Exam"> | Date | string | null
   endTime?: Prisma.DateTimeNullableFilter<"Exam"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
-  sections?: Prisma.ExamSectionListRelationFilter
+  currentSkill?: Prisma.EnumTestSkillNullableFilter<"Exam"> | $Enums.TestSkill | null
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
+  test?: Prisma.XOR<Prisma.TestScalarRelationFilter, Prisma.TestWhereInput>
   seats?: Prisma.ExamSeatListRelationFilter
+  examSectionProgresses?: Prisma.ExamSectionProgressListRelationFilter
 }
 
 export type ExamOrderByWithRelationInput = {
@@ -233,14 +234,15 @@ export type ExamOrderByWithRelationInput = {
   testId?: Prisma.SortOrder
   examDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  currentSection?: Prisma.SortOrderInput | Prisma.SortOrder
   isArchived?: Prisma.SortOrder
   startTime?: Prisma.SortOrderInput | Prisma.SortOrder
   endTime?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  sections?: Prisma.ExamSectionOrderByRelationAggregateInput
+  currentSkill?: Prisma.SortOrderInput | Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
+  test?: Prisma.TestOrderByWithRelationInput
   seats?: Prisma.ExamSeatOrderByRelationAggregateInput
+  examSectionProgresses?: Prisma.ExamSectionProgressOrderByRelationAggregateInput
 }
 
 export type ExamWhereUniqueInput = Prisma.AtLeast<{
@@ -252,14 +254,15 @@ export type ExamWhereUniqueInput = Prisma.AtLeast<{
   testId?: Prisma.StringFilter<"Exam"> | string
   examDate?: Prisma.DateTimeFilter<"Exam"> | Date | string
   status?: Prisma.EnumExamStatusFilter<"Exam"> | $Enums.ExamStatus
-  currentSection?: Prisma.EnumTestSectionNullableFilter<"Exam"> | $Enums.TestSection | null
   isArchived?: Prisma.BoolFilter<"Exam"> | boolean
   startTime?: Prisma.DateTimeNullableFilter<"Exam"> | Date | string | null
   endTime?: Prisma.DateTimeNullableFilter<"Exam"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
-  sections?: Prisma.ExamSectionListRelationFilter
+  currentSkill?: Prisma.EnumTestSkillNullableFilter<"Exam"> | $Enums.TestSkill | null
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
+  test?: Prisma.XOR<Prisma.TestScalarRelationFilter, Prisma.TestWhereInput>
   seats?: Prisma.ExamSeatListRelationFilter
+  examSectionProgresses?: Prisma.ExamSectionProgressListRelationFilter
 }, "id">
 
 export type ExamOrderByWithAggregationInput = {
@@ -268,11 +271,11 @@ export type ExamOrderByWithAggregationInput = {
   testId?: Prisma.SortOrder
   examDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  currentSection?: Prisma.SortOrderInput | Prisma.SortOrder
   isArchived?: Prisma.SortOrder
   startTime?: Prisma.SortOrderInput | Prisma.SortOrder
   endTime?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  currentSkill?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ExamCountOrderByAggregateInput
   _max?: Prisma.ExamMaxOrderByAggregateInput
   _min?: Prisma.ExamMinOrderByAggregateInput
@@ -287,26 +290,26 @@ export type ExamScalarWhereWithAggregatesInput = {
   testId?: Prisma.StringWithAggregatesFilter<"Exam"> | string
   examDate?: Prisma.DateTimeWithAggregatesFilter<"Exam"> | Date | string
   status?: Prisma.EnumExamStatusWithAggregatesFilter<"Exam"> | $Enums.ExamStatus
-  currentSection?: Prisma.EnumTestSectionNullableWithAggregatesFilter<"Exam"> | $Enums.TestSection | null
   isArchived?: Prisma.BoolWithAggregatesFilter<"Exam"> | boolean
   startTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Exam"> | Date | string | null
   endTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Exam"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Exam"> | Date | string
+  currentSkill?: Prisma.EnumTestSkillNullableWithAggregatesFilter<"Exam"> | $Enums.TestSkill | null
 }
 
 export type ExamCreateInput = {
   id?: string
-  testId: string
   examDate: Date | string
   status?: $Enums.ExamStatus
-  currentSection?: $Enums.TestSection | null
   isArchived?: boolean
   startTime?: Date | string | null
   endTime?: Date | string | null
   createdAt?: Date | string
-  sections?: Prisma.ExamSectionCreateNestedManyWithoutExamInput
+  currentSkill?: $Enums.TestSkill | null
   tenant: Prisma.TenantCreateNestedOneWithoutExamsInput
+  test: Prisma.TestCreateNestedOneWithoutExamsInput
   seats?: Prisma.ExamSeatCreateNestedManyWithoutExamInput
+  examSectionProgresses?: Prisma.ExamSectionProgressCreateNestedManyWithoutExamInput
 }
 
 export type ExamUncheckedCreateInput = {
@@ -315,28 +318,28 @@ export type ExamUncheckedCreateInput = {
   testId: string
   examDate: Date | string
   status?: $Enums.ExamStatus
-  currentSection?: $Enums.TestSection | null
   isArchived?: boolean
   startTime?: Date | string | null
   endTime?: Date | string | null
   createdAt?: Date | string
-  sections?: Prisma.ExamSectionUncheckedCreateNestedManyWithoutExamInput
+  currentSkill?: $Enums.TestSkill | null
   seats?: Prisma.ExamSeatUncheckedCreateNestedManyWithoutExamInput
+  examSectionProgresses?: Prisma.ExamSectionProgressUncheckedCreateNestedManyWithoutExamInput
 }
 
 export type ExamUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  testId?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
-  currentSection?: Prisma.NullableEnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sections?: Prisma.ExamSectionUpdateManyWithoutExamNestedInput
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
   tenant?: Prisma.TenantUpdateOneRequiredWithoutExamsNestedInput
+  test?: Prisma.TestUpdateOneRequiredWithoutExamsNestedInput
   seats?: Prisma.ExamSeatUpdateManyWithoutExamNestedInput
+  examSectionProgresses?: Prisma.ExamSectionProgressUpdateManyWithoutExamNestedInput
 }
 
 export type ExamUncheckedUpdateInput = {
@@ -345,13 +348,13 @@ export type ExamUncheckedUpdateInput = {
   testId?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
-  currentSection?: Prisma.NullableEnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sections?: Prisma.ExamSectionUncheckedUpdateManyWithoutExamNestedInput
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
   seats?: Prisma.ExamSeatUncheckedUpdateManyWithoutExamNestedInput
+  examSectionProgresses?: Prisma.ExamSectionProgressUncheckedUpdateManyWithoutExamNestedInput
 }
 
 export type ExamCreateManyInput = {
@@ -360,23 +363,22 @@ export type ExamCreateManyInput = {
   testId: string
   examDate: Date | string
   status?: $Enums.ExamStatus
-  currentSection?: $Enums.TestSection | null
   isArchived?: boolean
   startTime?: Date | string | null
   endTime?: Date | string | null
   createdAt?: Date | string
+  currentSkill?: $Enums.TestSkill | null
 }
 
 export type ExamUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  testId?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
-  currentSection?: Prisma.NullableEnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
 }
 
 export type ExamUncheckedUpdateManyInput = {
@@ -385,11 +387,11 @@ export type ExamUncheckedUpdateManyInput = {
   testId?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
-  currentSection?: Prisma.NullableEnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
 }
 
 export type ExamListRelationFilter = {
@@ -402,17 +404,22 @@ export type ExamOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type ExamScalarRelationFilter = {
+  is?: Prisma.ExamWhereInput
+  isNot?: Prisma.ExamWhereInput
+}
+
 export type ExamCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   testId?: Prisma.SortOrder
   examDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  currentSection?: Prisma.SortOrder
   isArchived?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  currentSkill?: Prisma.SortOrder
 }
 
 export type ExamMaxOrderByAggregateInput = {
@@ -421,11 +428,11 @@ export type ExamMaxOrderByAggregateInput = {
   testId?: Prisma.SortOrder
   examDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  currentSection?: Prisma.SortOrder
   isArchived?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  currentSkill?: Prisma.SortOrder
 }
 
 export type ExamMinOrderByAggregateInput = {
@@ -434,16 +441,11 @@ export type ExamMinOrderByAggregateInput = {
   testId?: Prisma.SortOrder
   examDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  currentSection?: Prisma.SortOrder
   isArchived?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-}
-
-export type ExamScalarRelationFilter = {
-  is?: Prisma.ExamWhereInput
-  isNot?: Prisma.ExamWhereInput
+  currentSkill?: Prisma.SortOrder
 }
 
 export type ExamCreateNestedManyWithoutTenantInput = {
@@ -488,30 +490,68 @@ export type ExamUncheckedUpdateManyWithoutTenantNestedInput = {
   deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
 }
 
-export type EnumExamStatusFieldUpdateOperationsInput = {
-  set?: $Enums.ExamStatus
+export type ExamCreateNestedManyWithoutTestInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutTestInput, Prisma.ExamUncheckedCreateWithoutTestInput> | Prisma.ExamCreateWithoutTestInput[] | Prisma.ExamUncheckedCreateWithoutTestInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutTestInput | Prisma.ExamCreateOrConnectWithoutTestInput[]
+  createMany?: Prisma.ExamCreateManyTestInputEnvelope
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
 }
 
-export type NullableEnumTestSectionFieldUpdateOperationsInput = {
-  set?: $Enums.TestSection | null
+export type ExamUncheckedCreateNestedManyWithoutTestInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutTestInput, Prisma.ExamUncheckedCreateWithoutTestInput> | Prisma.ExamCreateWithoutTestInput[] | Prisma.ExamUncheckedCreateWithoutTestInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutTestInput | Prisma.ExamCreateOrConnectWithoutTestInput[]
+  createMany?: Prisma.ExamCreateManyTestInputEnvelope
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+}
+
+export type ExamUpdateManyWithoutTestNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutTestInput, Prisma.ExamUncheckedCreateWithoutTestInput> | Prisma.ExamCreateWithoutTestInput[] | Prisma.ExamUncheckedCreateWithoutTestInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutTestInput | Prisma.ExamCreateOrConnectWithoutTestInput[]
+  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutTestInput | Prisma.ExamUpsertWithWhereUniqueWithoutTestInput[]
+  createMany?: Prisma.ExamCreateManyTestInputEnvelope
+  set?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  disconnect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  delete?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  update?: Prisma.ExamUpdateWithWhereUniqueWithoutTestInput | Prisma.ExamUpdateWithWhereUniqueWithoutTestInput[]
+  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutTestInput | Prisma.ExamUpdateManyWithWhereWithoutTestInput[]
+  deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
+}
+
+export type ExamUncheckedUpdateManyWithoutTestNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutTestInput, Prisma.ExamUncheckedCreateWithoutTestInput> | Prisma.ExamCreateWithoutTestInput[] | Prisma.ExamUncheckedCreateWithoutTestInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutTestInput | Prisma.ExamCreateOrConnectWithoutTestInput[]
+  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutTestInput | Prisma.ExamUpsertWithWhereUniqueWithoutTestInput[]
+  createMany?: Prisma.ExamCreateManyTestInputEnvelope
+  set?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  disconnect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  delete?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  update?: Prisma.ExamUpdateWithWhereUniqueWithoutTestInput | Prisma.ExamUpdateWithWhereUniqueWithoutTestInput[]
+  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutTestInput | Prisma.ExamUpdateManyWithWhereWithoutTestInput[]
+  deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
+}
+
+export type ExamCreateNestedOneWithoutExamSectionProgressesInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutExamSectionProgressesInput, Prisma.ExamUncheckedCreateWithoutExamSectionProgressesInput>
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutExamSectionProgressesInput
+  connect?: Prisma.ExamWhereUniqueInput
+}
+
+export type ExamUpdateOneRequiredWithoutExamSectionProgressesNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutExamSectionProgressesInput, Prisma.ExamUncheckedCreateWithoutExamSectionProgressesInput>
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutExamSectionProgressesInput
+  upsert?: Prisma.ExamUpsertWithoutExamSectionProgressesInput
+  connect?: Prisma.ExamWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ExamUpdateToOneWithWhereWithoutExamSectionProgressesInput, Prisma.ExamUpdateWithoutExamSectionProgressesInput>, Prisma.ExamUncheckedUpdateWithoutExamSectionProgressesInput>
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
-export type ExamCreateNestedOneWithoutSectionsInput = {
-  create?: Prisma.XOR<Prisma.ExamCreateWithoutSectionsInput, Prisma.ExamUncheckedCreateWithoutSectionsInput>
-  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutSectionsInput
-  connect?: Prisma.ExamWhereUniqueInput
-}
-
-export type ExamUpdateOneRequiredWithoutSectionsNestedInput = {
-  create?: Prisma.XOR<Prisma.ExamCreateWithoutSectionsInput, Prisma.ExamUncheckedCreateWithoutSectionsInput>
-  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutSectionsInput
-  upsert?: Prisma.ExamUpsertWithoutSectionsInput
-  connect?: Prisma.ExamWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ExamUpdateToOneWithWhereWithoutSectionsInput, Prisma.ExamUpdateWithoutSectionsInput>, Prisma.ExamUncheckedUpdateWithoutSectionsInput>
+export type NullableEnumTestSkillFieldUpdateOperationsInput = {
+  set?: $Enums.TestSkill | null
 }
 
 export type ExamCreateNestedOneWithoutSeatsInput = {
@@ -530,16 +570,16 @@ export type ExamUpdateOneRequiredWithoutSeatsNestedInput = {
 
 export type ExamCreateWithoutTenantInput = {
   id?: string
-  testId: string
   examDate: Date | string
   status?: $Enums.ExamStatus
-  currentSection?: $Enums.TestSection | null
   isArchived?: boolean
   startTime?: Date | string | null
   endTime?: Date | string | null
   createdAt?: Date | string
-  sections?: Prisma.ExamSectionCreateNestedManyWithoutExamInput
+  currentSkill?: $Enums.TestSkill | null
+  test: Prisma.TestCreateNestedOneWithoutExamsInput
   seats?: Prisma.ExamSeatCreateNestedManyWithoutExamInput
+  examSectionProgresses?: Prisma.ExamSectionProgressCreateNestedManyWithoutExamInput
 }
 
 export type ExamUncheckedCreateWithoutTenantInput = {
@@ -547,13 +587,13 @@ export type ExamUncheckedCreateWithoutTenantInput = {
   testId: string
   examDate: Date | string
   status?: $Enums.ExamStatus
-  currentSection?: $Enums.TestSection | null
   isArchived?: boolean
   startTime?: Date | string | null
   endTime?: Date | string | null
   createdAt?: Date | string
-  sections?: Prisma.ExamSectionUncheckedCreateNestedManyWithoutExamInput
+  currentSkill?: $Enums.TestSkill | null
   seats?: Prisma.ExamSeatUncheckedCreateNestedManyWithoutExamInput
+  examSectionProgresses?: Prisma.ExamSectionProgressUncheckedCreateNestedManyWithoutExamInput
 }
 
 export type ExamCreateOrConnectWithoutTenantInput = {
@@ -591,97 +631,151 @@ export type ExamScalarWhereInput = {
   testId?: Prisma.StringFilter<"Exam"> | string
   examDate?: Prisma.DateTimeFilter<"Exam"> | Date | string
   status?: Prisma.EnumExamStatusFilter<"Exam"> | $Enums.ExamStatus
-  currentSection?: Prisma.EnumTestSectionNullableFilter<"Exam"> | $Enums.TestSection | null
   isArchived?: Prisma.BoolFilter<"Exam"> | boolean
   startTime?: Prisma.DateTimeNullableFilter<"Exam"> | Date | string | null
   endTime?: Prisma.DateTimeNullableFilter<"Exam"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
+  currentSkill?: Prisma.EnumTestSkillNullableFilter<"Exam"> | $Enums.TestSkill | null
 }
 
-export type ExamCreateWithoutSectionsInput = {
+export type ExamCreateWithoutTestInput = {
   id?: string
-  testId: string
   examDate: Date | string
   status?: $Enums.ExamStatus
-  currentSection?: $Enums.TestSection | null
   isArchived?: boolean
   startTime?: Date | string | null
   endTime?: Date | string | null
   createdAt?: Date | string
+  currentSkill?: $Enums.TestSkill | null
   tenant: Prisma.TenantCreateNestedOneWithoutExamsInput
+  seats?: Prisma.ExamSeatCreateNestedManyWithoutExamInput
+  examSectionProgresses?: Prisma.ExamSectionProgressCreateNestedManyWithoutExamInput
+}
+
+export type ExamUncheckedCreateWithoutTestInput = {
+  id?: string
+  tenantId: string
+  examDate: Date | string
+  status?: $Enums.ExamStatus
+  isArchived?: boolean
+  startTime?: Date | string | null
+  endTime?: Date | string | null
+  createdAt?: Date | string
+  currentSkill?: $Enums.TestSkill | null
+  seats?: Prisma.ExamSeatUncheckedCreateNestedManyWithoutExamInput
+  examSectionProgresses?: Prisma.ExamSectionProgressUncheckedCreateNestedManyWithoutExamInput
+}
+
+export type ExamCreateOrConnectWithoutTestInput = {
+  where: Prisma.ExamWhereUniqueInput
+  create: Prisma.XOR<Prisma.ExamCreateWithoutTestInput, Prisma.ExamUncheckedCreateWithoutTestInput>
+}
+
+export type ExamCreateManyTestInputEnvelope = {
+  data: Prisma.ExamCreateManyTestInput | Prisma.ExamCreateManyTestInput[]
+  skipDuplicates?: boolean
+}
+
+export type ExamUpsertWithWhereUniqueWithoutTestInput = {
+  where: Prisma.ExamWhereUniqueInput
+  update: Prisma.XOR<Prisma.ExamUpdateWithoutTestInput, Prisma.ExamUncheckedUpdateWithoutTestInput>
+  create: Prisma.XOR<Prisma.ExamCreateWithoutTestInput, Prisma.ExamUncheckedCreateWithoutTestInput>
+}
+
+export type ExamUpdateWithWhereUniqueWithoutTestInput = {
+  where: Prisma.ExamWhereUniqueInput
+  data: Prisma.XOR<Prisma.ExamUpdateWithoutTestInput, Prisma.ExamUncheckedUpdateWithoutTestInput>
+}
+
+export type ExamUpdateManyWithWhereWithoutTestInput = {
+  where: Prisma.ExamScalarWhereInput
+  data: Prisma.XOR<Prisma.ExamUpdateManyMutationInput, Prisma.ExamUncheckedUpdateManyWithoutTestInput>
+}
+
+export type ExamCreateWithoutExamSectionProgressesInput = {
+  id?: string
+  examDate: Date | string
+  status?: $Enums.ExamStatus
+  isArchived?: boolean
+  startTime?: Date | string | null
+  endTime?: Date | string | null
+  createdAt?: Date | string
+  currentSkill?: $Enums.TestSkill | null
+  tenant: Prisma.TenantCreateNestedOneWithoutExamsInput
+  test: Prisma.TestCreateNestedOneWithoutExamsInput
   seats?: Prisma.ExamSeatCreateNestedManyWithoutExamInput
 }
 
-export type ExamUncheckedCreateWithoutSectionsInput = {
+export type ExamUncheckedCreateWithoutExamSectionProgressesInput = {
   id?: string
   tenantId: string
   testId: string
   examDate: Date | string
   status?: $Enums.ExamStatus
-  currentSection?: $Enums.TestSection | null
   isArchived?: boolean
   startTime?: Date | string | null
   endTime?: Date | string | null
   createdAt?: Date | string
+  currentSkill?: $Enums.TestSkill | null
   seats?: Prisma.ExamSeatUncheckedCreateNestedManyWithoutExamInput
 }
 
-export type ExamCreateOrConnectWithoutSectionsInput = {
+export type ExamCreateOrConnectWithoutExamSectionProgressesInput = {
   where: Prisma.ExamWhereUniqueInput
-  create: Prisma.XOR<Prisma.ExamCreateWithoutSectionsInput, Prisma.ExamUncheckedCreateWithoutSectionsInput>
+  create: Prisma.XOR<Prisma.ExamCreateWithoutExamSectionProgressesInput, Prisma.ExamUncheckedCreateWithoutExamSectionProgressesInput>
 }
 
-export type ExamUpsertWithoutSectionsInput = {
-  update: Prisma.XOR<Prisma.ExamUpdateWithoutSectionsInput, Prisma.ExamUncheckedUpdateWithoutSectionsInput>
-  create: Prisma.XOR<Prisma.ExamCreateWithoutSectionsInput, Prisma.ExamUncheckedCreateWithoutSectionsInput>
+export type ExamUpsertWithoutExamSectionProgressesInput = {
+  update: Prisma.XOR<Prisma.ExamUpdateWithoutExamSectionProgressesInput, Prisma.ExamUncheckedUpdateWithoutExamSectionProgressesInput>
+  create: Prisma.XOR<Prisma.ExamCreateWithoutExamSectionProgressesInput, Prisma.ExamUncheckedCreateWithoutExamSectionProgressesInput>
   where?: Prisma.ExamWhereInput
 }
 
-export type ExamUpdateToOneWithWhereWithoutSectionsInput = {
+export type ExamUpdateToOneWithWhereWithoutExamSectionProgressesInput = {
   where?: Prisma.ExamWhereInput
-  data: Prisma.XOR<Prisma.ExamUpdateWithoutSectionsInput, Prisma.ExamUncheckedUpdateWithoutSectionsInput>
+  data: Prisma.XOR<Prisma.ExamUpdateWithoutExamSectionProgressesInput, Prisma.ExamUncheckedUpdateWithoutExamSectionProgressesInput>
 }
 
-export type ExamUpdateWithoutSectionsInput = {
+export type ExamUpdateWithoutExamSectionProgressesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  testId?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
-  currentSection?: Prisma.NullableEnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
   tenant?: Prisma.TenantUpdateOneRequiredWithoutExamsNestedInput
+  test?: Prisma.TestUpdateOneRequiredWithoutExamsNestedInput
   seats?: Prisma.ExamSeatUpdateManyWithoutExamNestedInput
 }
 
-export type ExamUncheckedUpdateWithoutSectionsInput = {
+export type ExamUncheckedUpdateWithoutExamSectionProgressesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   testId?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
-  currentSection?: Prisma.NullableEnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
   seats?: Prisma.ExamSeatUncheckedUpdateManyWithoutExamNestedInput
 }
 
 export type ExamCreateWithoutSeatsInput = {
   id?: string
-  testId: string
   examDate: Date | string
   status?: $Enums.ExamStatus
-  currentSection?: $Enums.TestSection | null
   isArchived?: boolean
   startTime?: Date | string | null
   endTime?: Date | string | null
   createdAt?: Date | string
-  sections?: Prisma.ExamSectionCreateNestedManyWithoutExamInput
+  currentSkill?: $Enums.TestSkill | null
   tenant: Prisma.TenantCreateNestedOneWithoutExamsInput
+  test: Prisma.TestCreateNestedOneWithoutExamsInput
+  examSectionProgresses?: Prisma.ExamSectionProgressCreateNestedManyWithoutExamInput
 }
 
 export type ExamUncheckedCreateWithoutSeatsInput = {
@@ -690,12 +784,12 @@ export type ExamUncheckedCreateWithoutSeatsInput = {
   testId: string
   examDate: Date | string
   status?: $Enums.ExamStatus
-  currentSection?: $Enums.TestSection | null
   isArchived?: boolean
   startTime?: Date | string | null
   endTime?: Date | string | null
   createdAt?: Date | string
-  sections?: Prisma.ExamSectionUncheckedCreateNestedManyWithoutExamInput
+  currentSkill?: $Enums.TestSkill | null
+  examSectionProgresses?: Prisma.ExamSectionProgressUncheckedCreateNestedManyWithoutExamInput
 }
 
 export type ExamCreateOrConnectWithoutSeatsInput = {
@@ -716,16 +810,16 @@ export type ExamUpdateToOneWithWhereWithoutSeatsInput = {
 
 export type ExamUpdateWithoutSeatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  testId?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
-  currentSection?: Prisma.NullableEnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sections?: Prisma.ExamSectionUpdateManyWithoutExamNestedInput
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
   tenant?: Prisma.TenantUpdateOneRequiredWithoutExamsNestedInput
+  test?: Prisma.TestUpdateOneRequiredWithoutExamsNestedInput
+  examSectionProgresses?: Prisma.ExamSectionProgressUpdateManyWithoutExamNestedInput
 }
 
 export type ExamUncheckedUpdateWithoutSeatsInput = {
@@ -734,12 +828,12 @@ export type ExamUncheckedUpdateWithoutSeatsInput = {
   testId?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
-  currentSection?: Prisma.NullableEnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sections?: Prisma.ExamSectionUncheckedUpdateManyWithoutExamNestedInput
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
+  examSectionProgresses?: Prisma.ExamSectionProgressUncheckedUpdateManyWithoutExamNestedInput
 }
 
 export type ExamCreateManyTenantInput = {
@@ -747,25 +841,25 @@ export type ExamCreateManyTenantInput = {
   testId: string
   examDate: Date | string
   status?: $Enums.ExamStatus
-  currentSection?: $Enums.TestSection | null
   isArchived?: boolean
   startTime?: Date | string | null
   endTime?: Date | string | null
   createdAt?: Date | string
+  currentSkill?: $Enums.TestSkill | null
 }
 
 export type ExamUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  testId?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
-  currentSection?: Prisma.NullableEnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sections?: Prisma.ExamSectionUpdateManyWithoutExamNestedInput
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
+  test?: Prisma.TestUpdateOneRequiredWithoutExamsNestedInput
   seats?: Prisma.ExamSeatUpdateManyWithoutExamNestedInput
+  examSectionProgresses?: Prisma.ExamSectionProgressUpdateManyWithoutExamNestedInput
 }
 
 export type ExamUncheckedUpdateWithoutTenantInput = {
@@ -773,13 +867,13 @@ export type ExamUncheckedUpdateWithoutTenantInput = {
   testId?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
-  currentSection?: Prisma.NullableEnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sections?: Prisma.ExamSectionUncheckedUpdateManyWithoutExamNestedInput
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
   seats?: Prisma.ExamSeatUncheckedUpdateManyWithoutExamNestedInput
+  examSectionProgresses?: Prisma.ExamSectionProgressUncheckedUpdateManyWithoutExamNestedInput
 }
 
 export type ExamUncheckedUpdateManyWithoutTenantInput = {
@@ -787,11 +881,63 @@ export type ExamUncheckedUpdateManyWithoutTenantInput = {
   testId?: Prisma.StringFieldUpdateOperationsInput | string
   examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
-  currentSection?: Prisma.NullableEnumTestSectionFieldUpdateOperationsInput | $Enums.TestSection | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
+}
+
+export type ExamCreateManyTestInput = {
+  id?: string
+  tenantId: string
+  examDate: Date | string
+  status?: $Enums.ExamStatus
+  isArchived?: boolean
+  startTime?: Date | string | null
+  endTime?: Date | string | null
+  createdAt?: Date | string
+  currentSkill?: $Enums.TestSkill | null
+}
+
+export type ExamUpdateWithoutTestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutExamsNestedInput
+  seats?: Prisma.ExamSeatUpdateManyWithoutExamNestedInput
+  examSectionProgresses?: Prisma.ExamSectionProgressUpdateManyWithoutExamNestedInput
+}
+
+export type ExamUncheckedUpdateWithoutTestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
+  seats?: Prisma.ExamSeatUncheckedUpdateManyWithoutExamNestedInput
+  examSectionProgresses?: Prisma.ExamSectionProgressUncheckedUpdateManyWithoutExamNestedInput
+}
+
+export type ExamUncheckedUpdateManyWithoutTestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  examDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumExamStatusFieldUpdateOperationsInput | $Enums.ExamStatus
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSkill?: Prisma.NullableEnumTestSkillFieldUpdateOperationsInput | $Enums.TestSkill | null
 }
 
 
@@ -800,13 +946,13 @@ export type ExamUncheckedUpdateManyWithoutTenantInput = {
  */
 
 export type ExamCountOutputType = {
-  sections: number
   seats: number
+  examSectionProgresses: number
 }
 
 export type ExamCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  sections?: boolean | ExamCountOutputTypeCountSectionsArgs
   seats?: boolean | ExamCountOutputTypeCountSeatsArgs
+  examSectionProgresses?: boolean | ExamCountOutputTypeCountExamSectionProgressesArgs
 }
 
 /**
@@ -822,15 +968,15 @@ export type ExamCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * ExamCountOutputType without action
  */
-export type ExamCountOutputTypeCountSectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ExamSectionWhereInput
+export type ExamCountOutputTypeCountSeatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ExamSeatWhereInput
 }
 
 /**
  * ExamCountOutputType without action
  */
-export type ExamCountOutputTypeCountSeatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ExamSeatWhereInput
+export type ExamCountOutputTypeCountExamSectionProgressesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ExamSectionProgressWhereInput
 }
 
 
@@ -840,14 +986,15 @@ export type ExamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   testId?: boolean
   examDate?: boolean
   status?: boolean
-  currentSection?: boolean
   isArchived?: boolean
   startTime?: boolean
   endTime?: boolean
   createdAt?: boolean
-  sections?: boolean | Prisma.Exam$sectionsArgs<ExtArgs>
+  currentSkill?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  test?: boolean | Prisma.TestDefaultArgs<ExtArgs>
   seats?: boolean | Prisma.Exam$seatsArgs<ExtArgs>
+  examSectionProgresses?: boolean | Prisma.Exam$examSectionProgressesArgs<ExtArgs>
   _count?: boolean | Prisma.ExamCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["exam"]>
 
@@ -857,12 +1004,13 @@ export type ExamSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   testId?: boolean
   examDate?: boolean
   status?: boolean
-  currentSection?: boolean
   isArchived?: boolean
   startTime?: boolean
   endTime?: boolean
   createdAt?: boolean
+  currentSkill?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  test?: boolean | Prisma.TestDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["exam"]>
 
 export type ExamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -871,12 +1019,13 @@ export type ExamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   testId?: boolean
   examDate?: boolean
   status?: boolean
-  currentSection?: boolean
   isArchived?: boolean
   startTime?: boolean
   endTime?: boolean
   createdAt?: boolean
+  currentSkill?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  test?: boolean | Prisma.TestDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["exam"]>
 
 export type ExamSelectScalar = {
@@ -885,33 +1034,37 @@ export type ExamSelectScalar = {
   testId?: boolean
   examDate?: boolean
   status?: boolean
-  currentSection?: boolean
   isArchived?: boolean
   startTime?: boolean
   endTime?: boolean
   createdAt?: boolean
+  currentSkill?: boolean
 }
 
-export type ExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "testId" | "examDate" | "status" | "currentSection" | "isArchived" | "startTime" | "endTime" | "createdAt", ExtArgs["result"]["exam"]>
+export type ExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "testId" | "examDate" | "status" | "isArchived" | "startTime" | "endTime" | "createdAt" | "currentSkill", ExtArgs["result"]["exam"]>
 export type ExamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  sections?: boolean | Prisma.Exam$sectionsArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  test?: boolean | Prisma.TestDefaultArgs<ExtArgs>
   seats?: boolean | Prisma.Exam$seatsArgs<ExtArgs>
+  examSectionProgresses?: boolean | Prisma.Exam$examSectionProgressesArgs<ExtArgs>
   _count?: boolean | Prisma.ExamCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ExamIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  test?: boolean | Prisma.TestDefaultArgs<ExtArgs>
 }
 export type ExamIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  test?: boolean | Prisma.TestDefaultArgs<ExtArgs>
 }
 
 export type $ExamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Exam"
   objects: {
-    sections: Prisma.$ExamSectionPayload<ExtArgs>[]
     tenant: Prisma.$TenantPayload<ExtArgs>
+    test: Prisma.$TestPayload<ExtArgs>
     seats: Prisma.$ExamSeatPayload<ExtArgs>[]
+    examSectionProgresses: Prisma.$ExamSectionProgressPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -919,11 +1072,11 @@ export type $ExamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     testId: string
     examDate: Date
     status: $Enums.ExamStatus
-    currentSection: $Enums.TestSection | null
     isArchived: boolean
     startTime: Date | null
     endTime: Date | null
     createdAt: Date
+    currentSkill: $Enums.TestSkill | null
   }, ExtArgs["result"]["exam"]>
   composites: {}
 }
@@ -1318,9 +1471,10 @@ readonly fields: ExamFieldRefs;
  */
 export interface Prisma__ExamClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  sections<T extends Prisma.Exam$sectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Exam$sectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamSectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  test<T extends Prisma.TestDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TestDefaultArgs<ExtArgs>>): Prisma.Prisma__TestClient<runtime.Types.Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   seats<T extends Prisma.Exam$seatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Exam$seatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamSeatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  examSectionProgresses<T extends Prisma.Exam$examSectionProgressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Exam$examSectionProgressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamSectionProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1355,11 +1509,11 @@ export interface ExamFieldRefs {
   readonly testId: Prisma.FieldRef<"Exam", 'String'>
   readonly examDate: Prisma.FieldRef<"Exam", 'DateTime'>
   readonly status: Prisma.FieldRef<"Exam", 'ExamStatus'>
-  readonly currentSection: Prisma.FieldRef<"Exam", 'TestSection'>
   readonly isArchived: Prisma.FieldRef<"Exam", 'Boolean'>
   readonly startTime: Prisma.FieldRef<"Exam", 'DateTime'>
   readonly endTime: Prisma.FieldRef<"Exam", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Exam", 'DateTime'>
+  readonly currentSkill: Prisma.FieldRef<"Exam", 'TestSkill'>
 }
     
 
@@ -1756,30 +1910,6 @@ export type ExamDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * Exam.sections
- */
-export type Exam$sectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the ExamSection
-   */
-  select?: Prisma.ExamSectionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the ExamSection
-   */
-  omit?: Prisma.ExamSectionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ExamSectionInclude<ExtArgs> | null
-  where?: Prisma.ExamSectionWhereInput
-  orderBy?: Prisma.ExamSectionOrderByWithRelationInput | Prisma.ExamSectionOrderByWithRelationInput[]
-  cursor?: Prisma.ExamSectionWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ExamSectionScalarFieldEnum | Prisma.ExamSectionScalarFieldEnum[]
-}
-
-/**
  * Exam.seats
  */
 export type Exam$seatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1801,6 +1931,30 @@ export type Exam$seatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.ExamSeatScalarFieldEnum | Prisma.ExamSeatScalarFieldEnum[]
+}
+
+/**
+ * Exam.examSectionProgresses
+ */
+export type Exam$examSectionProgressesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ExamSectionProgress
+   */
+  select?: Prisma.ExamSectionProgressSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ExamSectionProgress
+   */
+  omit?: Prisma.ExamSectionProgressOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExamSectionProgressInclude<ExtArgs> | null
+  where?: Prisma.ExamSectionProgressWhereInput
+  orderBy?: Prisma.ExamSectionProgressOrderByWithRelationInput | Prisma.ExamSectionProgressOrderByWithRelationInput[]
+  cursor?: Prisma.ExamSectionProgressWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ExamSectionProgressScalarFieldEnum | Prisma.ExamSectionProgressScalarFieldEnum[]
 }
 
 /**

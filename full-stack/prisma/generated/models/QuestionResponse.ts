@@ -20,58 +20,90 @@ export type QuestionResponseModel = runtime.Types.Result.DefaultSelection<Prisma
 
 export type AggregateQuestionResponse = {
   _count: QuestionResponseCountAggregateOutputType | null
+  _avg: QuestionResponseAvgAggregateOutputType | null
+  _sum: QuestionResponseSumAggregateOutputType | null
   _min: QuestionResponseMinAggregateOutputType | null
   _max: QuestionResponseMaxAggregateOutputType | null
 }
 
+export type QuestionResponseAvgAggregateOutputType = {
+  wordCount: number | null
+}
+
+export type QuestionResponseSumAggregateOutputType = {
+  wordCount: number | null
+}
+
 export type QuestionResponseMinAggregateOutputType = {
   id: string | null
-  sectionId: string | null
+  sectionProgressId: string | null
   questionId: string | null
+  wordCount: number | null
   isFlagged: boolean | null
   visitedAt: Date | null
+  answeredAt: Date | null
 }
 
 export type QuestionResponseMaxAggregateOutputType = {
   id: string | null
-  sectionId: string | null
+  sectionProgressId: string | null
   questionId: string | null
+  wordCount: number | null
   isFlagged: boolean | null
   visitedAt: Date | null
+  answeredAt: Date | null
 }
 
 export type QuestionResponseCountAggregateOutputType = {
   id: number
-  sectionId: number
+  sectionProgressId: number
   questionId: number
+  value: number
+  wordCount: number
   isFlagged: number
   visitedAt: number
+  answeredAt: number
   _all: number
 }
 
 
+export type QuestionResponseAvgAggregateInputType = {
+  wordCount?: true
+}
+
+export type QuestionResponseSumAggregateInputType = {
+  wordCount?: true
+}
+
 export type QuestionResponseMinAggregateInputType = {
   id?: true
-  sectionId?: true
+  sectionProgressId?: true
   questionId?: true
+  wordCount?: true
   isFlagged?: true
   visitedAt?: true
+  answeredAt?: true
 }
 
 export type QuestionResponseMaxAggregateInputType = {
   id?: true
-  sectionId?: true
+  sectionProgressId?: true
   questionId?: true
+  wordCount?: true
   isFlagged?: true
   visitedAt?: true
+  answeredAt?: true
 }
 
 export type QuestionResponseCountAggregateInputType = {
   id?: true
-  sectionId?: true
+  sectionProgressId?: true
   questionId?: true
+  value?: true
+  wordCount?: true
   isFlagged?: true
   visitedAt?: true
+  answeredAt?: true
   _all?: true
 }
 
@@ -113,6 +145,18 @@ export type QuestionResponseAggregateArgs<ExtArgs extends runtime.Types.Extensio
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: QuestionResponseAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: QuestionResponseSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: QuestionResponseMinAggregateInputType
@@ -143,17 +187,24 @@ export type QuestionResponseGroupByArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   _count?: QuestionResponseCountAggregateInputType | true
+  _avg?: QuestionResponseAvgAggregateInputType
+  _sum?: QuestionResponseSumAggregateInputType
   _min?: QuestionResponseMinAggregateInputType
   _max?: QuestionResponseMaxAggregateInputType
 }
 
 export type QuestionResponseGroupByOutputType = {
   id: string
-  sectionId: string
+  sectionProgressId: string
   questionId: string
+  value: runtime.JsonValue | null
+  wordCount: number | null
   isFlagged: boolean
   visitedAt: Date | null
+  answeredAt: Date | null
   _count: QuestionResponseCountAggregateOutputType | null
+  _avg: QuestionResponseAvgAggregateOutputType | null
+  _sum: QuestionResponseSumAggregateOutputType | null
   _min: QuestionResponseMinAggregateOutputType | null
   _max: QuestionResponseMaxAggregateOutputType | null
 }
@@ -178,53 +229,64 @@ export type QuestionResponseWhereInput = {
   OR?: Prisma.QuestionResponseWhereInput[]
   NOT?: Prisma.QuestionResponseWhereInput | Prisma.QuestionResponseWhereInput[]
   id?: Prisma.StringFilter<"QuestionResponse"> | string
-  sectionId?: Prisma.StringFilter<"QuestionResponse"> | string
+  sectionProgressId?: Prisma.StringFilter<"QuestionResponse"> | string
   questionId?: Prisma.StringFilter<"QuestionResponse"> | string
+  value?: Prisma.JsonNullableFilter<"QuestionResponse">
+  wordCount?: Prisma.IntNullableFilter<"QuestionResponse"> | number | null
   isFlagged?: Prisma.BoolFilter<"QuestionResponse"> | boolean
   visitedAt?: Prisma.DateTimeNullableFilter<"QuestionResponse"> | Date | string | null
-  section?: Prisma.XOR<Prisma.SectionProgressScalarRelationFilter, Prisma.SectionProgressWhereInput>
-  answer?: Prisma.XOR<Prisma.AnswerNullableScalarRelationFilter, Prisma.AnswerWhereInput> | null
-  highlights?: Prisma.HighlightListRelationFilter
+  answeredAt?: Prisma.DateTimeNullableFilter<"QuestionResponse"> | Date | string | null
+  sectionProgress?: Prisma.XOR<Prisma.SectionProgressScalarRelationFilter, Prisma.SectionProgressWhereInput>
+  question?: Prisma.XOR<Prisma.QuestionScalarRelationFilter, Prisma.QuestionWhereInput>
   drafts?: Prisma.WritingDraftListRelationFilter
 }
 
 export type QuestionResponseOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  sectionId?: Prisma.SortOrder
+  sectionProgressId?: Prisma.SortOrder
   questionId?: Prisma.SortOrder
+  value?: Prisma.SortOrderInput | Prisma.SortOrder
+  wordCount?: Prisma.SortOrderInput | Prisma.SortOrder
   isFlagged?: Prisma.SortOrder
   visitedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  section?: Prisma.SectionProgressOrderByWithRelationInput
-  answer?: Prisma.AnswerOrderByWithRelationInput
-  highlights?: Prisma.HighlightOrderByRelationAggregateInput
+  answeredAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  sectionProgress?: Prisma.SectionProgressOrderByWithRelationInput
+  question?: Prisma.QuestionOrderByWithRelationInput
   drafts?: Prisma.WritingDraftOrderByRelationAggregateInput
 }
 
 export type QuestionResponseWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  sectionId_questionId?: Prisma.QuestionResponseSectionIdQuestionIdCompoundUniqueInput
+  sectionProgressId_questionId?: Prisma.QuestionResponseSectionProgressIdQuestionIdCompoundUniqueInput
   AND?: Prisma.QuestionResponseWhereInput | Prisma.QuestionResponseWhereInput[]
   OR?: Prisma.QuestionResponseWhereInput[]
   NOT?: Prisma.QuestionResponseWhereInput | Prisma.QuestionResponseWhereInput[]
-  sectionId?: Prisma.StringFilter<"QuestionResponse"> | string
+  sectionProgressId?: Prisma.StringFilter<"QuestionResponse"> | string
   questionId?: Prisma.StringFilter<"QuestionResponse"> | string
+  value?: Prisma.JsonNullableFilter<"QuestionResponse">
+  wordCount?: Prisma.IntNullableFilter<"QuestionResponse"> | number | null
   isFlagged?: Prisma.BoolFilter<"QuestionResponse"> | boolean
   visitedAt?: Prisma.DateTimeNullableFilter<"QuestionResponse"> | Date | string | null
-  section?: Prisma.XOR<Prisma.SectionProgressScalarRelationFilter, Prisma.SectionProgressWhereInput>
-  answer?: Prisma.XOR<Prisma.AnswerNullableScalarRelationFilter, Prisma.AnswerWhereInput> | null
-  highlights?: Prisma.HighlightListRelationFilter
+  answeredAt?: Prisma.DateTimeNullableFilter<"QuestionResponse"> | Date | string | null
+  sectionProgress?: Prisma.XOR<Prisma.SectionProgressScalarRelationFilter, Prisma.SectionProgressWhereInput>
+  question?: Prisma.XOR<Prisma.QuestionScalarRelationFilter, Prisma.QuestionWhereInput>
   drafts?: Prisma.WritingDraftListRelationFilter
-}, "id" | "sectionId_questionId">
+}, "id" | "sectionProgressId_questionId">
 
 export type QuestionResponseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  sectionId?: Prisma.SortOrder
+  sectionProgressId?: Prisma.SortOrder
   questionId?: Prisma.SortOrder
+  value?: Prisma.SortOrderInput | Prisma.SortOrder
+  wordCount?: Prisma.SortOrderInput | Prisma.SortOrder
   isFlagged?: Prisma.SortOrder
   visitedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  answeredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.QuestionResponseCountOrderByAggregateInput
+  _avg?: Prisma.QuestionResponseAvgOrderByAggregateInput
   _max?: Prisma.QuestionResponseMaxOrderByAggregateInput
   _min?: Prisma.QuestionResponseMinOrderByAggregateInput
+  _sum?: Prisma.QuestionResponseSumOrderByAggregateInput
 }
 
 export type QuestionResponseScalarWhereWithAggregatesInput = {
@@ -232,77 +294,92 @@ export type QuestionResponseScalarWhereWithAggregatesInput = {
   OR?: Prisma.QuestionResponseScalarWhereWithAggregatesInput[]
   NOT?: Prisma.QuestionResponseScalarWhereWithAggregatesInput | Prisma.QuestionResponseScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"QuestionResponse"> | string
-  sectionId?: Prisma.StringWithAggregatesFilter<"QuestionResponse"> | string
+  sectionProgressId?: Prisma.StringWithAggregatesFilter<"QuestionResponse"> | string
   questionId?: Prisma.StringWithAggregatesFilter<"QuestionResponse"> | string
+  value?: Prisma.JsonNullableWithAggregatesFilter<"QuestionResponse">
+  wordCount?: Prisma.IntNullableWithAggregatesFilter<"QuestionResponse"> | number | null
   isFlagged?: Prisma.BoolWithAggregatesFilter<"QuestionResponse"> | boolean
   visitedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"QuestionResponse"> | Date | string | null
+  answeredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"QuestionResponse"> | Date | string | null
 }
 
 export type QuestionResponseCreateInput = {
   id?: string
-  questionId: string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: number | null
   isFlagged?: boolean
   visitedAt?: Date | string | null
-  section: Prisma.SectionProgressCreateNestedOneWithoutQuestionsInput
-  answer?: Prisma.AnswerCreateNestedOneWithoutQuestionInput
-  highlights?: Prisma.HighlightCreateNestedManyWithoutQuestionInput
-  drafts?: Prisma.WritingDraftCreateNestedManyWithoutQuestionInput
+  answeredAt?: Date | string | null
+  sectionProgress: Prisma.SectionProgressCreateNestedOneWithoutResponsesInput
+  question: Prisma.QuestionCreateNestedOneWithoutResponsesInput
+  drafts?: Prisma.WritingDraftCreateNestedManyWithoutQuestionResponseInput
 }
 
 export type QuestionResponseUncheckedCreateInput = {
   id?: string
-  sectionId: string
+  sectionProgressId: string
   questionId: string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: number | null
   isFlagged?: boolean
   visitedAt?: Date | string | null
-  answer?: Prisma.AnswerUncheckedCreateNestedOneWithoutQuestionInput
-  highlights?: Prisma.HighlightUncheckedCreateNestedManyWithoutQuestionInput
-  drafts?: Prisma.WritingDraftUncheckedCreateNestedManyWithoutQuestionInput
+  answeredAt?: Date | string | null
+  drafts?: Prisma.WritingDraftUncheckedCreateNestedManyWithoutQuestionResponseInput
 }
 
 export type QuestionResponseUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  section?: Prisma.SectionProgressUpdateOneRequiredWithoutQuestionsNestedInput
-  answer?: Prisma.AnswerUpdateOneWithoutQuestionNestedInput
-  highlights?: Prisma.HighlightUpdateManyWithoutQuestionNestedInput
-  drafts?: Prisma.WritingDraftUpdateManyWithoutQuestionNestedInput
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionProgress?: Prisma.SectionProgressUpdateOneRequiredWithoutResponsesNestedInput
+  question?: Prisma.QuestionUpdateOneRequiredWithoutResponsesNestedInput
+  drafts?: Prisma.WritingDraftUpdateManyWithoutQuestionResponseNestedInput
 }
 
 export type QuestionResponseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  sectionId?: Prisma.StringFieldUpdateOperationsInput | string
+  sectionProgressId?: Prisma.StringFieldUpdateOperationsInput | string
   questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  answer?: Prisma.AnswerUncheckedUpdateOneWithoutQuestionNestedInput
-  highlights?: Prisma.HighlightUncheckedUpdateManyWithoutQuestionNestedInput
-  drafts?: Prisma.WritingDraftUncheckedUpdateManyWithoutQuestionNestedInput
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  drafts?: Prisma.WritingDraftUncheckedUpdateManyWithoutQuestionResponseNestedInput
 }
 
 export type QuestionResponseCreateManyInput = {
   id?: string
-  sectionId: string
+  sectionProgressId: string
   questionId: string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: number | null
   isFlagged?: boolean
   visitedAt?: Date | string | null
+  answeredAt?: Date | string | null
 }
 
 export type QuestionResponseUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type QuestionResponseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  sectionId?: Prisma.StringFieldUpdateOperationsInput | string
+  sectionProgressId?: Prisma.StringFieldUpdateOperationsInput | string
   questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type QuestionResponseListRelationFilter = {
@@ -315,33 +392,48 @@ export type QuestionResponseOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type QuestionResponseSectionIdQuestionIdCompoundUniqueInput = {
-  sectionId: string
+export type QuestionResponseSectionProgressIdQuestionIdCompoundUniqueInput = {
+  sectionProgressId: string
   questionId: string
 }
 
 export type QuestionResponseCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  sectionId?: Prisma.SortOrder
+  sectionProgressId?: Prisma.SortOrder
   questionId?: Prisma.SortOrder
+  value?: Prisma.SortOrder
+  wordCount?: Prisma.SortOrder
   isFlagged?: Prisma.SortOrder
   visitedAt?: Prisma.SortOrder
+  answeredAt?: Prisma.SortOrder
+}
+
+export type QuestionResponseAvgOrderByAggregateInput = {
+  wordCount?: Prisma.SortOrder
 }
 
 export type QuestionResponseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  sectionId?: Prisma.SortOrder
+  sectionProgressId?: Prisma.SortOrder
   questionId?: Prisma.SortOrder
+  wordCount?: Prisma.SortOrder
   isFlagged?: Prisma.SortOrder
   visitedAt?: Prisma.SortOrder
+  answeredAt?: Prisma.SortOrder
 }
 
 export type QuestionResponseMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  sectionId?: Prisma.SortOrder
+  sectionProgressId?: Prisma.SortOrder
   questionId?: Prisma.SortOrder
+  wordCount?: Prisma.SortOrder
   isFlagged?: Prisma.SortOrder
   visitedAt?: Prisma.SortOrder
+  answeredAt?: Prisma.SortOrder
+}
+
+export type QuestionResponseSumOrderByAggregateInput = {
+  wordCount?: Prisma.SortOrder
 }
 
 export type QuestionResponseScalarRelationFilter = {
@@ -349,74 +441,88 @@ export type QuestionResponseScalarRelationFilter = {
   isNot?: Prisma.QuestionResponseWhereInput
 }
 
-export type QuestionResponseCreateNestedManyWithoutSectionInput = {
-  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionInput> | Prisma.QuestionResponseCreateWithoutSectionInput[] | Prisma.QuestionResponseUncheckedCreateWithoutSectionInput[]
-  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutSectionInput | Prisma.QuestionResponseCreateOrConnectWithoutSectionInput[]
-  createMany?: Prisma.QuestionResponseCreateManySectionInputEnvelope
+export type QuestionResponseCreateNestedManyWithoutQuestionInput = {
+  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutQuestionInput, Prisma.QuestionResponseUncheckedCreateWithoutQuestionInput> | Prisma.QuestionResponseCreateWithoutQuestionInput[] | Prisma.QuestionResponseUncheckedCreateWithoutQuestionInput[]
+  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutQuestionInput | Prisma.QuestionResponseCreateOrConnectWithoutQuestionInput[]
+  createMany?: Prisma.QuestionResponseCreateManyQuestionInputEnvelope
   connect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
 }
 
-export type QuestionResponseUncheckedCreateNestedManyWithoutSectionInput = {
-  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionInput> | Prisma.QuestionResponseCreateWithoutSectionInput[] | Prisma.QuestionResponseUncheckedCreateWithoutSectionInput[]
-  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutSectionInput | Prisma.QuestionResponseCreateOrConnectWithoutSectionInput[]
-  createMany?: Prisma.QuestionResponseCreateManySectionInputEnvelope
+export type QuestionResponseUncheckedCreateNestedManyWithoutQuestionInput = {
+  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutQuestionInput, Prisma.QuestionResponseUncheckedCreateWithoutQuestionInput> | Prisma.QuestionResponseCreateWithoutQuestionInput[] | Prisma.QuestionResponseUncheckedCreateWithoutQuestionInput[]
+  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutQuestionInput | Prisma.QuestionResponseCreateOrConnectWithoutQuestionInput[]
+  createMany?: Prisma.QuestionResponseCreateManyQuestionInputEnvelope
   connect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
 }
 
-export type QuestionResponseUpdateManyWithoutSectionNestedInput = {
-  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionInput> | Prisma.QuestionResponseCreateWithoutSectionInput[] | Prisma.QuestionResponseUncheckedCreateWithoutSectionInput[]
-  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutSectionInput | Prisma.QuestionResponseCreateOrConnectWithoutSectionInput[]
-  upsert?: Prisma.QuestionResponseUpsertWithWhereUniqueWithoutSectionInput | Prisma.QuestionResponseUpsertWithWhereUniqueWithoutSectionInput[]
-  createMany?: Prisma.QuestionResponseCreateManySectionInputEnvelope
+export type QuestionResponseUpdateManyWithoutQuestionNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutQuestionInput, Prisma.QuestionResponseUncheckedCreateWithoutQuestionInput> | Prisma.QuestionResponseCreateWithoutQuestionInput[] | Prisma.QuestionResponseUncheckedCreateWithoutQuestionInput[]
+  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutQuestionInput | Prisma.QuestionResponseCreateOrConnectWithoutQuestionInput[]
+  upsert?: Prisma.QuestionResponseUpsertWithWhereUniqueWithoutQuestionInput | Prisma.QuestionResponseUpsertWithWhereUniqueWithoutQuestionInput[]
+  createMany?: Prisma.QuestionResponseCreateManyQuestionInputEnvelope
   set?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
   disconnect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
   delete?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
   connect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
-  update?: Prisma.QuestionResponseUpdateWithWhereUniqueWithoutSectionInput | Prisma.QuestionResponseUpdateWithWhereUniqueWithoutSectionInput[]
-  updateMany?: Prisma.QuestionResponseUpdateManyWithWhereWithoutSectionInput | Prisma.QuestionResponseUpdateManyWithWhereWithoutSectionInput[]
+  update?: Prisma.QuestionResponseUpdateWithWhereUniqueWithoutQuestionInput | Prisma.QuestionResponseUpdateWithWhereUniqueWithoutQuestionInput[]
+  updateMany?: Prisma.QuestionResponseUpdateManyWithWhereWithoutQuestionInput | Prisma.QuestionResponseUpdateManyWithWhereWithoutQuestionInput[]
   deleteMany?: Prisma.QuestionResponseScalarWhereInput | Prisma.QuestionResponseScalarWhereInput[]
 }
 
-export type QuestionResponseUncheckedUpdateManyWithoutSectionNestedInput = {
-  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionInput> | Prisma.QuestionResponseCreateWithoutSectionInput[] | Prisma.QuestionResponseUncheckedCreateWithoutSectionInput[]
-  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutSectionInput | Prisma.QuestionResponseCreateOrConnectWithoutSectionInput[]
-  upsert?: Prisma.QuestionResponseUpsertWithWhereUniqueWithoutSectionInput | Prisma.QuestionResponseUpsertWithWhereUniqueWithoutSectionInput[]
-  createMany?: Prisma.QuestionResponseCreateManySectionInputEnvelope
+export type QuestionResponseUncheckedUpdateManyWithoutQuestionNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutQuestionInput, Prisma.QuestionResponseUncheckedCreateWithoutQuestionInput> | Prisma.QuestionResponseCreateWithoutQuestionInput[] | Prisma.QuestionResponseUncheckedCreateWithoutQuestionInput[]
+  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutQuestionInput | Prisma.QuestionResponseCreateOrConnectWithoutQuestionInput[]
+  upsert?: Prisma.QuestionResponseUpsertWithWhereUniqueWithoutQuestionInput | Prisma.QuestionResponseUpsertWithWhereUniqueWithoutQuestionInput[]
+  createMany?: Prisma.QuestionResponseCreateManyQuestionInputEnvelope
   set?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
   disconnect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
   delete?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
   connect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
-  update?: Prisma.QuestionResponseUpdateWithWhereUniqueWithoutSectionInput | Prisma.QuestionResponseUpdateWithWhereUniqueWithoutSectionInput[]
-  updateMany?: Prisma.QuestionResponseUpdateManyWithWhereWithoutSectionInput | Prisma.QuestionResponseUpdateManyWithWhereWithoutSectionInput[]
+  update?: Prisma.QuestionResponseUpdateWithWhereUniqueWithoutQuestionInput | Prisma.QuestionResponseUpdateWithWhereUniqueWithoutQuestionInput[]
+  updateMany?: Prisma.QuestionResponseUpdateManyWithWhereWithoutQuestionInput | Prisma.QuestionResponseUpdateManyWithWhereWithoutQuestionInput[]
   deleteMany?: Prisma.QuestionResponseScalarWhereInput | Prisma.QuestionResponseScalarWhereInput[]
 }
 
-export type QuestionResponseCreateNestedOneWithoutAnswerInput = {
-  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutAnswerInput, Prisma.QuestionResponseUncheckedCreateWithoutAnswerInput>
-  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutAnswerInput
-  connect?: Prisma.QuestionResponseWhereUniqueInput
+export type QuestionResponseCreateNestedManyWithoutSectionProgressInput = {
+  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionProgressInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionProgressInput> | Prisma.QuestionResponseCreateWithoutSectionProgressInput[] | Prisma.QuestionResponseUncheckedCreateWithoutSectionProgressInput[]
+  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutSectionProgressInput | Prisma.QuestionResponseCreateOrConnectWithoutSectionProgressInput[]
+  createMany?: Prisma.QuestionResponseCreateManySectionProgressInputEnvelope
+  connect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
 }
 
-export type QuestionResponseUpdateOneRequiredWithoutAnswerNestedInput = {
-  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutAnswerInput, Prisma.QuestionResponseUncheckedCreateWithoutAnswerInput>
-  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutAnswerInput
-  upsert?: Prisma.QuestionResponseUpsertWithoutAnswerInput
-  connect?: Prisma.QuestionResponseWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.QuestionResponseUpdateToOneWithWhereWithoutAnswerInput, Prisma.QuestionResponseUpdateWithoutAnswerInput>, Prisma.QuestionResponseUncheckedUpdateWithoutAnswerInput>
+export type QuestionResponseUncheckedCreateNestedManyWithoutSectionProgressInput = {
+  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionProgressInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionProgressInput> | Prisma.QuestionResponseCreateWithoutSectionProgressInput[] | Prisma.QuestionResponseUncheckedCreateWithoutSectionProgressInput[]
+  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutSectionProgressInput | Prisma.QuestionResponseCreateOrConnectWithoutSectionProgressInput[]
+  createMany?: Prisma.QuestionResponseCreateManySectionProgressInputEnvelope
+  connect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
 }
 
-export type QuestionResponseCreateNestedOneWithoutHighlightsInput = {
-  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutHighlightsInput, Prisma.QuestionResponseUncheckedCreateWithoutHighlightsInput>
-  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutHighlightsInput
-  connect?: Prisma.QuestionResponseWhereUniqueInput
+export type QuestionResponseUpdateManyWithoutSectionProgressNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionProgressInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionProgressInput> | Prisma.QuestionResponseCreateWithoutSectionProgressInput[] | Prisma.QuestionResponseUncheckedCreateWithoutSectionProgressInput[]
+  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutSectionProgressInput | Prisma.QuestionResponseCreateOrConnectWithoutSectionProgressInput[]
+  upsert?: Prisma.QuestionResponseUpsertWithWhereUniqueWithoutSectionProgressInput | Prisma.QuestionResponseUpsertWithWhereUniqueWithoutSectionProgressInput[]
+  createMany?: Prisma.QuestionResponseCreateManySectionProgressInputEnvelope
+  set?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
+  disconnect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
+  delete?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
+  connect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
+  update?: Prisma.QuestionResponseUpdateWithWhereUniqueWithoutSectionProgressInput | Prisma.QuestionResponseUpdateWithWhereUniqueWithoutSectionProgressInput[]
+  updateMany?: Prisma.QuestionResponseUpdateManyWithWhereWithoutSectionProgressInput | Prisma.QuestionResponseUpdateManyWithWhereWithoutSectionProgressInput[]
+  deleteMany?: Prisma.QuestionResponseScalarWhereInput | Prisma.QuestionResponseScalarWhereInput[]
 }
 
-export type QuestionResponseUpdateOneRequiredWithoutHighlightsNestedInput = {
-  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutHighlightsInput, Prisma.QuestionResponseUncheckedCreateWithoutHighlightsInput>
-  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutHighlightsInput
-  upsert?: Prisma.QuestionResponseUpsertWithoutHighlightsInput
-  connect?: Prisma.QuestionResponseWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.QuestionResponseUpdateToOneWithWhereWithoutHighlightsInput, Prisma.QuestionResponseUpdateWithoutHighlightsInput>, Prisma.QuestionResponseUncheckedUpdateWithoutHighlightsInput>
+export type QuestionResponseUncheckedUpdateManyWithoutSectionProgressNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionProgressInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionProgressInput> | Prisma.QuestionResponseCreateWithoutSectionProgressInput[] | Prisma.QuestionResponseUncheckedCreateWithoutSectionProgressInput[]
+  connectOrCreate?: Prisma.QuestionResponseCreateOrConnectWithoutSectionProgressInput | Prisma.QuestionResponseCreateOrConnectWithoutSectionProgressInput[]
+  upsert?: Prisma.QuestionResponseUpsertWithWhereUniqueWithoutSectionProgressInput | Prisma.QuestionResponseUpsertWithWhereUniqueWithoutSectionProgressInput[]
+  createMany?: Prisma.QuestionResponseCreateManySectionProgressInputEnvelope
+  set?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
+  disconnect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
+  delete?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
+  connect?: Prisma.QuestionResponseWhereUniqueInput | Prisma.QuestionResponseWhereUniqueInput[]
+  update?: Prisma.QuestionResponseUpdateWithWhereUniqueWithoutSectionProgressInput | Prisma.QuestionResponseUpdateWithWhereUniqueWithoutSectionProgressInput[]
+  updateMany?: Prisma.QuestionResponseUpdateManyWithWhereWithoutSectionProgressInput | Prisma.QuestionResponseUpdateManyWithWhereWithoutSectionProgressInput[]
+  deleteMany?: Prisma.QuestionResponseScalarWhereInput | Prisma.QuestionResponseScalarWhereInput[]
 }
 
 export type QuestionResponseCreateNestedOneWithoutDraftsInput = {
@@ -433,50 +539,52 @@ export type QuestionResponseUpdateOneRequiredWithoutDraftsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.QuestionResponseUpdateToOneWithWhereWithoutDraftsInput, Prisma.QuestionResponseUpdateWithoutDraftsInput>, Prisma.QuestionResponseUncheckedUpdateWithoutDraftsInput>
 }
 
-export type QuestionResponseCreateWithoutSectionInput = {
+export type QuestionResponseCreateWithoutQuestionInput = {
   id?: string
-  questionId: string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: number | null
   isFlagged?: boolean
   visitedAt?: Date | string | null
-  answer?: Prisma.AnswerCreateNestedOneWithoutQuestionInput
-  highlights?: Prisma.HighlightCreateNestedManyWithoutQuestionInput
-  drafts?: Prisma.WritingDraftCreateNestedManyWithoutQuestionInput
+  answeredAt?: Date | string | null
+  sectionProgress: Prisma.SectionProgressCreateNestedOneWithoutResponsesInput
+  drafts?: Prisma.WritingDraftCreateNestedManyWithoutQuestionResponseInput
 }
 
-export type QuestionResponseUncheckedCreateWithoutSectionInput = {
+export type QuestionResponseUncheckedCreateWithoutQuestionInput = {
   id?: string
-  questionId: string
+  sectionProgressId: string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: number | null
   isFlagged?: boolean
   visitedAt?: Date | string | null
-  answer?: Prisma.AnswerUncheckedCreateNestedOneWithoutQuestionInput
-  highlights?: Prisma.HighlightUncheckedCreateNestedManyWithoutQuestionInput
-  drafts?: Prisma.WritingDraftUncheckedCreateNestedManyWithoutQuestionInput
+  answeredAt?: Date | string | null
+  drafts?: Prisma.WritingDraftUncheckedCreateNestedManyWithoutQuestionResponseInput
 }
 
-export type QuestionResponseCreateOrConnectWithoutSectionInput = {
+export type QuestionResponseCreateOrConnectWithoutQuestionInput = {
   where: Prisma.QuestionResponseWhereUniqueInput
-  create: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionInput>
+  create: Prisma.XOR<Prisma.QuestionResponseCreateWithoutQuestionInput, Prisma.QuestionResponseUncheckedCreateWithoutQuestionInput>
 }
 
-export type QuestionResponseCreateManySectionInputEnvelope = {
-  data: Prisma.QuestionResponseCreateManySectionInput | Prisma.QuestionResponseCreateManySectionInput[]
+export type QuestionResponseCreateManyQuestionInputEnvelope = {
+  data: Prisma.QuestionResponseCreateManyQuestionInput | Prisma.QuestionResponseCreateManyQuestionInput[]
   skipDuplicates?: boolean
 }
 
-export type QuestionResponseUpsertWithWhereUniqueWithoutSectionInput = {
+export type QuestionResponseUpsertWithWhereUniqueWithoutQuestionInput = {
   where: Prisma.QuestionResponseWhereUniqueInput
-  update: Prisma.XOR<Prisma.QuestionResponseUpdateWithoutSectionInput, Prisma.QuestionResponseUncheckedUpdateWithoutSectionInput>
-  create: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionInput>
+  update: Prisma.XOR<Prisma.QuestionResponseUpdateWithoutQuestionInput, Prisma.QuestionResponseUncheckedUpdateWithoutQuestionInput>
+  create: Prisma.XOR<Prisma.QuestionResponseCreateWithoutQuestionInput, Prisma.QuestionResponseUncheckedCreateWithoutQuestionInput>
 }
 
-export type QuestionResponseUpdateWithWhereUniqueWithoutSectionInput = {
+export type QuestionResponseUpdateWithWhereUniqueWithoutQuestionInput = {
   where: Prisma.QuestionResponseWhereUniqueInput
-  data: Prisma.XOR<Prisma.QuestionResponseUpdateWithoutSectionInput, Prisma.QuestionResponseUncheckedUpdateWithoutSectionInput>
+  data: Prisma.XOR<Prisma.QuestionResponseUpdateWithoutQuestionInput, Prisma.QuestionResponseUncheckedUpdateWithoutQuestionInput>
 }
 
-export type QuestionResponseUpdateManyWithWhereWithoutSectionInput = {
+export type QuestionResponseUpdateManyWithWhereWithoutQuestionInput = {
   where: Prisma.QuestionResponseScalarWhereInput
-  data: Prisma.XOR<Prisma.QuestionResponseUpdateManyMutationInput, Prisma.QuestionResponseUncheckedUpdateManyWithoutSectionInput>
+  data: Prisma.XOR<Prisma.QuestionResponseUpdateManyMutationInput, Prisma.QuestionResponseUncheckedUpdateManyWithoutQuestionInput>
 }
 
 export type QuestionResponseScalarWhereInput = {
@@ -484,142 +592,83 @@ export type QuestionResponseScalarWhereInput = {
   OR?: Prisma.QuestionResponseScalarWhereInput[]
   NOT?: Prisma.QuestionResponseScalarWhereInput | Prisma.QuestionResponseScalarWhereInput[]
   id?: Prisma.StringFilter<"QuestionResponse"> | string
-  sectionId?: Prisma.StringFilter<"QuestionResponse"> | string
+  sectionProgressId?: Prisma.StringFilter<"QuestionResponse"> | string
   questionId?: Prisma.StringFilter<"QuestionResponse"> | string
+  value?: Prisma.JsonNullableFilter<"QuestionResponse">
+  wordCount?: Prisma.IntNullableFilter<"QuestionResponse"> | number | null
   isFlagged?: Prisma.BoolFilter<"QuestionResponse"> | boolean
   visitedAt?: Prisma.DateTimeNullableFilter<"QuestionResponse"> | Date | string | null
+  answeredAt?: Prisma.DateTimeNullableFilter<"QuestionResponse"> | Date | string | null
 }
 
-export type QuestionResponseCreateWithoutAnswerInput = {
+export type QuestionResponseCreateWithoutSectionProgressInput = {
   id?: string
-  questionId: string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: number | null
   isFlagged?: boolean
   visitedAt?: Date | string | null
-  section: Prisma.SectionProgressCreateNestedOneWithoutQuestionsInput
-  highlights?: Prisma.HighlightCreateNestedManyWithoutQuestionInput
-  drafts?: Prisma.WritingDraftCreateNestedManyWithoutQuestionInput
+  answeredAt?: Date | string | null
+  question: Prisma.QuestionCreateNestedOneWithoutResponsesInput
+  drafts?: Prisma.WritingDraftCreateNestedManyWithoutQuestionResponseInput
 }
 
-export type QuestionResponseUncheckedCreateWithoutAnswerInput = {
+export type QuestionResponseUncheckedCreateWithoutSectionProgressInput = {
   id?: string
-  sectionId: string
   questionId: string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: number | null
   isFlagged?: boolean
   visitedAt?: Date | string | null
-  highlights?: Prisma.HighlightUncheckedCreateNestedManyWithoutQuestionInput
-  drafts?: Prisma.WritingDraftUncheckedCreateNestedManyWithoutQuestionInput
+  answeredAt?: Date | string | null
+  drafts?: Prisma.WritingDraftUncheckedCreateNestedManyWithoutQuestionResponseInput
 }
 
-export type QuestionResponseCreateOrConnectWithoutAnswerInput = {
+export type QuestionResponseCreateOrConnectWithoutSectionProgressInput = {
   where: Prisma.QuestionResponseWhereUniqueInput
-  create: Prisma.XOR<Prisma.QuestionResponseCreateWithoutAnswerInput, Prisma.QuestionResponseUncheckedCreateWithoutAnswerInput>
+  create: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionProgressInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionProgressInput>
 }
 
-export type QuestionResponseUpsertWithoutAnswerInput = {
-  update: Prisma.XOR<Prisma.QuestionResponseUpdateWithoutAnswerInput, Prisma.QuestionResponseUncheckedUpdateWithoutAnswerInput>
-  create: Prisma.XOR<Prisma.QuestionResponseCreateWithoutAnswerInput, Prisma.QuestionResponseUncheckedCreateWithoutAnswerInput>
-  where?: Prisma.QuestionResponseWhereInput
+export type QuestionResponseCreateManySectionProgressInputEnvelope = {
+  data: Prisma.QuestionResponseCreateManySectionProgressInput | Prisma.QuestionResponseCreateManySectionProgressInput[]
+  skipDuplicates?: boolean
 }
 
-export type QuestionResponseUpdateToOneWithWhereWithoutAnswerInput = {
-  where?: Prisma.QuestionResponseWhereInput
-  data: Prisma.XOR<Prisma.QuestionResponseUpdateWithoutAnswerInput, Prisma.QuestionResponseUncheckedUpdateWithoutAnswerInput>
-}
-
-export type QuestionResponseUpdateWithoutAnswerInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
-  isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  section?: Prisma.SectionProgressUpdateOneRequiredWithoutQuestionsNestedInput
-  highlights?: Prisma.HighlightUpdateManyWithoutQuestionNestedInput
-  drafts?: Prisma.WritingDraftUpdateManyWithoutQuestionNestedInput
-}
-
-export type QuestionResponseUncheckedUpdateWithoutAnswerInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  sectionId?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
-  isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  highlights?: Prisma.HighlightUncheckedUpdateManyWithoutQuestionNestedInput
-  drafts?: Prisma.WritingDraftUncheckedUpdateManyWithoutQuestionNestedInput
-}
-
-export type QuestionResponseCreateWithoutHighlightsInput = {
-  id?: string
-  questionId: string
-  isFlagged?: boolean
-  visitedAt?: Date | string | null
-  section: Prisma.SectionProgressCreateNestedOneWithoutQuestionsInput
-  answer?: Prisma.AnswerCreateNestedOneWithoutQuestionInput
-  drafts?: Prisma.WritingDraftCreateNestedManyWithoutQuestionInput
-}
-
-export type QuestionResponseUncheckedCreateWithoutHighlightsInput = {
-  id?: string
-  sectionId: string
-  questionId: string
-  isFlagged?: boolean
-  visitedAt?: Date | string | null
-  answer?: Prisma.AnswerUncheckedCreateNestedOneWithoutQuestionInput
-  drafts?: Prisma.WritingDraftUncheckedCreateNestedManyWithoutQuestionInput
-}
-
-export type QuestionResponseCreateOrConnectWithoutHighlightsInput = {
+export type QuestionResponseUpsertWithWhereUniqueWithoutSectionProgressInput = {
   where: Prisma.QuestionResponseWhereUniqueInput
-  create: Prisma.XOR<Prisma.QuestionResponseCreateWithoutHighlightsInput, Prisma.QuestionResponseUncheckedCreateWithoutHighlightsInput>
+  update: Prisma.XOR<Prisma.QuestionResponseUpdateWithoutSectionProgressInput, Prisma.QuestionResponseUncheckedUpdateWithoutSectionProgressInput>
+  create: Prisma.XOR<Prisma.QuestionResponseCreateWithoutSectionProgressInput, Prisma.QuestionResponseUncheckedCreateWithoutSectionProgressInput>
 }
 
-export type QuestionResponseUpsertWithoutHighlightsInput = {
-  update: Prisma.XOR<Prisma.QuestionResponseUpdateWithoutHighlightsInput, Prisma.QuestionResponseUncheckedUpdateWithoutHighlightsInput>
-  create: Prisma.XOR<Prisma.QuestionResponseCreateWithoutHighlightsInput, Prisma.QuestionResponseUncheckedCreateWithoutHighlightsInput>
-  where?: Prisma.QuestionResponseWhereInput
+export type QuestionResponseUpdateWithWhereUniqueWithoutSectionProgressInput = {
+  where: Prisma.QuestionResponseWhereUniqueInput
+  data: Prisma.XOR<Prisma.QuestionResponseUpdateWithoutSectionProgressInput, Prisma.QuestionResponseUncheckedUpdateWithoutSectionProgressInput>
 }
 
-export type QuestionResponseUpdateToOneWithWhereWithoutHighlightsInput = {
-  where?: Prisma.QuestionResponseWhereInput
-  data: Prisma.XOR<Prisma.QuestionResponseUpdateWithoutHighlightsInput, Prisma.QuestionResponseUncheckedUpdateWithoutHighlightsInput>
-}
-
-export type QuestionResponseUpdateWithoutHighlightsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
-  isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  section?: Prisma.SectionProgressUpdateOneRequiredWithoutQuestionsNestedInput
-  answer?: Prisma.AnswerUpdateOneWithoutQuestionNestedInput
-  drafts?: Prisma.WritingDraftUpdateManyWithoutQuestionNestedInput
-}
-
-export type QuestionResponseUncheckedUpdateWithoutHighlightsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  sectionId?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
-  isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  answer?: Prisma.AnswerUncheckedUpdateOneWithoutQuestionNestedInput
-  drafts?: Prisma.WritingDraftUncheckedUpdateManyWithoutQuestionNestedInput
+export type QuestionResponseUpdateManyWithWhereWithoutSectionProgressInput = {
+  where: Prisma.QuestionResponseScalarWhereInput
+  data: Prisma.XOR<Prisma.QuestionResponseUpdateManyMutationInput, Prisma.QuestionResponseUncheckedUpdateManyWithoutSectionProgressInput>
 }
 
 export type QuestionResponseCreateWithoutDraftsInput = {
   id?: string
-  questionId: string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: number | null
   isFlagged?: boolean
   visitedAt?: Date | string | null
-  section: Prisma.SectionProgressCreateNestedOneWithoutQuestionsInput
-  answer?: Prisma.AnswerCreateNestedOneWithoutQuestionInput
-  highlights?: Prisma.HighlightCreateNestedManyWithoutQuestionInput
+  answeredAt?: Date | string | null
+  sectionProgress: Prisma.SectionProgressCreateNestedOneWithoutResponsesInput
+  question: Prisma.QuestionCreateNestedOneWithoutResponsesInput
 }
 
 export type QuestionResponseUncheckedCreateWithoutDraftsInput = {
   id?: string
-  sectionId: string
+  sectionProgressId: string
   questionId: string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: number | null
   isFlagged?: boolean
   visitedAt?: Date | string | null
-  answer?: Prisma.AnswerUncheckedCreateNestedOneWithoutQuestionInput
-  highlights?: Prisma.HighlightUncheckedCreateNestedManyWithoutQuestionInput
+  answeredAt?: Date | string | null
 }
 
 export type QuestionResponseCreateOrConnectWithoutDraftsInput = {
@@ -640,56 +689,108 @@ export type QuestionResponseUpdateToOneWithWhereWithoutDraftsInput = {
 
 export type QuestionResponseUpdateWithoutDraftsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  section?: Prisma.SectionProgressUpdateOneRequiredWithoutQuestionsNestedInput
-  answer?: Prisma.AnswerUpdateOneWithoutQuestionNestedInput
-  highlights?: Prisma.HighlightUpdateManyWithoutQuestionNestedInput
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionProgress?: Prisma.SectionProgressUpdateOneRequiredWithoutResponsesNestedInput
+  question?: Prisma.QuestionUpdateOneRequiredWithoutResponsesNestedInput
 }
 
 export type QuestionResponseUncheckedUpdateWithoutDraftsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  sectionId?: Prisma.StringFieldUpdateOperationsInput | string
+  sectionProgressId?: Prisma.StringFieldUpdateOperationsInput | string
   questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  answer?: Prisma.AnswerUncheckedUpdateOneWithoutQuestionNestedInput
-  highlights?: Prisma.HighlightUncheckedUpdateManyWithoutQuestionNestedInput
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
-export type QuestionResponseCreateManySectionInput = {
+export type QuestionResponseCreateManyQuestionInput = {
   id?: string
-  questionId: string
+  sectionProgressId: string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: number | null
   isFlagged?: boolean
   visitedAt?: Date | string | null
+  answeredAt?: Date | string | null
 }
 
-export type QuestionResponseUpdateWithoutSectionInput = {
+export type QuestionResponseUpdateWithoutQuestionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  answer?: Prisma.AnswerUpdateOneWithoutQuestionNestedInput
-  highlights?: Prisma.HighlightUpdateManyWithoutQuestionNestedInput
-  drafts?: Prisma.WritingDraftUpdateManyWithoutQuestionNestedInput
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionProgress?: Prisma.SectionProgressUpdateOneRequiredWithoutResponsesNestedInput
+  drafts?: Prisma.WritingDraftUpdateManyWithoutQuestionResponseNestedInput
 }
 
-export type QuestionResponseUncheckedUpdateWithoutSectionInput = {
+export type QuestionResponseUncheckedUpdateWithoutQuestionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  sectionProgressId?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  answer?: Prisma.AnswerUncheckedUpdateOneWithoutQuestionNestedInput
-  highlights?: Prisma.HighlightUncheckedUpdateManyWithoutQuestionNestedInput
-  drafts?: Prisma.WritingDraftUncheckedUpdateManyWithoutQuestionNestedInput
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  drafts?: Prisma.WritingDraftUncheckedUpdateManyWithoutQuestionResponseNestedInput
 }
 
-export type QuestionResponseUncheckedUpdateManyWithoutSectionInput = {
+export type QuestionResponseUncheckedUpdateManyWithoutQuestionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  sectionProgressId?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type QuestionResponseCreateManySectionProgressInput = {
+  id?: string
+  questionId: string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: number | null
+  isFlagged?: boolean
+  visitedAt?: Date | string | null
+  answeredAt?: Date | string | null
+}
+
+export type QuestionResponseUpdateWithoutSectionProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  question?: Prisma.QuestionUpdateOneRequiredWithoutResponsesNestedInput
+  drafts?: Prisma.WritingDraftUpdateManyWithoutQuestionResponseNestedInput
+}
+
+export type QuestionResponseUncheckedUpdateWithoutSectionProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  drafts?: Prisma.WritingDraftUncheckedUpdateManyWithoutQuestionResponseNestedInput
+}
+
+export type QuestionResponseUncheckedUpdateManyWithoutSectionProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  wordCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFlagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  visitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -698,12 +799,10 @@ export type QuestionResponseUncheckedUpdateManyWithoutSectionInput = {
  */
 
 export type QuestionResponseCountOutputType = {
-  highlights: number
   drafts: number
 }
 
 export type QuestionResponseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  highlights?: boolean | QuestionResponseCountOutputTypeCountHighlightsArgs
   drafts?: boolean | QuestionResponseCountOutputTypeCountDraftsArgs
 }
 
@@ -720,13 +819,6 @@ export type QuestionResponseCountOutputTypeDefaultArgs<ExtArgs extends runtime.T
 /**
  * QuestionResponseCountOutputType without action
  */
-export type QuestionResponseCountOutputTypeCountHighlightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.HighlightWhereInput
-}
-
-/**
- * QuestionResponseCountOutputType without action
- */
 export type QuestionResponseCountOutputTypeCountDraftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.WritingDraftWhereInput
 }
@@ -734,72 +826,88 @@ export type QuestionResponseCountOutputTypeCountDraftsArgs<ExtArgs extends runti
 
 export type QuestionResponseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  sectionId?: boolean
+  sectionProgressId?: boolean
   questionId?: boolean
+  value?: boolean
+  wordCount?: boolean
   isFlagged?: boolean
   visitedAt?: boolean
-  section?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
-  answer?: boolean | Prisma.QuestionResponse$answerArgs<ExtArgs>
-  highlights?: boolean | Prisma.QuestionResponse$highlightsArgs<ExtArgs>
+  answeredAt?: boolean
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
   drafts?: boolean | Prisma.QuestionResponse$draftsArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionResponseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["questionResponse"]>
 
 export type QuestionResponseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  sectionId?: boolean
+  sectionProgressId?: boolean
   questionId?: boolean
+  value?: boolean
+  wordCount?: boolean
   isFlagged?: boolean
   visitedAt?: boolean
-  section?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  answeredAt?: boolean
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["questionResponse"]>
 
 export type QuestionResponseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  sectionId?: boolean
+  sectionProgressId?: boolean
   questionId?: boolean
+  value?: boolean
+  wordCount?: boolean
   isFlagged?: boolean
   visitedAt?: boolean
-  section?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  answeredAt?: boolean
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["questionResponse"]>
 
 export type QuestionResponseSelectScalar = {
   id?: boolean
-  sectionId?: boolean
+  sectionProgressId?: boolean
   questionId?: boolean
+  value?: boolean
+  wordCount?: boolean
   isFlagged?: boolean
   visitedAt?: boolean
+  answeredAt?: boolean
 }
 
-export type QuestionResponseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sectionId" | "questionId" | "isFlagged" | "visitedAt", ExtArgs["result"]["questionResponse"]>
+export type QuestionResponseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sectionProgressId" | "questionId" | "value" | "wordCount" | "isFlagged" | "visitedAt" | "answeredAt", ExtArgs["result"]["questionResponse"]>
 export type QuestionResponseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  section?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
-  answer?: boolean | Prisma.QuestionResponse$answerArgs<ExtArgs>
-  highlights?: boolean | Prisma.QuestionResponse$highlightsArgs<ExtArgs>
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
   drafts?: boolean | Prisma.QuestionResponse$draftsArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionResponseCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type QuestionResponseIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  section?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
 }
 export type QuestionResponseIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  section?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  sectionProgress?: boolean | Prisma.SectionProgressDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
 }
 
 export type $QuestionResponsePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "QuestionResponse"
   objects: {
-    section: Prisma.$SectionProgressPayload<ExtArgs>
-    answer: Prisma.$AnswerPayload<ExtArgs> | null
-    highlights: Prisma.$HighlightPayload<ExtArgs>[]
+    sectionProgress: Prisma.$SectionProgressPayload<ExtArgs>
+    question: Prisma.$QuestionPayload<ExtArgs>
     drafts: Prisma.$WritingDraftPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    sectionId: string
+    sectionProgressId: string
     questionId: string
+    value: runtime.JsonValue | null
+    wordCount: number | null
     isFlagged: boolean
     visitedAt: Date | null
+    answeredAt: Date | null
   }, ExtArgs["result"]["questionResponse"]>
   composites: {}
 }
@@ -1194,9 +1302,8 @@ readonly fields: QuestionResponseFieldRefs;
  */
 export interface Prisma__QuestionResponseClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  section<T extends Prisma.SectionProgressDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SectionProgressDefaultArgs<ExtArgs>>): Prisma.Prisma__SectionProgressClient<runtime.Types.Result.GetResult<Prisma.$SectionProgressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  answer<T extends Prisma.QuestionResponse$answerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionResponse$answerArgs<ExtArgs>>): Prisma.Prisma__AnswerClient<runtime.Types.Result.GetResult<Prisma.$AnswerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  highlights<T extends Prisma.QuestionResponse$highlightsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionResponse$highlightsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HighlightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sectionProgress<T extends Prisma.SectionProgressDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SectionProgressDefaultArgs<ExtArgs>>): Prisma.Prisma__SectionProgressClient<runtime.Types.Result.GetResult<Prisma.$SectionProgressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  question<T extends Prisma.QuestionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionDefaultArgs<ExtArgs>>): Prisma.Prisma__QuestionClient<runtime.Types.Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   drafts<T extends Prisma.QuestionResponse$draftsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionResponse$draftsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WritingDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1228,10 +1335,13 @@ export interface Prisma__QuestionResponseClient<T, Null = never, ExtArgs extends
  */
 export interface QuestionResponseFieldRefs {
   readonly id: Prisma.FieldRef<"QuestionResponse", 'String'>
-  readonly sectionId: Prisma.FieldRef<"QuestionResponse", 'String'>
+  readonly sectionProgressId: Prisma.FieldRef<"QuestionResponse", 'String'>
   readonly questionId: Prisma.FieldRef<"QuestionResponse", 'String'>
+  readonly value: Prisma.FieldRef<"QuestionResponse", 'Json'>
+  readonly wordCount: Prisma.FieldRef<"QuestionResponse", 'Int'>
   readonly isFlagged: Prisma.FieldRef<"QuestionResponse", 'Boolean'>
   readonly visitedAt: Prisma.FieldRef<"QuestionResponse", 'DateTime'>
+  readonly answeredAt: Prisma.FieldRef<"QuestionResponse", 'DateTime'>
 }
     
 
@@ -1625,49 +1735,6 @@ export type QuestionResponseDeleteManyArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many QuestionResponses to delete.
    */
   limit?: number
-}
-
-/**
- * QuestionResponse.answer
- */
-export type QuestionResponse$answerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Answer
-   */
-  select?: Prisma.AnswerSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Answer
-   */
-  omit?: Prisma.AnswerOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AnswerInclude<ExtArgs> | null
-  where?: Prisma.AnswerWhereInput
-}
-
-/**
- * QuestionResponse.highlights
- */
-export type QuestionResponse$highlightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Highlight
-   */
-  select?: Prisma.HighlightSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Highlight
-   */
-  omit?: Prisma.HighlightOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.HighlightInclude<ExtArgs> | null
-  where?: Prisma.HighlightWhereInput
-  orderBy?: Prisma.HighlightOrderByWithRelationInput | Prisma.HighlightOrderByWithRelationInput[]
-  cursor?: Prisma.HighlightWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.HighlightScalarFieldEnum | Prisma.HighlightScalarFieldEnum[]
 }
 
 /**

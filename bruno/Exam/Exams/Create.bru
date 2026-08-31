@@ -1,0 +1,37 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/exams
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "testId": "seed-lt-test",
+    "examDate": "2026-08-21T16:49",
+    "seats": [
+      {
+        "candidateName": "Abd",
+        "candidateContact": "+980218793981273"
+      },
+      {
+        "candidateName": "Muhammad",
+        "candidateContact": "+123891273982"
+      },
+      {
+        "candidateName": "Ali",
+        "candidateContact": "+09820938012983"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

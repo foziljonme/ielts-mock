@@ -4,8 +4,25 @@ import { CreateExamSchema, UpdateExamSchema } from "./exam.schema";
 import examSeatsService from "./seats/seat.service";
 import { AppError } from "@/shared/utils/errors";
 import { ErrorCodes } from "@/shared/utils/errors/codes";
-import { ExamStatus, Prisma } from "../../../prisma/generated/client";
+import {
+  Exam,
+  ExamStatus,
+  Prisma,
+  TestSkill,
+} from "../../../prisma/generated/client";
 import sectionsService from "./sections/sections.service";
+
+type ExamFullInfo = Prisma.ExamGetPayload<{
+  include: {
+    test: {
+      include: {
+        sections: true;
+      };
+    };
+    examSectionProgresses: true;
+    seats: true;
+  };
+}>;
 
 class ExamService {
   constructor() {}
@@ -15,6 +32,13 @@ class ExamService {
       const { seats: seatsData, ...examData } = data;
       const exam = await tx.exam.create({
         data: { ...examData, tenantId: ctx.user.tenantId },
+        include: {
+          test: {
+            include: {
+              sections: true,
+            },
+          },
+        },
       });
 
       const seats = await examSeatsService.createSeats(
@@ -23,14 +47,23 @@ class ExamService {
         exam.id,
         seatsData,
       );
+      const skillsList = Object.values(TestSkill);
+      const examSectionProgresses =
+        await tx.examSectionProgress.createManyAndReturn({
+          data: skillsList.map((s) => ({
+            examId: exam.id,
+            status: ExamStatus.SCHEDULED,
+            skill: s,
+          })),
+        });
 
-      const sections = await sectionsService.createSections(tx, exam.id);
-
-      return { ...exam, seats, sections };
+      // const sections = await sectionsService.createSections(tx, exam.id);
+      const { test, ...rest } = exam;
+      return { ...rest, test, examSectionProgresses, seats };
     });
   }
 
-  async getExams(ctx: AuthRequestContext, page: number, pageSize: number) {
+  async listExams(ctx: AuthRequestContext, page: number, pageSize: number) {
     const [items, totalItems] = await db.$transaction([
       db.exam.findMany({
         skip: (page - 1) * pageSize,
@@ -43,7 +76,11 @@ class ExamService {
               sections: true,
             },
           },
-          sections: true,
+          test: {
+            include: {
+              sections: true,
+            },
+          },
         },
       }),
       db.exam.count({ where: { tenantId: ctx.user.tenantId } }),
@@ -52,18 +89,50 @@ class ExamService {
     return { items, totalItems };
   }
 
+  // Overload: true => full info
+  getExamById(
+    tx: Prisma.TransactionClient,
+    ctx: AuthRequestContext,
+    examId: string,
+    includeFullInfo: true,
+  ): Promise<ExamFullInfo>;
+
+  // Overload: false or omitted => plain Exam
+  getExamById(
+    tx: Prisma.TransactionClient,
+    ctx: AuthRequestContext,
+    examId: string,
+    includeFullInfo?: false,
+  ): Promise<Exam>;
+
+  // Implementation — must accept boolean
   async getExamById(
     tx: Prisma.TransactionClient,
     ctx: AuthRequestContext,
     examId: string,
-  ) {
-    const exam = await tx.exam.findUnique({
-      where: { id: examId, tenantId: ctx.user.tenantId },
-      include: {
-        seats: true,
-        sections: true,
-      },
-    });
+    includeFullInfo: boolean = false,
+  ): Promise<Exam | ExamFullInfo> {
+    const where = {
+      id: examId,
+      tenantId: ctx.user.tenantId,
+    };
+
+    const exam = includeFullInfo
+      ? await tx.exam.findUnique({
+          where,
+          include: {
+            test: {
+              include: {
+                sections: true,
+              },
+            },
+            examSectionProgresses: true,
+            seats: true,
+          },
+        })
+      : await tx.exam.findUnique({
+          where,
+        });
 
     if (!exam) {
       throw new AppError(
@@ -79,7 +148,7 @@ class ExamService {
 
   async getExamByIdWithTx(ctx: AuthRequestContext, examId: string) {
     return db.$transaction(async (tx) => {
-      return this.getExamById(tx, ctx, examId);
+      return this.getExamById(tx, ctx, examId, true);
     });
   }
 
@@ -135,7 +204,11 @@ class ExamService {
         data: { status: ExamStatus.OPEN },
         include: {
           seats: true,
-          sections: true,
+          test: {
+            include: {
+              sections: true,
+            },
+          },
         },
       });
 

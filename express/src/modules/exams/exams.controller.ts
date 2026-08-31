@@ -14,7 +14,7 @@ export const createExam = asyncHandler(async (req: AuthRequest, res) => {
 
 export const listExams = asyncHandler(async (req: AuthRequest, res) => {
   const { page, pageSize } = validate(paginationSchema, req.query);
-  const { items, totalItems } = await examService.getExams(
+  const { items, totalItems } = await examService.listExams(
     { user: req.user! },
     page,
     pageSize,

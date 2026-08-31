@@ -1,4 +1,4 @@
-import { Prisma, TestSection } from "../../../../prisma/generated/client";
+import { Prisma } from "../../../../prisma/generated/client";
 
 export class ProgressService {
   constructor() {}

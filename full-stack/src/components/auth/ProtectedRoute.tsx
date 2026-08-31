@@ -17,7 +17,7 @@ export function ProtectedRoute({ children }: Props) {
     if (!isLoading && !isAuthenticated) {
       if (router.pathname.startsWith('/admin')) {
         router.replace('/admin/login')
-      } else if (router.pathname.startsWith('/candidate')) {
+      } else {
         router.replace('/candidate/login')
       }
     }

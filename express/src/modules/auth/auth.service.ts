@@ -227,8 +227,16 @@ class AuthService {
 
   async getMeCandidate(ctx: AuthRequestContext) {
     return await db.$transaction(async (tx) => {
+      console.log("ctx.user.sub", ctx.user.sub);
       const seat = await tx.examSeat.findUnique({
         where: { id: ctx.user.sub },
+        include: {
+          exam: {
+            include: {
+              // currentSection: true,
+            },
+          },
+        },
       });
 
       if (!seat) {
